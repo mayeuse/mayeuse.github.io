@@ -1,4 +1,4 @@
-import Torus3D from './Torus3D';
+import Model3D from './Model3D';
 
 const HeroSection = () => {
   return (
@@ -10,7 +10,7 @@ const HeroSection = () => {
             and a minor in International Engineering from the Australian National University.
           </p>
         </div>
-        <Torus3D />
+        <Model3D />
       </div>
     </section>
   );

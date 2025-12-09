@@ -8,6 +8,7 @@ import ContactSection from "@/components/ContactSection";
 import SectionHeader from "@/components/SectionHeader";
 import HandwrittenLogo from "@/components/HandwrittenLogo";
 import FloatingParticles from "@/components/FloatingParticles";
+import GalleryWallBackground from "@/components/GalleryWallBackground";
 
 const sections = [
   { id: 'top', title: '' },
@@ -40,7 +41,8 @@ const Index = () => {
   }, []);
 
   return (
-    <main className="gallery-wall min-h-screen relative">
+    <main className="min-h-screen relative">
+      <GalleryWallBackground />
       <FloatingParticles />
       <HandwrittenLogo />
       {currentSection && <SectionHeader title={currentSection} />}
