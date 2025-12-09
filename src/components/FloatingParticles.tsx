@@ -8,20 +8,20 @@ const FloatingParticles = () => {
     if (!container) return;
 
     const particles: HTMLDivElement[] = [];
-    const particleCount = 30;
+    const particleCount = 80;
 
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
-      particle.className = 'absolute rounded-full bg-foreground/10';
+      particle.className = 'absolute rounded-full bg-foreground/5';
       
-      const size = Math.random() * 4 + 2;
+      const size = Math.random() * 2 + 1;
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
       
-      const duration = Math.random() * 20 + 15;
-      const delay = Math.random() * -20;
+      const duration = Math.random() * 8 + 5;
+      const delay = Math.random() * -8;
       particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
       
       container.appendChild(particle);
