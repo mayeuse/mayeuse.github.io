@@ -1,5 +1,4 @@
 import Torus3D from './Torus3D';
-import handwrittenName from '@/assets/handwritten-name.png';
 
 const HeroSection = () => {
   return (

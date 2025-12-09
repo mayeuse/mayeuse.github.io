@@ -7,8 +7,7 @@ const RotatingTorus = () => {
 
   useFrame((_, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.x += delta * 0.1;
-      meshRef.current.rotation.y += delta * 0.12;
+      meshRef.current.rotation.y += delta * 0.15;
     }
   });
 
