@@ -1,16 +1,50 @@
+import { useEffect, useState } from 'react';
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
-import StatementSection from "@/components/StatementSection";
 import WorksSection from "@/components/WorksSection";
+import PresentationsSection from "@/components/PresentationsSection";
+import AwardsSection from "@/components/AwardsSection";
 import ContactSection from "@/components/ContactSection";
+import SectionHeader from "@/components/SectionHeader";
+
+const sections = [
+  { id: 'top', title: '' },
+  { id: 'works', title: 'SELECTED WORKS' },
+  { id: 'presentations', title: 'PRESENTATIONS' },
+  { id: 'awards', title: 'AWARDS' },
+  { id: 'contact', title: 'CONTACT' },
+];
 
 const Index = () => {
+  const [currentSection, setCurrentSection] = useState('');
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight / 2;
+      
+      for (let i = sections.length - 1; i >= 0; i--) {
+        const element = document.getElementById(sections[i].id);
+        if (element && element.offsetTop <= scrollPosition) {
+          setCurrentSection(sections[i].title);
+          break;
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <main className="bg-background min-h-screen">
+      {currentSection && <SectionHeader title={currentSection} />}
       <Navigation />
       <HeroSection />
-      <StatementSection />
       <WorksSection />
+      <PresentationsSection />
+      <AwardsSection />
       <ContactSection />
     </main>
   );

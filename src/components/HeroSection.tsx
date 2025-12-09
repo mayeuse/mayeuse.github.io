@@ -1,9 +1,18 @@
+import Torus3D from './Torus3D';
+import handwrittenName from '@/assets/handwritten-name.png';
+
 const HeroSection = () => {
   return (
     <section id="top" className="min-h-screen flex items-center pl-[10%] pr-[10%]">
-      <h1 className="font-body text-foreground text-6xl md:text-8xl lg:text-9xl font-light tracking-tight uppercase">
-        Maya Eusebio
-      </h1>
+      <div className="flex items-center gap-8 md:gap-16">
+        <div className="w-1/3">
+          <p className="font-nav text-foreground text-lg md:text-xl leading-relaxed">
+            I am a senior at the University of Central Florida with a major in Computer Science 
+            and a minor in International Engineering from the Australian National University.
+          </p>
+        </div>
+        <Torus3D />
+      </div>
     </section>
   );
 };
