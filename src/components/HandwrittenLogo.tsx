@@ -9,7 +9,7 @@ const HandwrittenLogo = () => {
       <img 
         src={handwrittenName} 
         alt="Maya Eusebio" 
-        className="w-[33vw] h-auto"
+        className="w-[50vw] h-auto"
       />
     </a>
   );
