@@ -1,73 +1,37 @@
-import { useRef } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { Mesh, TextureLoader } from 'three';
-import { useState, useEffect } from 'react';
+import { Canvas } from '@react-three/fiber';
 
-// Placeholder images - replace with actual slideshow images
-const slideshowImages = [
-  'https://images.unsplash.com/photo-1541961017774-22349e4a1262?w=1200&h=800&fit=crop',
-  'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?w=1200&h=800&fit=crop',
-  'https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=1200&h=800&fit=crop',
-];
-
-const ProjectedSlideshow = () => {
-  const meshRef = useRef<Mesh>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [opacity, setOpacity] = useState(1);
-  
-  const textures = useLoader(TextureLoader, slideshowImages);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setOpacity(0);
-      setTimeout(() => {
-        setCurrentIndex((prev) => (prev + 1) % slideshowImages.length);
-        setOpacity(1);
-      }, 800);
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  return (
-    <mesh ref={meshRef} position={[0, 0, -4.8]}>
-      <planeGeometry args={[16, 10]} />
-      <meshBasicMaterial 
-        map={textures[currentIndex]}
-        transparent
-        opacity={0.25 * opacity}
-      />
-    </mesh>
-  );
-};
-
-const GalleryWall = () => {
+const StudioWall = () => {
   return (
     <group>
-      {/* Main wall - pure white */}
-      <mesh position={[0, 0, -5]} receiveShadow>
-        <planeGeometry args={[60, 40]} />
+      {/* Floor */}
+      <mesh position={[0, -8, -5]} rotation={[-Math.PI / 2.5, 0, 0]} receiveShadow>
+        <planeGeometry args={[80, 60]} />
         <meshStandardMaterial 
-          color="#ffffff"
-          roughness={0.95}
+          color="#f5f5f5"
+          roughness={0.15}
           metalness={0}
-        />
-      </mesh>
-      
-      {/* Subtle texture overlay */}
-      <mesh position={[0, 0, -4.95]}>
-        <planeGeometry args={[60, 40]} />
-        <meshStandardMaterial 
-          color="#f8f8f8"
-          roughness={1}
-          metalness={0}
-          transparent
-          opacity={0.2}
         />
       </mesh>
 
-      {/* Centered projected slideshow */}
-      <ProjectedSlideshow />
+      {/* Back wall */}
+      <mesh position={[0, 5, -20]} receiveShadow>
+        <planeGeometry args={[80, 50]} />
+        <meshStandardMaterial 
+          color="#fafafa"
+          roughness={0.4}
+          metalness={0}
+        />
+      </mesh>
+
+      {/* Curved infinity cove (seamless floor-to-wall transition) */}
+      <mesh position={[0, -3, -12]} rotation={[0.3, 0, 0]} receiveShadow>
+        <planeGeometry args={[80, 20]} />
+        <meshStandardMaterial 
+          color="#f8f8f8"
+          roughness={0.25}
+          metalness={0}
+        />
+      </mesh>
     </group>
   );
 };
@@ -76,12 +40,34 @@ const GalleryWallBackground = () => {
   return (
     <div className="fixed inset-0 z-0">
       <Canvas
-        camera={{ position: [0, 0, 12], fov: 50 }}
+        camera={{ position: [0, 2, 15], fov: 50 }}
         style={{ background: '#ffffff' }}
+        shadows
       >
-        <ambientLight intensity={1} />
-        <directionalLight position={[5, 5, 5]} intensity={0.3} />
-        <GalleryWall />
+        {/* Key light - main studio light from upper right */}
+        <directionalLight 
+          position={[10, 15, 10]} 
+          intensity={2} 
+          castShadow
+          shadow-mapSize={[2048, 2048]}
+        />
+        
+        {/* Fill light - softer from left */}
+        <directionalLight 
+          position={[-8, 8, 5]} 
+          intensity={0.8} 
+        />
+        
+        {/* Rim light - from behind */}
+        <directionalLight 
+          position={[0, 5, -10]} 
+          intensity={0.5} 
+        />
+        
+        {/* Ambient fill */}
+        <ambientLight intensity={0.6} />
+        
+        <StudioWall />
       </Canvas>
     </div>
   );

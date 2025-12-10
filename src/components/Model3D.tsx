@@ -1,10 +1,11 @@
 import { useRef, Suspense } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Mesh, Group } from 'three';
+import { useGLTF } from '@react-three/drei';
+import { Group } from 'three';
 
-// Placeholder rotating box until .obj file is added
 const RotatingModel = () => {
   const groupRef = useRef<Group>(null);
+  const { scene } = useGLTF('/models/smallLeaves.glb');
 
   useFrame((_, delta) => {
     if (groupRef.current) {
@@ -14,11 +15,7 @@ const RotatingModel = () => {
 
   return (
     <group ref={groupRef}>
-      {/* Replace this with OBJLoader when file is ready */}
-      <mesh>
-        <boxGeometry args={[1.5, 1.5, 1.5]} />
-        <meshToonMaterial color="#ffeded" />
-      </mesh>
+      <primitive object={scene} scale={2} />
     </group>
   );
 };
