@@ -1,11 +1,27 @@
-import { useRef, Suspense } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
-import { useGLTF, Center } from '@react-three/drei';
-import { Group } from 'three';
+import { useRef, Suspense, useMemo } from 'react';
+import { Canvas, useFrame, useLoader } from '@react-three/fiber';
+import { Center } from '@react-three/drei';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { Group, MeshStandardMaterial } from 'three';
 
 const FlowerModel = () => {
   const groupRef = useRef<Group>(null);
-  const { scene } = useGLTF('/models/smallLeaves.glb');
+  const obj = useLoader(OBJLoader, '/models/smallLeaves.obj');
+
+  const clonedScene = useMemo(() => {
+    const clone = obj.clone();
+    // Apply a nice sage green material to all meshes
+    clone.traverse((child) => {
+      if ((child as any).isMesh) {
+        (child as any).material = new MeshStandardMaterial({
+          color: '#8aaf8a',
+          roughness: 0.4,
+          metalness: 0.1,
+        });
+      }
+    });
+    return clone;
+  }, [obj]);
 
   useFrame((_, delta) => {
     if (groupRef.current) {
@@ -16,7 +32,7 @@ const FlowerModel = () => {
   return (
     <group ref={groupRef}>
       <Center>
-        <primitive object={scene.clone()} scale={1.5} />
+        <primitive object={clonedScene} scale={2} />
       </Center>
     </group>
   );
