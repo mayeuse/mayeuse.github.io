@@ -27,7 +27,7 @@ const WorksSection = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
   const handleProjectClick = (projectId: string) => {
-    setActiveProject(activeProject === projectId ? null : projectId);
+    setActiveProject(projectId);
   };
 
   const isAnimating = (projectId: string) => {
