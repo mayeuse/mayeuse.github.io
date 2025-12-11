@@ -1,16 +1,12 @@
-import { useState } from 'react';
 import { Info } from 'lucide-react';
 import Model3D from './Model3D';
 import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 
 const HeroSection = () => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-
   return (
     <section id="top" className="min-h-screen flex items-center pl-[10%] pr-[10%] relative z-10">
       <div className="flex items-center gap-8 md:gap-16">
@@ -19,25 +15,20 @@ const HeroSection = () => {
             I am a senior at the University of Central Florida with a major in Computer Science 
             and a minor in International Engineering from the Australian National University.
           </p>
-          <button
-            onClick={() => setDialogOpen(true)}
-            className="flex items-center gap-2 mt-4 font-nav text-foreground text-sm md:text-base transition-colors hover:text-pink-500 hover:underline cursor-pointer"
-          >
-            <Info className="w-4 h-4" />
-            <span>Why This Flower?</span>
-          </button>
+          <HoverCard openDelay={100} closeDelay={200}>
+            <HoverCardTrigger asChild>
+              <button className="flex items-center gap-2 mt-4 font-nav text-foreground text-sm md:text-base transition-colors hover:text-pink-500 hover:underline cursor-pointer">
+                <Info className="w-4 h-4" />
+                <span>Why This Flower?</span>
+              </button>
+            </HoverCardTrigger>
+            <HoverCardContent align="start" className="w-64">
+              <p className="text-sm">This is my rendition of the morivivi.</p>
+            </HoverCardContent>
+          </HoverCard>
         </div>
         <Model3D />
       </div>
-
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Why This Flower?</DialogTitle>
-          </DialogHeader>
-          <p className="text-foreground">This is my rendition of the morivivi.</p>
-        </DialogContent>
-      </Dialog>
     </section>
   );
 };
