@@ -16,7 +16,7 @@ const Model = ({ url, scale = 0.02 }: { url: string; scale?: number }) => {
 
   useFrame((_, delta) => {
     if (meshRef.current) {
-      meshRef.current.rotation.y += delta * 0.5;
+      meshRef.current.rotation.x += delta * 0.5;
     }
   });
 
@@ -34,7 +34,7 @@ const Model = ({ url, scale = 0.02 }: { url: string; scale?: number }) => {
 
 const STLModel = ({ url, position = [0, 0, 0], scale = 0.02 }: STLModelProps) => {
   return (
-    <div className="w-28 h-28">
+    <div className="w-36 h-36">
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} intensity={0.8} />
