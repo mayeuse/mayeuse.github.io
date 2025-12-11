@@ -52,7 +52,7 @@ const STLModel = memo(({ url, scale = 0.02, label }: STLModelProps) => {
   return (
     <div className="flex flex-col items-center">
       <div className="w-36 h-36 cursor-grab active:cursor-grabbing relative">
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ antialias: false }} dpr={1}>
+        <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ antialias: true }} dpr={[1, 2]}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
           <Model url={url} scale={scale} isInteracting={isInteracting} />

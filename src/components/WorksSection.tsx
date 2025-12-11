@@ -2,6 +2,8 @@ import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import STLModel from './STLModel';
 import ExpSchematic from '@/assets/ExpSchematic.png';
+import HandheldProbeAnimated from '@/assets/HandheldProbeAnimated.gif';
+import NovelProbeAnimated from '@/assets/NovelProbeAnimated.gif';
 
 interface Project {
   id: string;
@@ -163,6 +165,20 @@ const WorksSection = () => {
                             ))}
                           </Suspense>
                         </div>
+                      </div>
+                      
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Data Collection</h3>
+                      <div className="mt-4 flex items-center justify-center gap-4">
+                        <img 
+                          src={HandheldProbeAnimated} 
+                          alt="Handheld probe data collection animation"
+                          className="h-64 w-auto object-contain"
+                        />
+                        <img 
+                          src={NovelProbeAnimated} 
+                          alt="Novel probe data collection animation"
+                          className="h-64 w-auto object-contain"
+                        />
                       </div>
                     </>
                   )}
