@@ -148,7 +148,7 @@ const WorksSection = () => {
                             className="w-full h-auto"
                           />
                           <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed">
-                            I used a mixture of digital and manual fabrication techniques to create a force sensing stand.
+                            The test was performed on a phantom breast with a known tumor inside. I used a z-axis manipulator to control the motion of the probe precisely, and 3D printed attachments that would affix each probe to it. The phantom breast was placed on a laser cut acrylic stage bolted into a 3D printed ball-and-socket joint, which was then screwed into a digital force sensor that was clamped to the table. The ball-and-socket joint allowed the stage to be angled such that the tumor was exactly in line with the axis of motion of the probe. Two screws, when tightened, made the entire stage rigid such that all force from the probe was transferred to the force sensor without dissipating or converting. I verified accuracy with known weights.
                           </p>
                         </div>
                         
@@ -180,6 +180,11 @@ const WorksSection = () => {
                           className="h-64 w-auto object-contain"
                         />
                       </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-center max-w-4xl mx-auto">
+                        I screen recorded the process of collecting data for each probe. I placed acoustic gel over the tumor, then lowered the probes incrementally from 0 to 11 N of force. To make a fair comparison between the probes, I flattened the 3D data from our novel probe onto a 2D plane, conserving the highest value out of the depth for each point.
+                      </p>
+                      
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
                     </>
                   )}
                 </div>
