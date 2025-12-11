@@ -4,7 +4,7 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ title }: SectionHeaderProps) => {
   return (
-    <div className="fixed top-6 left-[5%] z-40">
+    <div className="fixed top-[11%] right-[5%] z-40">
       <span className="font-nav text-foreground text-2xl md:text-4xl uppercase tracking-wide">
         {title}
       </span>
