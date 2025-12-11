@@ -143,19 +143,16 @@ const WorksSection = () => {
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
                       <div className="mt-4 flex items-start gap-2">
                         {/* Schematic Image */}
-                        <div className="flex flex-col w-[66%]">
+                        <div className="w-[66%]">
                           <img 
                             src={ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
                             className="w-full h-auto"
                           />
-                          <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed">
-                            The test was performed on a phantom breast with a known tumor inside. I used a z-axis manipulator to control the motion of the probe precisely, and 3D printed attachments that would affix each probe to it. The phantom breast was placed on a laser cut acrylic stage bolted into a 3D printed ball-and-socket joint, which was then screwed into a digital force sensor that was clamped to the table. The ball-and-socket joint allowed the stage to be angled such that the tumor was exactly in line with the axis of motion of the probe. Two screws, when tightened, made the entire stage rigid such that all force from the probe was transferred to the force sensor without dissipating or converting. I verified accuracy with known weights.
-                          </p>
                         </div>
                         
                         {/* STL Models Column */}
-                        <div className="flex flex-col gap-0">
+                        <div className="flex flex-col gap-0 -mt-4">
                           <Suspense fallback={<div className="w-36 h-36 bg-muted/20 animate-pulse" />}>
                             {stlModels.map((model, index) => (
                               <STLModel 
@@ -168,6 +165,9 @@ const WorksSection = () => {
                           </Suspense>
                         </div>
                       </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        The test was performed on a phantom breast with a known tumor inside. I used a z-axis manipulator to control the motion of the probe precisely, and 3D printed attachments that would affix each probe to it. The phantom breast was placed on a laser cut acrylic stage bolted into a 3D printed ball-and-socket joint, which was then screwed into a digital force sensor that was clamped to the table. The ball-and-socket joint allowed the stage to be angled such that the tumor was exactly in line with the axis of motion of the probe. Two screws, when tightened, made the entire stage rigid such that all force from the probe was transferred to the force sensor without dissipating or converting. I verified accuracy with known weights.
+                      </p>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Data Collection</h3>
                       <div className="mt-4 flex items-center justify-center gap-4">
@@ -182,7 +182,7 @@ const WorksSection = () => {
                           className="h-64 w-auto object-contain"
                         />
                       </div>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-center max-w-4xl mx-auto">
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I screen recorded the process of collecting data for each probe. I placed acoustic gel over the tumor, then lowered the probes incrementally from 0 to 11 N of force. To make a fair comparison between the probes, I flattened the 3D data from our novel probe onto a 2D plane, conserving the highest value out of the depth for each point.
                       </p>
                       
@@ -193,7 +193,7 @@ const WorksSection = () => {
                         alt="Tumor deformation comparison between linear array and wearable 4D system"
                         className="mt-4 w-full max-w-4xl mx-auto h-auto"
                       />
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-center max-w-4xl mx-auto">
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
                         To visualize which system was more prone to causing tumor deformation, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
                       </p>
                       
@@ -202,7 +202,7 @@ const WorksSection = () => {
                         alt="Image quality over increasing applied pressure comparison"
                         className="mt-6 w-full max-w-4xl mx-auto h-auto"
                       />
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-center max-w-4xl mx-auto">
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
                         To assess image quality, I used Contrast-to-Noise Ratio (CNR). This would effectively communicate how distinguishable the tumor is from regular tissue. I modified a CNR calculator by Shrihari Viswanath so that a user could choose between manually selecting target and background regions for each photo or using the same regions for every image in a series. I also made it so that the results would be sent directly to a csv format for easier post-processing. This allowed me to graph quality over applied pressure.
                       </p>
                     </>
