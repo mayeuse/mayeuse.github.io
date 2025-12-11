@@ -1,6 +1,6 @@
 const Model3D = () => {
   return (
-    <div className="w-[480px] h-[480px] md:w-[640px] md:h-[640px]">
+    <div className="w-[530px] h-[530px] md:w-[700px] md:h-[700px] -ml-[200px]">
       <video
         src="/videos/flower.webm"
         autoPlay
