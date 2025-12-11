@@ -4,6 +4,8 @@ import STLModel from './STLModel';
 import ExpSchematic from '@/assets/ExpSchematic.png';
 import HandheldProbeAnimated from '@/assets/HandheldProbeAnimated.gif';
 import NovelProbeAnimated from '@/assets/NovelProbeAnimated.gif';
+import DeformationFigure from '@/assets/DeformationFigure.png';
+import PressureFigure from '@/assets/PressureFigure.png';
 
 interface Project {
   id: string;
@@ -185,6 +187,24 @@ const WorksSection = () => {
                       </p>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
+                      
+                      <img 
+                        src={DeformationFigure} 
+                        alt="Tumor deformation comparison between linear array and wearable 4D system"
+                        className="mt-4 w-full max-w-4xl mx-auto h-auto"
+                      />
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-center max-w-4xl mx-auto">
+                        To visualize which system was more prone to causing tumor deformation, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
+                      </p>
+                      
+                      <img 
+                        src={PressureFigure} 
+                        alt="Image quality over increasing applied pressure comparison"
+                        className="mt-6 w-full max-w-4xl mx-auto h-auto"
+                      />
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-center max-w-4xl mx-auto">
+                        To assess image quality, I used Contrast-to-Noise Ratio (CNR). This would effectively communicate how distinguishable the tumor is from regular tissue. I modified a CNR calculator by Shrihari Viswanath so that a user could choose between manually selecting target and background regions for each photo or using the same regions for every image in a series. I also made it so that the results would be sent directly to a csv format for easier post-processing. This allowed me to graph quality over applied pressure.
+                      </p>
                     </>
                   )}
                 </div>
