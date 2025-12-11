@@ -44,10 +44,10 @@ const WorksSection = () => {
   };
 
   return (
-    <section id="works" className="min-h-screen flex items-center py-20 relative z-10 bg-red-500/10">
-      <div className="flex w-full h-full">
+    <section id="works" className="h-screen flex items-start pt-[25vh] relative z-10">
+      <div className="flex w-full h-[70vh]">
         {/* Thumbnails Column */}
-        <div className="flex flex-col gap-8 pl-[10%]">
+        <div className="flex flex-col justify-between h-full pl-[10%]">
           {projects.map((project) => (
             <div
               key={project.id}
@@ -57,7 +57,7 @@ const WorksSection = () => {
               onClick={() => handleProjectClick(project.id)}
             >
               {/* Thumbnail */}
-              <div className="relative w-32 h-24 md:w-40 md:h-28 overflow-hidden bg-muted/20">
+              <div className="relative w-24 h-16 md:w-32 md:h-20 overflow-hidden bg-muted/20">
                 <motion.div
                   className="w-full h-full bg-gradient-to-br from-foreground/5 to-foreground/20"
                   animate={{
@@ -92,13 +92,13 @@ const WorksSection = () => {
                       repeat: isAnimating(project.id) ? Infinity : 0,
                     }}
                   >
-                    <div className="w-8 h-8 border border-foreground/30 rounded-full" />
+                    <div className="w-6 h-6 border border-foreground/30 rounded-full" />
                   </motion.div>
                 </motion.div>
               </div>
               
               {/* Label */}
-              <span className={`mt-2 font-nav text-sm md:text-base uppercase tracking-wider transition-colors duration-300 ${
+              <span className={`mt-1 font-nav text-xs md:text-sm uppercase tracking-wider transition-colors duration-300 ${
                 activeProject === project.id 
                   ? 'text-primary' 
                   : 'text-foreground/60 group-hover:text-foreground'
@@ -111,11 +111,6 @@ const WorksSection = () => {
 
         {/* Project Display Area */}
         <div className="flex-1 flex flex-col items-center justify-center px-8">
-          {/* Debug: show active state */}
-          <p className="text-sm text-red-500 mb-4">
-            Debug: {activeProject || 'none'} | Has data: {activeProjectData ? 'yes' : 'no'}
-          </p>
-          
           {activeProjectData ? (
             <div className="max-w-2xl">
               {activeProjectData.displayTitle ? (
