@@ -33,7 +33,7 @@ const Model = ({ url, scale, extraRotation = [0, 0, 0], isInteracting }: ModelPr
     <group rotation={[0, 0, -Math.PI / 2]}>
       <group rotation={extraRotation}>
         <mesh ref={meshRef} geometry={geometry} scale={scale}>
-          <meshStandardMaterial color="#888888" metalness={0.3} roughness={0.6} />
+          <meshStandardMaterial color="#888888" metalness={0.3} roughness={0.6} vertexColors={false} />
         </mesh>
       </group>
     </group>
