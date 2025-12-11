@@ -5,11 +5,19 @@ interface Project {
   id: string;
   title: string;
   thumbnail: string;
+  displayTitle?: string;
+  subtitle?: string;
 }
 
 const projects: Project[] = [
   { id: 'texels', title: 'TEXELS', thumbnail: '/placeholder.svg' },
-  { id: 'cancer-screening', title: 'CANCER SCREENING', thumbnail: '/placeholder.svg' },
+  { 
+    id: 'cancer-screening', 
+    title: 'CANCER SCREENING', 
+    thumbnail: '/placeholder.svg',
+    displayTitle: 'Can a novel probe by the Conformable Decoders detect tumors with less pressure?',
+    subtitle: 'I built a testing system to compare a new ultrasound probe to the industry standard for two reasons. (1) Increasing comfort would make it more approachable for women to monitor their tumors longitudinally and provide doctors with more information when determining treatment plans. (2) squeezing tumors less during screening results in a more accurate calculation of volume when assessing responses to treatment.'
+  },
   { id: 'drug-delivery', title: 'DRUG DELIVERY', thumbnail: '/placeholder.svg' },
   { id: 'lyken', title: 'LYKEN', thumbnail: '/placeholder.svg' },
 ];
@@ -20,6 +28,14 @@ const WorksSection = () => {
 
   const handleProjectClick = (projectId: string) => {
     setActiveProject(activeProject === projectId ? null : projectId);
+  };
+
+  const isAnimating = (projectId: string) => {
+    return hoveredProject === projectId && activeProject !== projectId;
+  };
+
+  const isFrozen = (projectId: string) => {
+    return activeProject === projectId;
   };
 
   return (
@@ -36,54 +52,44 @@ const WorksSection = () => {
               onClick={() => handleProjectClick(project.id)}
             >
               {/* Thumbnail */}
-              <div className="relative w-32 h-24 md:w-40 md:h-28 overflow-hidden bg-muted/20 border border-foreground/10">
+              <div className="relative w-32 h-24 md:w-40 md:h-28 overflow-hidden bg-muted/20">
                 <motion.div
                   className="w-full h-full bg-gradient-to-br from-foreground/5 to-foreground/20"
                   animate={{
-                    scale: hoveredProject === project.id || activeProject === project.id ? [1, 1.05, 1] : 1,
-                    opacity: hoveredProject === project.id || activeProject === project.id ? [0.5, 1, 0.8] : 0.6,
+                    scale: isAnimating(project.id) ? [1, 1.05, 1] : isFrozen(project.id) ? 1.05 : 1,
+                    opacity: isAnimating(project.id) ? [0.5, 1, 0.8] : isFrozen(project.id) ? 1 : 0.6,
                   }}
                   transition={{
                     duration: 0.8,
-                    repeat: hoveredProject === project.id && activeProject !== project.id ? Infinity : 0,
+                    repeat: isAnimating(project.id) ? Infinity : 0,
                     ease: "easeInOut",
                   }}
                 >
                   <motion.div
                     className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-primary/10"
                     animate={{
-                      x: hoveredProject === project.id || activeProject === project.id ? [0, 10, 0] : 0,
-                      y: hoveredProject === project.id || activeProject === project.id ? [0, -5, 0] : 0,
+                      x: isAnimating(project.id) ? [0, 10, 0] : isFrozen(project.id) ? 10 : 0,
+                      y: isAnimating(project.id) ? [0, -5, 0] : isFrozen(project.id) ? -5 : 0,
                     }}
                     transition={{
                       duration: 1.2,
-                      repeat: hoveredProject === project.id && activeProject !== project.id ? Infinity : 0,
+                      repeat: isAnimating(project.id) ? Infinity : 0,
                       ease: "easeInOut",
                     }}
                   />
                   <motion.div
                     className="absolute inset-0 flex items-center justify-center"
                     animate={{
-                      rotate: hoveredProject === project.id || activeProject === project.id ? [0, 2, -2, 0] : 0,
+                      rotate: isAnimating(project.id) ? [0, 2, -2, 0] : isFrozen(project.id) ? 2 : 0,
                     }}
                     transition={{
                       duration: 0.6,
-                      repeat: hoveredProject === project.id && activeProject !== project.id ? Infinity : 0,
+                      repeat: isAnimating(project.id) ? Infinity : 0,
                     }}
                   >
                     <div className="w-8 h-8 border border-foreground/30 rounded-full" />
                   </motion.div>
                 </motion.div>
-                
-                {/* Active indicator */}
-                {activeProject === project.id && (
-                  <motion.div
-                    className="absolute inset-0 border-2 border-primary"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                  />
-                )}
               </div>
               
               {/* Label */}
@@ -108,11 +114,22 @@ const WorksSection = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="text-center"
+                className="max-w-2xl"
               >
-                <h2 className="font-body text-foreground text-5xl md:text-7xl lg:text-8xl uppercase tracking-wide">
-                  {projects.find(p => p.id === activeProject)?.title}
-                </h2>
+                {projects.find(p => p.id === activeProject)?.displayTitle ? (
+                  <div className="space-y-6">
+                    <h2 className="font-body text-foreground text-3xl md:text-4xl lg:text-5xl leading-tight">
+                      {projects.find(p => p.id === activeProject)?.displayTitle}
+                    </h2>
+                    <p className="font-body text-foreground/70 text-base md:text-lg leading-relaxed">
+                      {projects.find(p => p.id === activeProject)?.subtitle}
+                    </p>
+                  </div>
+                ) : (
+                  <h2 className="font-body text-foreground text-5xl md:text-7xl lg:text-8xl uppercase tracking-wide">
+                    {projects.find(p => p.id === activeProject)?.title}
+                  </h2>
+                )}
               </motion.div>
             )}
           </AnimatePresence>
