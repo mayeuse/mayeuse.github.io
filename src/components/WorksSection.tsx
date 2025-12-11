@@ -29,7 +29,7 @@ const projects: Project[] = [
 const stlModels = [
   { url: '/models/Probe_Head_Attachment.stl', label: 'Novel Probe Attachment' },
   { url: '/models/Handheld_Probe_Attachment_v3.stl', label: 'Traditional Probe Attachment' },
-  { url: '/models/Tilt_Mechanism.stl', label: 'Stage Tilt Mechanism', extraRotation: [0, 0, -Math.PI / 2] as [number, number, number] },
+  { url: '/models/Tilt_Mechanism.stl', label: 'Stage Tilt Mechanism' },
 ];
 
 const WorksSection = () => {
@@ -139,7 +139,7 @@ const WorksSection = () => {
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
                       <div className="mt-4 flex items-start gap-2">
                         {/* Schematic Image */}
-                        <div className="flex flex-col w-[50%]">
+                        <div className="flex flex-col w-[66%]">
                           <img 
                             src={ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
@@ -159,7 +159,6 @@ const WorksSection = () => {
                                 url={model.url} 
                                 scale={0.035} 
                                 label={model.label}
-                                extraRotation={model.extraRotation}
                               />
                             ))}
                           </Suspense>
