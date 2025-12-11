@@ -106,43 +106,27 @@ const WorksSection = () => {
 
         {/* Project Display Area */}
         <div className="flex-1 flex items-center justify-center px-8">
-          <AnimatePresence mode="wait">
-            {activeProject && (
-              <motion.div
-                key={activeProject}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.4, ease: "easeOut" }}
-                className="max-w-2xl"
-              >
-                {projects.find(p => p.id === activeProject)?.displayTitle ? (
-                  <div className="space-y-6">
-                    <h2 className="font-body text-foreground text-3xl md:text-4xl lg:text-5xl leading-tight">
-                      {projects.find(p => p.id === activeProject)?.displayTitle}
-                    </h2>
-                    <p className="font-body text-foreground/70 text-base md:text-lg leading-relaxed">
-                      {projects.find(p => p.id === activeProject)?.subtitle}
-                    </p>
-                  </div>
-                ) : (
-                  <h2 className="font-body text-foreground text-5xl md:text-7xl lg:text-8xl uppercase tracking-wide">
-                    {projects.find(p => p.id === activeProject)?.title}
+          {activeProject ? (
+            <div className="max-w-2xl">
+              {projects.find(p => p.id === activeProject)?.displayTitle ? (
+                <div className="space-y-6">
+                  <h2 className="font-body text-foreground text-3xl md:text-4xl lg:text-5xl leading-tight">
+                    {projects.find(p => p.id === activeProject)?.displayTitle}
                   </h2>
-                )}
-              </motion.div>
-            )}
-          </AnimatePresence>
-          
-          {/* Default state when no project selected */}
-          {!activeProject && (
-            <motion.h2 
-              className="font-body text-foreground/20 text-5xl md:text-7xl uppercase tracking-wide"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
+                  <p className="font-body text-foreground/70 text-base md:text-lg leading-relaxed">
+                    {projects.find(p => p.id === activeProject)?.subtitle}
+                  </p>
+                </div>
+              ) : (
+                <h2 className="font-body text-foreground text-5xl md:text-7xl lg:text-8xl uppercase tracking-wide">
+                  {projects.find(p => p.id === activeProject)?.title}
+                </h2>
+              )}
+            </div>
+          ) : (
+            <h2 className="font-body text-foreground/20 text-5xl md:text-7xl uppercase tracking-wide">
               Selected Works
-            </motion.h2>
+            </h2>
           )}
         </div>
       </div>
