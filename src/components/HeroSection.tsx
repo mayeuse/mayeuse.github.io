@@ -9,11 +9,10 @@ import {
 const HeroSection = () => {
   return (
     <section id="top" className="min-h-screen flex items-center pl-[10%] pr-[10%] relative z-10">
-      <div className="flex items-center gap-8 md:gap-16">
+      <div className="flex items-center justify-between w-full">
         <div className="w-1/3">
           <p className="font-nav text-foreground text-lg md:text-xl leading-relaxed">
-            I am a senior at the University of Central Florida with a major in Computer Science 
-            and a minor in International Engineering from the Australian National University.
+            I am a Computer Science major at the University of Central Florida with a minor in International Engineering from the Australian National University. Through art, engineering, and anthropology, I aim to develop new tools that center marginalized perspectives.
           </p>
           <HoverCard openDelay={100} closeDelay={200}>
             <HoverCardTrigger asChild>
@@ -22,8 +21,8 @@ const HeroSection = () => {
                 <span>Why This Flower?</span>
               </button>
             </HoverCardTrigger>
-            <HoverCardContent align="start" className="w-64">
-              <p className="text-sm">This is my rendition of the morivivi.</p>
+            <HoverCardContent align="start" className="w-80">
+              <p className="text-sm leading-relaxed">This is my rendition of the "sensitive plant," or as I call it, "morivivi." Some of my first memories in the Dominican Republic are of making its leaves curl up outside my family home. Since then, I look for it everywhere I go. It serves as a strong reminder to me of the through lines that exist between what feel like completely different worlds. It also resembles the plant from "Horton Hears a Who," which housed an entire world on one small speck of dust.</p>
             </HoverCardContent>
           </HoverCard>
         </div>
