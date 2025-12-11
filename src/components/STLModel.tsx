@@ -24,15 +24,17 @@ const Model = ({ url, scale = 0.02 }: { url: string; scale?: number }) => {
   geometry.center();
 
   return (
-    <mesh ref={meshRef} geometry={geometry} scale={scale}>
-      <meshStandardMaterial color="#8B9B8B" metalness={0.3} roughness={0.6} />
-    </mesh>
+    <group rotation={[0, 0, -Math.PI / 2]}>
+      <mesh ref={meshRef} geometry={geometry} scale={scale}>
+        <meshStandardMaterial color="#8B9B8B" metalness={0.3} roughness={0.6} />
+      </mesh>
+    </group>
   );
 };
 
 const STLModel = ({ url, position = [0, 0, 0], scale = 0.02 }: STLModelProps) => {
   return (
-    <div className="w-20 h-20">
+    <div className="w-28 h-28">
       <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
         <ambientLight intensity={0.6} />
         <directionalLight position={[5, 5, 5]} intensity={0.8} />

@@ -135,12 +135,12 @@ const WorksSection = () => {
                   </div>
                   
                   {activeProjectData.hasSchematic && (
-                    <div className="mt-8 flex items-start gap-6">
+                    <div className="mt-8 flex items-start gap-2">
                       {/* STL Models Column */}
-                      <div className="flex flex-col gap-4">
-                        <Suspense fallback={<div className="w-20 h-20 bg-muted/20 animate-pulse" />}>
+                      <div className="flex flex-col gap-1">
+                        <Suspense fallback={<div className="w-28 h-28 bg-muted/20 animate-pulse" />}>
                           {stlModels.map((model, index) => (
-                            <STLModel key={index} url={model} scale={0.015} />
+                            <STLModel key={index} url={model} scale={0.025} />
                           ))}
                         </Suspense>
                       </div>
@@ -149,7 +149,7 @@ const WorksSection = () => {
                       <img 
                         src={ExpSchematic} 
                         alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
-                        className="max-w-md h-auto"
+                        className="max-w-[280px] h-auto"
                       />
                     </div>
                   )}
