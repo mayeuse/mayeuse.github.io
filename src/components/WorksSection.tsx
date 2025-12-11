@@ -27,9 +27,9 @@ const projects: Project[] = [
 ];
 
 const stlModels = [
-  '/models/Probe_Head_Attachment.stl',
-  '/models/Handheld_Probe_Attachment_v3.stl',
-  '/models/Tilt_Mechanism.stl',
+  { url: '/models/Probe_Head_Attachment.stl', tooltip: 'novel probe attachment' },
+  { url: '/models/Handheld_Probe_Attachment_v3.stl', tooltip: 'traditional probe attachment' },
+  { url: '/models/Tilt_Mechanism.stl', tooltip: 'stage tilt mechanism', extraRotation: [0, 0, -Math.PI / 2] as [number, number, number] },
 ];
 
 const WorksSection = () => {
@@ -135,23 +135,37 @@ const WorksSection = () => {
                   </div>
                   
                   {activeProjectData.hasSchematic && (
-                    <div className="mt-8 flex items-start gap-2">
-                      {/* STL Models Column */}
-                      <div className="flex flex-col gap-0">
-                        <Suspense fallback={<div className="w-36 h-36 bg-muted/20 animate-pulse" />}>
-                          {stlModels.map((model, index) => (
-                            <STLModel key={index} url={model} scale={0.035} />
-                          ))}
-                        </Suspense>
+                    <>
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
+                      <div className="mt-4 flex items-start gap-2">
+                        {/* Schematic Image */}
+                        <div className="flex flex-col">
+                          <img 
+                            src={ExpSchematic} 
+                            alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
+                            className="max-w-[280px] h-auto"
+                          />
+                          <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed max-w-[280px]">
+                            I used a mixture of digital and manual fabrication techniques to create a force sensing stand.
+                          </p>
+                        </div>
+                        
+                        {/* STL Models Column */}
+                        <div className="flex flex-col gap-0">
+                          <Suspense fallback={<div className="w-36 h-36 bg-muted/20 animate-pulse" />}>
+                            {stlModels.map((model, index) => (
+                              <STLModel 
+                                key={index} 
+                                url={model.url} 
+                                scale={0.035} 
+                                tooltip={model.tooltip}
+                                extraRotation={model.extraRotation}
+                              />
+                            ))}
+                          </Suspense>
+                        </div>
                       </div>
-                      
-                      {/* Schematic Image */}
-                      <img 
-                        src={ExpSchematic} 
-                        alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
-                        className="max-w-[280px] h-auto"
-                      />
-                    </div>
+                    </>
                   )}
                 </div>
               ) : (
