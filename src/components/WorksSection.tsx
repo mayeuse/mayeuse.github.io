@@ -31,7 +31,9 @@ const WorksSection = () => {
     setActiveProject(projectId);
   };
 
-  console.log('Current activeProject:', activeProject);
+  const activeProjectData = activeProject ? projects.find(p => p.id === activeProject) : null;
+  
+  console.log('Current activeProject:', activeProject, 'Data:', activeProjectData);
 
   const isAnimating = (projectId: string) => {
     return hoveredProject === projectId && activeProject !== projectId;
@@ -109,20 +111,20 @@ const WorksSection = () => {
 
         {/* Project Display Area */}
         <div className="flex-1 flex items-center justify-center px-8">
-          {activeProject ? (
+          {activeProjectData ? (
             <div className="max-w-2xl">
-              {projects.find(p => p.id === activeProject)?.displayTitle ? (
+              {activeProjectData.displayTitle ? (
                 <div className="space-y-6">
                   <h2 className="font-body text-foreground text-3xl md:text-4xl lg:text-5xl leading-tight">
-                    {projects.find(p => p.id === activeProject)?.displayTitle}
+                    {activeProjectData.displayTitle}
                   </h2>
                   <p className="font-body text-foreground/70 text-base md:text-lg leading-relaxed">
-                    {projects.find(p => p.id === activeProject)?.subtitle}
+                    {activeProjectData.subtitle}
                   </p>
                 </div>
               ) : (
                 <h2 className="font-body text-foreground text-5xl md:text-7xl lg:text-8xl uppercase tracking-wide">
-                  {projects.find(p => p.id === activeProject)?.title}
+                  {activeProjectData.title}
                 </h2>
               )}
             </div>
