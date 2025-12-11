@@ -24,7 +24,7 @@ const Navigation = () => {
             <a
               href={link.href}
               onClick={(e) => handleClick(e, link.href)}
-              className="font-nav text-foreground text-sm md:text-base uppercase tracking-wide hover:text-primary hover:underline transition-colors"
+              className="font-nav text-foreground text-base md:text-lg uppercase tracking-wide hover:text-primary hover:underline transition-colors"
             >
               {link.label}
             </a>

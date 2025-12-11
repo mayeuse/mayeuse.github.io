@@ -12,7 +12,7 @@ const HeroSection = () => {
       <div className="flex items-center justify-between w-full">
         <div className="w-1/3">
           <p className="font-nav text-foreground text-lg md:text-xl leading-relaxed">
-            I am a Computer Science major at the University of Central Florida with a minor in International Engineering from the Australian National University. Through art, engineering, and anthropology, I aim to develop new tools that center marginalized perspectives.
+            I am a Computer Science major at the University of Central Florida with a minor in International Engineering from the Australian National University. Through art, engineering, and anthropology, I aim to develop new tools that center marginalized worlds.
           </p>
           <HoverCard openDelay={100} closeDelay={200}>
             <HoverCardTrigger asChild>
