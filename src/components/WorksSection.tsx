@@ -27,8 +27,11 @@ const WorksSection = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
 
   const handleProjectClick = (projectId: string) => {
+    console.log('Clicked project:', projectId);
     setActiveProject(projectId);
   };
+
+  console.log('Current activeProject:', activeProject);
 
   const isAnimating = (projectId: string) => {
     return hoveredProject === projectId && activeProject !== projectId;
