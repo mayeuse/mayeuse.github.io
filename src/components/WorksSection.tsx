@@ -44,7 +44,7 @@ const WorksSection = () => {
   };
 
   return (
-    <section id="works" className="min-h-screen flex items-center py-20">
+    <section id="works" className="min-h-screen flex items-center py-20 relative z-10 bg-red-500/10">
       <div className="flex w-full h-full">
         {/* Thumbnails Column */}
         <div className="flex flex-col gap-8 pl-[10%]">
