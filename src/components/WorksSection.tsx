@@ -111,6 +111,11 @@ const WorksSection = () => {
 
         {/* Project Display Area */}
         <div className="flex-1 flex items-center justify-center px-8">
+          {/* Debug: show active state */}
+          <div className="absolute top-4 right-4 text-xs text-red-500">
+            Debug: {activeProject || 'none'} | Has data: {activeProjectData ? 'yes' : 'no'}
+          </div>
+          
           {activeProjectData ? (
             <div className="max-w-2xl">
               {activeProjectData.displayTitle ? (
