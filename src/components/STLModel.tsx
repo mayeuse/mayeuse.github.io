@@ -3,12 +3,7 @@ import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
 import * as THREE from 'three';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { RotateCcw } from 'lucide-react';
 
 interface ModelProps {
   url: string;
@@ -45,44 +40,35 @@ interface STLModelProps {
   position?: [number, number, number];
   scale?: number;
   extraRotation?: [number, number, number];
-  tooltip?: string;
+  label?: string;
 }
 
-const STLModel = ({ url, position = [0, 0, 0], scale = 0.02, extraRotation, tooltip }: STLModelProps) => {
+const STLModel = ({ url, position = [0, 0, 0], scale = 0.02, extraRotation, label }: STLModelProps) => {
   const [isInteracting, setIsInteracting] = useState(false);
 
-  const content = (
-    <div className="w-36 h-36 cursor-grab active:cursor-grabbing">
-      <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
-        <ambientLight intensity={0.6} />
-        <directionalLight position={[5, 5, 5]} intensity={0.8} />
-        <Model url={url} scale={scale} extraRotation={extraRotation} isInteracting={isInteracting} />
-        <OrbitControls 
-          enableZoom={false} 
-          enablePan={false}
-          onStart={() => setIsInteracting(true)}
-          onEnd={() => setIsInteracting(false)}
-        />
-      </Canvas>
+  return (
+    <div className="flex flex-col items-center">
+      <div className="w-36 h-36 cursor-grab active:cursor-grabbing relative">
+        <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+          <ambientLight intensity={0.6} />
+          <directionalLight position={[5, 5, 5]} intensity={0.8} />
+          <Model url={url} scale={scale} extraRotation={extraRotation} isInteracting={isInteracting} />
+          <OrbitControls 
+            enableZoom={false} 
+            enablePan={false}
+            onStart={() => setIsInteracting(true)}
+            onEnd={() => setIsInteracting(false)}
+          />
+        </Canvas>
+        <div className="absolute bottom-1 right-1 text-foreground/40">
+          <RotateCcw size={14} />
+        </div>
+      </div>
+      {label && (
+        <span className="font-body text-xs text-foreground/70 text-center mt-1">{label}</span>
+      )}
     </div>
   );
-
-  if (tooltip) {
-    return (
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            {content}
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>{tooltip}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-    );
-  }
-
-  return content;
 };
 
 export default STLModel;
