@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
+import STLModel from './STLModel';
+import ExpSchematic from '@/assets/ExpSchematic.png';
 
 interface Project {
   id: string;
@@ -7,6 +9,7 @@ interface Project {
   thumbnail: string;
   displayTitle?: string;
   subtitle?: string;
+  hasSchematic?: boolean;
 }
 
 const projects: Project[] = [
@@ -16,10 +19,17 @@ const projects: Project[] = [
     title: 'CANCER SCREENING', 
     thumbnail: '/placeholder.svg',
     displayTitle: 'Can a novel probe by the Conformable Decoders detect tumors with less pressure?',
-    subtitle: 'I built a testing system to compare a new ultrasound probe to the industry standard for two reasons. (1) Increasing comfort would make it more approachable for women to monitor their tumors longitudinally and provide doctors with more information when determining treatment plans. (2) squeezing tumors less during screening results in a more accurate calculation of volume when assessing responses to treatment.'
+    subtitle: 'I built a testing system to compare a new ultrasound probe to the industry standard for two reasons.',
+    hasSchematic: true
   },
   { id: 'drug-delivery', title: 'DRUG DELIVERY', thumbnail: '/placeholder.svg' },
   { id: 'lyken', title: 'LYKEN', thumbnail: '/placeholder.svg' },
+];
+
+const stlModels = [
+  '/models/Probe_Head_Attachment.stl',
+  '/models/Handheld_Probe_Attachment_v3.stl',
+  '/models/Tilt_Mechanism.stl',
 ];
 
 const WorksSection = () => {
@@ -110,17 +120,39 @@ const WorksSection = () => {
         </div>
 
         {/* Project Display Area */}
-        <div className="flex-1 flex flex-col items-center justify-center px-8">
+        <div className="flex-1 flex flex-col items-start justify-start px-8 pr-[15%] overflow-y-auto">
           {activeProjectData ? (
             <div className="max-w-2xl">
               {activeProjectData.displayTitle ? (
-                <div className="space-y-6">
-                  <h2 className="font-body text-foreground text-3xl md:text-4xl lg:text-5xl leading-tight">
+                <div className="space-y-4">
+                  <h2 className="font-body text-foreground text-2xl md:text-3xl lg:text-4xl leading-tight">
                     {activeProjectData.displayTitle}
                   </h2>
-                  <p className="font-body text-foreground/70 text-base md:text-lg leading-relaxed">
-                    {activeProjectData.subtitle}
-                  </p>
+                  <div className="font-body text-foreground/70 text-sm md:text-base leading-relaxed">
+                    <p>{activeProjectData.subtitle}</p>
+                    <p className="mt-4">(1) Increasing comfort would make it more approachable for women to monitor their tumors longitudinally and provide doctors with more information when determining treatment plans.</p>
+                    <p className="mt-4">(2) Squeezing tumors less during screening results in a more accurate calculation of volume when assessing responses to treatment.</p>
+                  </div>
+                  
+                  {activeProjectData.hasSchematic && (
+                    <div className="mt-8 flex items-start gap-6">
+                      {/* STL Models Column */}
+                      <div className="flex flex-col gap-4">
+                        <Suspense fallback={<div className="w-20 h-20 bg-muted/20 animate-pulse" />}>
+                          {stlModels.map((model, index) => (
+                            <STLModel key={index} url={model} scale={0.015} />
+                          ))}
+                        </Suspense>
+                      </div>
+                      
+                      {/* Schematic Image */}
+                      <img 
+                        src={ExpSchematic} 
+                        alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
+                        className="max-w-md h-auto"
+                      />
+                    </div>
+                  )}
                 </div>
               ) : (
                 <h2 className="font-body text-foreground text-5xl md:text-7xl lg:text-8xl uppercase tracking-wide">
@@ -129,7 +161,7 @@ const WorksSection = () => {
               )}
             </div>
           ) : (
-            <h2 className="font-body text-foreground/20 text-5xl md:text-7xl uppercase tracking-wide">
+            <h2 className="font-body text-foreground/20 text-5xl md:text-7xl uppercase tracking-wide pt-[20%]">
               Selected Works
             </h2>
           )}
