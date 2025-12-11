@@ -137,10 +137,10 @@ const WorksSection = () => {
                   {activeProjectData.hasSchematic && (
                     <div className="mt-8 flex items-start gap-2">
                       {/* STL Models Column */}
-                      <div className="flex flex-col gap-1">
-                        <Suspense fallback={<div className="w-28 h-28 bg-muted/20 animate-pulse" />}>
+                      <div className="flex flex-col gap-0">
+                        <Suspense fallback={<div className="w-36 h-36 bg-muted/20 animate-pulse" />}>
                           {stlModels.map((model, index) => (
-                            <STLModel key={index} url={model} scale={0.025} />
+                            <STLModel key={index} url={model} scale={0.035} />
                           ))}
                         </Suspense>
                       </div>
