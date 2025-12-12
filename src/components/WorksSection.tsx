@@ -155,16 +155,16 @@ const WorksSection = () => {
                   {activeProject === 'drug-delivery' && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Phantom Environment</h3>
-                      <div className="mt-4 flex gap-4 justify-center">
+                      <div className="mt-4 flex flex-col gap-4 items-center">
                         <img 
                           src={PhantomModels} 
                           alt="Phantom environment 3D models" 
-                          className="w-1/2 object-contain"
+                          className="w-full object-contain"
                         />
                         <img 
                           src={PhantomMoldsAndMaterials} 
                           alt="Phantom molds and materials" 
-                          className="w-1/2 object-contain"
+                          className="w-full object-contain"
                         />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
@@ -172,9 +172,14 @@ const WorksSection = () => {
                       </p>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Surface Optimization</h3>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        {/* Content to be added */}
-                      </p>
+                      <div className="mt-4 flex items-start gap-4">
+                        <div className="w-1/2 flex justify-center">
+                          <STLModel url="/models/Varied_Pillars_mold.stl" scale={0.015} label="pillar mold" />
+                        </div>
+                        <p className="w-1/2 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                          After exploration, I worked with polydimethylsiloxane (PDMS) as the device substrate due to its elasticity, biocompatibility, and biodurability. However, its hydrophobicity would repel mucus, so I added surface pillars to introduce mechanical adhesion. I tested molds made of PLA and resin with different curing steps, pillars of different diameters, and of different heights.
+                        </p>
+                      </div>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
