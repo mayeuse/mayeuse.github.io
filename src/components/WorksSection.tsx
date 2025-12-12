@@ -10,6 +10,8 @@ import PhantomModels from '@/assets/PhantomModels.png';
 import PhantomMoldsAndMaterials from '@/assets/PhantomMoldsAndMaterials.png';
 import ContactAngleAnalysis from '@/assets/ContactAngleAnalysis.png';
 import ContactAngleResults from '@/assets/ContactAngleResults.png';
+import PillarMold from '@/assets/PillarMold.png';
+import PillarWicking from '@/assets/PillarWicking.png';
 
 interface Project {
   id: string;
@@ -193,9 +195,24 @@ const WorksSection = () => {
                         I found that the coating achieved hydrophilicity in both water and simulated mucus by analyzing contact angles in imageJ. The coating wore off within two hours, but reactivated at least once upon soaking in BSA and phosphate buffer, allowing for device reuse.
                       </p>
                       
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Physical Optimization</h3>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        {/* Content to be added */}
+                        To introduce mechanical adhesion, I added pillars to the surface of the PDMS. I tested molds made of PLA and resin with different curing steps, pillars of different diameters (10-, 5-, 2-, and 1-mm), and of different heights (1- and 2-mm).
+                      </p>
+                      <div className="mt-4 flex gap-4 justify-center">
+                        <img 
+                          src={PillarMold} 
+                          alt="Varied pillar mold design" 
+                          className="max-h-[200px] object-contain"
+                        />
+                        <img 
+                          src={PillarWicking} 
+                          alt="Pillar wicking test results" 
+                          className="max-h-[200px] object-contain"
+                        />
+                      </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I analyzed the distance covered and change in surface area of water drops with imageJ to determine the wicking effects of the pillars. I proposed a design with varying sizes to move and hold mucus in designated areas, as different sizes had different advantages.
                       </p>
                     </>
                   )}
