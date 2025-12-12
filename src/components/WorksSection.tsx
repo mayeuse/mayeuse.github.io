@@ -6,6 +6,8 @@ import HandheldProbeAnimated from '@/assets/HandheldProbeAnimated.gif';
 import NovelProbeAnimated from '@/assets/NovelProbeAnimated.gif';
 import DeformationFigure from '@/assets/DeformationFigure.png';
 import PressureFigure from '@/assets/PressureFigure.png';
+import PhantomModels from '@/assets/PhantomModels.png';
+import PhantomMoldsAndMaterials from '@/assets/PhantomMoldsAndMaterials.png';
 
 interface Project {
   id: string;
@@ -152,9 +154,21 @@ const WorksSection = () => {
                   {/* Drug Delivery Content */}
                   {activeProject === 'drug-delivery' && (
                     <>
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Environment</h3>
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Phantom Environment</h3>
+                      <div className="mt-4 flex gap-4 justify-center">
+                        <img 
+                          src={PhantomModels} 
+                          alt="Phantom environment 3D models" 
+                          className="w-1/2 object-contain"
+                        />
+                        <img 
+                          src={PhantomMoldsAndMaterials} 
+                          alt="Phantom molds and materials" 
+                          className="w-1/2 object-contain"
+                        />
+                      </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        {/* Content to be added */}
+                        I created a phantom bodily tract with elastomers of the correct stiffness and simulated bodily fluids.
                       </p>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Surface Optimization</h3>
