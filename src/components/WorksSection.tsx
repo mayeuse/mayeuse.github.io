@@ -8,6 +8,7 @@ import DeformationFigure from '@/assets/DeformationFigure.png';
 import PressureFigure from '@/assets/PressureFigure.png';
 import PhantomModels from '@/assets/PhantomModels.png';
 import PhantomMoldsAndMaterials from '@/assets/PhantomMoldsAndMaterials.png';
+import PillarMold from '@/assets/PillarMold.png';
 
 interface Project {
   id: string;
@@ -173,8 +174,12 @@ const WorksSection = () => {
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Surface Optimization</h3>
                       <div className="mt-4 flex items-stretch gap-4">
-                        <div className="w-1/2 flex justify-center">
-                          <STLModel url="/models/Varied_Pillars_mold.stl" scale={0.075} label="pillar mold" className="w-full h-full min-h-[200px]" />
+                        <div className="w-1/2 flex justify-center items-center">
+                          <img 
+                            src={PillarMold} 
+                            alt="Pillar mold for PDMS surface optimization" 
+                            className="rotate-90 max-h-[250px] object-contain"
+                          />
                         </div>
                         <p className="w-1/2 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                           After exploration, I worked with polydimethylsiloxane (PDMS) as the device substrate due to its elasticity, biocompatibility, and biodurability. However, its hydrophobicity would repel mucus, so I added surface pillars to introduce mechanical adhesion. I tested molds made of PLA and resin with different curing steps, pillars of different diameters, and of different heights.
