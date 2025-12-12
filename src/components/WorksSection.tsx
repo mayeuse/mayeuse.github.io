@@ -8,7 +8,8 @@ import DeformationFigure from '@/assets/DeformationFigure.png';
 import PressureFigure from '@/assets/PressureFigure.png';
 import PhantomModels from '@/assets/PhantomModels.png';
 import PhantomMoldsAndMaterials from '@/assets/PhantomMoldsAndMaterials.png';
-import PillarMold from '@/assets/PillarMold.png';
+import ContactAngleAnalysis from '@/assets/ContactAngleAnalysis.png';
+import ContactAngleResults from '@/assets/ContactAngleResults.png';
 
 interface Project {
   id: string;
@@ -172,19 +173,25 @@ const WorksSection = () => {
                         I created a phantom bodily tract with elastomers of the correct stiffness and simulated bodily fluids.
                       </p>
                       
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Surface Optimization</h3>
-                      <div className="mt-4 flex items-stretch gap-4 overflow-hidden">
-                        <div className="w-1/2 flex justify-center items-center overflow-hidden">
-                          <img 
-                            src={PillarMold} 
-                            alt="Pillar mold for PDMS surface optimization" 
-                            className="rotate-90 max-w-[200px] object-contain"
-                          />
-                        </div>
-                        <p className="w-1/2 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                          After exploration, I worked with polydimethylsiloxane (PDMS) as the device substrate due to its elasticity, biocompatibility, and biodurability. However, its hydrophobicity would repel mucus, so I added surface pillars to introduce mechanical adhesion. I tested molds made of PLA and resin with different curing steps, pillars of different diameters, and of different heights.
-                        </p>
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Chemical Optimization</h3>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        After exploration, I worked with polydimethylsiloxane (PDMS) as the device substrate due to its elasticity, biocompatibility, and biodurability. However, its hydrophobicity would repel mucus, so I replicated a study that deposited a hydrophilic coating of polydopamine and bovine serum albumin (BSA).
+                      </p>
+                      <div className="mt-4 flex gap-4 justify-center">
+                        <img 
+                          src={ContactAngleAnalysis} 
+                          alt="Contact angle analysis in ImageJ" 
+                          className="max-h-[200px] object-contain"
+                        />
+                        <img 
+                          src={ContactAngleResults} 
+                          alt="Contact angle results comparing coated and uncoated surfaces" 
+                          className="max-h-[200px] object-contain"
+                        />
                       </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I found that the coating achieved hydrophilicity in both water and simulated mucus by analyzing contact angles in imageJ. The coating wore off within two hours, but reactivated at least once upon soaking in BSA and phosphate buffer, allowing for device reuse.
+                      </p>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
