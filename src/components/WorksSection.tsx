@@ -26,7 +26,14 @@ const projects: Project[] = [
     subtitle: 'I built a testing system to compare a new ultrasound probe to the industry standard for two reasons.',
     hasSchematic: true
   },
-  { id: 'drug-delivery', title: 'DRUG DELIVERY', thumbnail: '/placeholder.svg' },
+  { 
+    id: 'drug-delivery', 
+    title: 'DRUG DELIVERY', 
+    thumbnail: '/placeholder.svg',
+    displayTitle: 'How can we optimize a surface to stick to bodily tracts for drug delivery?',
+    subtitle: 'I physically and chemically modified a biocompatible substrate to wick mucus and latch itself onto the lining of a bodily tract for noninvasive, long term drug delivery through the epithelium.',
+    hasSchematic: false
+  },
   { id: 'lyken', title: 'LYKEN', thumbnail: '/placeholder.svg' },
 ];
 
@@ -132,12 +139,37 @@ const WorksSection = () => {
                   <h2 className="font-body text-foreground text-2xl md:text-3xl lg:text-4xl leading-tight">
                     {activeProjectData.displayTitle}
                   </h2>
-                  <div className="font-body text-foreground/70 text-sm md:text-base leading-relaxed">
+                  <div className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                     <p>{activeProjectData.subtitle}</p>
-                    <p className="mt-4">(1) Increasing comfort would make it more approachable for women to monitor their tumors longitudinally and provide doctors with more information when determining treatment plans.</p>
-                    <p className="mt-4">(2) Squeezing tumors less during screening results in a more accurate calculation of volume when assessing responses to treatment.</p>
+                    {activeProject === 'cancer-screening' && (
+                      <>
+                        <p className="mt-4">(1) Increasing comfort would make it more approachable for women to monitor their tumors longitudinally and provide doctors with more information when determining treatment plans.</p>
+                        <p className="mt-4">(2) Squeezing tumors less during screening results in a more accurate calculation of volume when assessing responses to treatment.</p>
+                      </>
+                    )}
                   </div>
                   
+                  {/* Drug Delivery Content */}
+                  {activeProject === 'drug-delivery' && (
+                    <>
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Environment</h3>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        {/* Content to be added */}
+                      </p>
+                      
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Surface Optimization</h3>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        {/* Content to be added */}
+                      </p>
+                      
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        {/* Content to be added */}
+                      </p>
+                    </>
+                  )}
+                  
+                  {/* Cancer Screening Content */}
                   {activeProjectData.hasSchematic && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
