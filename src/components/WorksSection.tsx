@@ -173,12 +173,12 @@ const WorksSection = () => {
                       </p>
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Surface Optimization</h3>
-                      <div className="mt-4 flex items-stretch gap-4">
-                        <div className="w-1/2 flex justify-center items-center">
+                      <div className="mt-4 flex items-stretch gap-4 overflow-hidden">
+                        <div className="w-1/2 flex justify-center items-center overflow-hidden">
                           <img 
                             src={PillarMold} 
                             alt="Pillar mold for PDMS surface optimization" 
-                            className="rotate-90 max-h-[250px] object-contain"
+                            className="rotate-90 max-w-[200px] object-contain"
                           />
                         </div>
                         <p className="w-1/2 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
