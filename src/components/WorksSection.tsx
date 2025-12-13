@@ -377,107 +377,106 @@ const WorksSection = () => {
                         <div className="w-1/2 flex flex-col gap-4">
                           {/* First Carousel - Looks */}
                           <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} alt="Previous look" className="max-h-[80px] object-contain" />
                             </div>
-                            <button onClick={handleCarouselPrev} className="absolute left-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={carouselIndex} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
                               <img src={lykenImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
-                            <button onClick={handleCarouselNext} className="absolute right-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenImages[(carouselIndex + 1) % lykenImages.length]} alt="Next look" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Second Carousel - Sketches */}
                           <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenSketchImages[(sketchCarouselIndex - 1 + lykenSketchImages.length) % lykenSketchImages.length]} alt="Previous sketch" className="max-h-[80px] object-contain" />
                             </div>
-                            <button onClick={handleSketchCarouselPrev} className="absolute left-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleSketchCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`sketch-${sketchCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
                               <img src={lykenSketchImages[sketchCarouselIndex]} alt={`Sketch ${sketchCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
-                            <button onClick={handleSketchCarouselNext} className="absolute right-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleSketchCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenSketchImages[(sketchCarouselIndex + 1) % lykenSketchImages.length]} alt="Next sketch" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Third Carousel - Details */}
                           <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenDetailImages[(detailCarouselIndex - 1 + lykenDetailImages.length) % lykenDetailImages.length]} alt="Previous detail" className="max-h-[80px] object-contain" />
                             </div>
-                            <button onClick={handleDetailCarouselPrev} className="absolute left-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleDetailCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`detail-${detailCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
                               <img src={lykenDetailImages[detailCarouselIndex]} alt={`Detail ${detailCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
-                            <button onClick={handleDetailCarouselNext} className="absolute right-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleDetailCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenDetailImages[(detailCarouselIndex + 1) % lykenDetailImages.length]} alt="Next detail" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Fourth Carousel - Body */}
                           <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenBodyImages[(bodyCarouselIndex - 1 + lykenBodyImages.length) % lykenBodyImages.length]} alt="Previous body" className="max-h-[80px] object-contain" />
                             </div>
-                            <button onClick={handleBodyCarouselPrev} className="absolute left-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleBodyCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`body-${bodyCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
                               <img src={lykenBodyImages[bodyCarouselIndex]} alt={`Body ${bodyCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
-                            <button onClick={handleBodyCarouselNext} className="absolute right-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleBodyCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenBodyImages[(bodyCarouselIndex + 1) % lykenBodyImages.length]} alt="Next body" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Fifth Carousel - Hem */}
                           <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenHemImages[(hemCarouselIndex - 1 + lykenHemImages.length) % lykenHemImages.length]} alt="Previous hem" className="max-h-[80px] object-contain" />
                             </div>
-                            <button onClick={handleHemCarouselPrev} className="absolute left-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleHemCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`hem-${hemCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
                               <img src={lykenHemImages[hemCarouselIndex]} alt={`Hem ${hemCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
-                            <button onClick={handleHemCarouselNext} className="absolute right-[20%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                            <button onClick={handleHemCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
                               <img src={lykenHemImages[(hemCarouselIndex + 1) % lykenHemImages.length]} alt="Next hem" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                         </div>
                         
-                        {/* Right side - Paragraph + Still Images (50% width) */}
+                        {/* Right side - Paragraph + Still Image (50% width) */}
                         <div className="w-1/2 flex flex-col gap-4">
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                             Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on cultural signifiers that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
                           <img src={LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
-                          <img src={LykenFullSketch2} alt="Full sketch design 2" className="w-full object-contain" />
                         </div>
                       </div>
                     </>
