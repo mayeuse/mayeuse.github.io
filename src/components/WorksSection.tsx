@@ -1,5 +1,6 @@
 import { useState, Suspense } from 'react';
 import { motion } from 'framer-motion';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import STLModel from './STLModel';
 import ExpSchematic from '@/assets/ExpSchematic.png';
 import HandheldProbeAnimated from '@/assets/HandheldProbeAnimated.gif';
@@ -12,6 +13,9 @@ import ContactAngleAnalysis from '@/assets/ContactAngleAnalysis.png';
 import ContactAngleResults from '@/assets/ContactAngleResults.png';
 import PillarMold from '@/assets/PillarMold.png';
 import PillarWicking from '@/assets/PillarWicking.png';
+import LykenLook1 from '@/assets/LykenLook1.png';
+import LykenLook2 from '@/assets/LykenLook2.png';
+import LykenLook3 from '@/assets/LykenLook3.png';
 
 interface Project {
   id: string;
@@ -40,8 +44,17 @@ const projects: Project[] = [
     subtitle: 'I physically and chemically modified a biocompatible substrate to wick mucus and latch itself onto the lining of a bodily tract for noninvasive, long term drug delivery through the epithelium.',
     hasSchematic: false
   },
-  { id: 'lyken', title: 'LYKEN', thumbnail: '/placeholder.svg' },
+  { 
+    id: 'lyken', 
+    title: 'LYKEN', 
+    thumbnail: '/placeholder.svg',
+    displayTitle: 'What could circular fashion look like in Orlando?',
+    subtitle: 'I set out to create one full look using only home grown and native biomaterials or recycled fibers.',
+    hasSchematic: false
+  },
 ];
+
+const lykenImages = [LykenLook1, LykenLook2, LykenLook3];
 
 const stlModels = [
   { url: '/models/Probe_Head_Attachment.stl', label: 'Novel Probe Attachment' },
@@ -52,6 +65,15 @@ const stlModels = [
 const WorksSection = () => {
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const handleCarouselPrev = () => {
+    setCarouselIndex((prev) => (prev - 1 + lykenImages.length) % lykenImages.length);
+  };
+
+  const handleCarouselNext = () => {
+    setCarouselIndex((prev) => (prev + 1) % lykenImages.length);
+  };
 
   const handleProjectClick = (projectId: string) => {
     console.log('Clicked project:', projectId);
@@ -285,6 +307,74 @@ const WorksSection = () => {
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
                         To assess image quality, I used Contrast-to-Noise Ratio (CNR). This would effectively communicate how distinguishable the tumor is from regular tissue. I modified a CNR calculator by Shrihari Viswanath so that a user could choose between manually selecting target and background regions for each photo or using the same regions for every image in a series. I also made it so that the results would be sent directly to a csv format for easier post-processing. This allowed me to graph quality over applied pressure.
                       </p>
+                    </>
+                  )}
+                  
+                  {/* Lyken Content */}
+                  {activeProject === 'lyken' && (
+                    <>
+                      <div className="mt-8 flex gap-8 items-start">
+                        {/* Carousel - 50% width */}
+                        <div className="w-1/2 relative">
+                          <div className="relative flex items-center justify-center h-[400px]">
+                            {/* Previous image (behind, left) */}
+                            <div className="absolute left-0 z-0 opacity-40 scale-75 -translate-x-4">
+                              <img 
+                                src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} 
+                                alt="Previous look"
+                                className="max-h-[300px] object-contain"
+                              />
+                            </div>
+                            
+                            {/* Main image */}
+                            <motion.div 
+                              key={carouselIndex}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.3 }}
+                              className="relative z-10"
+                            >
+                              <img 
+                                src={lykenImages[carouselIndex]} 
+                                alt={`Look ${carouselIndex + 1}`}
+                                className="max-h-[380px] object-contain"
+                              />
+                            </motion.div>
+                            
+                            {/* Next image (behind, right) */}
+                            <div className="absolute right-0 z-0 opacity-40 scale-75 translate-x-4">
+                              <img 
+                                src={lykenImages[(carouselIndex + 1) % lykenImages.length]} 
+                                alt="Next look"
+                                className="max-h-[300px] object-contain"
+                              />
+                            </div>
+                          </div>
+                          
+                          {/* Navigation arrows */}
+                          <div className="flex justify-center gap-4 mt-4">
+                            <button 
+                              onClick={handleCarouselPrev}
+                              className="p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors"
+                            >
+                              <ChevronLeft className="w-5 h-5" />
+                            </button>
+                            <button 
+                              onClick={handleCarouselNext}
+                              className="p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors"
+                            >
+                              <ChevronRight className="w-5 h-5" />
+                            </button>
+                          </div>
+                        </div>
+                        
+                        {/* Text paragraph */}
+                        <div className="w-1/2">
+                          <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                            Aside from the material challenge, I worked with a narrative concept for this piece.
+                          </p>
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
