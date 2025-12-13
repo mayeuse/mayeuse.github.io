@@ -34,6 +34,9 @@ import LykenBody2 from '@/assets/LykenBody2.png';
 import LykenBody3 from '@/assets/LykenBody3.png';
 import LykenHem1 from '@/assets/LykenHem1.png';
 import LykenHem2 from '@/assets/LykenHem2.png';
+import PetalJewelry1 from '@/assets/PetalJewelry1.png';
+import PetalJewelry2 from '@/assets/PetalJewelry2.png';
+import PetalJewelry3 from '@/assets/PetalJewelry3.png';
 
 interface Project {
   id: string;
@@ -479,6 +482,17 @@ const WorksSection = () => {
                           <img src={LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
                         </div>
                       </div>
+                      
+                      {/* Petal Jewelry Section */}
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Petal Jewelry</h3>
+                      <div className="mt-4 flex gap-4 justify-center">
+                        <img src={PetalJewelry1} alt="Fallen flower petals collection" className="max-h-[200px] object-contain" />
+                        <img src={PetalJewelry2} alt="Clay made from flower petals - hibiscus, yucca, king's mantle" className="max-h-[200px] object-contain" />
+                        <img src={PetalJewelry3} alt="Finished petal clay beads" className="max-h-[200px] object-contain" />
+                      </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I used fallen petals of native flowers to create clay beads. I mimicked traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
+                      </p>
                     </>
                   )}
                 </div>
