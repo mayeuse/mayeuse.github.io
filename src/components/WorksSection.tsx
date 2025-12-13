@@ -16,6 +16,13 @@ import PillarWicking from '@/assets/PillarWicking.png';
 import LykenLook1 from '@/assets/LykenLook1.png';
 import LykenLook2 from '@/assets/LykenLook2.png';
 import LykenLook3 from '@/assets/LykenLook3.png';
+import LykenSketch1 from '@/assets/LykenSketch1.png';
+import LykenSketch2 from '@/assets/LykenSketch2.png';
+import LykenSketch3 from '@/assets/LykenSketch3.png';
+import LykenSketch4 from '@/assets/LykenSketch4.png';
+import LykenSketch5 from '@/assets/LykenSketch5.png';
+import LykenSketch6 from '@/assets/LykenSketch6.png';
+import LykenSketch7 from '@/assets/LykenSketch7.png';
 
 interface Project {
   id: string;
@@ -55,6 +62,7 @@ const projects: Project[] = [
 ];
 
 const lykenImages = [LykenLook1, LykenLook2, LykenLook3];
+const lykenSketchImages = [LykenSketch1, LykenSketch2, LykenSketch3, LykenSketch4, LykenSketch5, LykenSketch6, LykenSketch7];
 
 const stlModels = [
   { url: '/models/Probe_Head_Attachment.stl', label: 'Novel Probe Attachment' },
@@ -66,6 +74,7 @@ const WorksSection = () => {
   const [activeProject, setActiveProject] = useState<string | null>(null);
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
+  const [sketchCarouselIndex, setSketchCarouselIndex] = useState(0);
 
   const handleCarouselPrev = () => {
     setCarouselIndex((prev) => (prev - 1 + lykenImages.length) % lykenImages.length);
@@ -73,6 +82,14 @@ const WorksSection = () => {
 
   const handleCarouselNext = () => {
     setCarouselIndex((prev) => (prev + 1) % lykenImages.length);
+  };
+
+  const handleSketchCarouselPrev = () => {
+    setSketchCarouselIndex((prev) => (prev - 1 + lykenSketchImages.length) % lykenSketchImages.length);
+  };
+
+  const handleSketchCarouselNext = () => {
+    setSketchCarouselIndex((prev) => (prev + 1) % lykenSketchImages.length);
   };
 
   const handleProjectClick = (projectId: string) => {
@@ -313,18 +330,28 @@ const WorksSection = () => {
                   {/* Lyken Content */}
                   {activeProject === 'lyken' && (
                     <>
-                      <div className="mt-8 flex gap-8 items-start">
-                        {/* Carousel - 50% width */}
-                        <div className="w-1/2 relative">
-                          <div className="relative flex items-center justify-center h-[400px]">
+                      <div className="mb-6" />
+                      <div className="flex gap-8 items-stretch">
+                        {/* Carousels - 50% width */}
+                        <div className="w-1/2 flex flex-col justify-between">
+                          {/* First Carousel */}
+                          <div className="relative flex items-center justify-center flex-1">
                             {/* Previous image (behind, left) */}
-                            <div className="absolute left-0 z-0 opacity-40 scale-75 -translate-x-4">
+                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-16">
                               <img 
                                 src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} 
                                 alt="Previous look"
-                                className="max-h-[300px] object-contain"
+                                className="max-h-[160px] object-contain"
                               />
                             </div>
+                            
+                            {/* Left Arrow */}
+                            <button 
+                              onClick={handleCarouselPrev}
+                              className="absolute left-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                            >
+                              <ChevronLeft className="w-4 h-4" />
+                            </button>
                             
                             {/* Main image */}
                             <motion.div 
@@ -337,41 +364,85 @@ const WorksSection = () => {
                               <img 
                                 src={lykenImages[carouselIndex]} 
                                 alt={`Look ${carouselIndex + 1}`}
-                                className="max-h-[380px] object-contain"
+                                className="max-h-[180px] object-contain"
                               />
                             </motion.div>
                             
+                            {/* Right Arrow */}
+                            <button 
+                              onClick={handleCarouselNext}
+                              className="absolute right-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                            >
+                              <ChevronRight className="w-4 h-4" />
+                            </button>
+                            
                             {/* Next image (behind, right) */}
-                            <div className="absolute right-0 z-0 opacity-40 scale-75 translate-x-4">
+                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-16">
                               <img 
                                 src={lykenImages[(carouselIndex + 1) % lykenImages.length]} 
                                 alt="Next look"
-                                className="max-h-[300px] object-contain"
+                                className="max-h-[160px] object-contain"
                               />
                             </div>
                           </div>
                           
-                          {/* Navigation arrows */}
-                          <div className="flex justify-center gap-4 mt-4">
+                          {/* Second Carousel - Sketches */}
+                          <div className="relative flex items-center justify-center flex-1 mt-4">
+                            {/* Previous sketch (behind, left) */}
+                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-16">
+                              <img 
+                                src={lykenSketchImages[(sketchCarouselIndex - 1 + lykenSketchImages.length) % lykenSketchImages.length]} 
+                                alt="Previous sketch"
+                                className="max-h-[120px] object-contain"
+                              />
+                            </div>
+                            
+                            {/* Left Arrow */}
                             <button 
-                              onClick={handleCarouselPrev}
-                              className="p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors"
+                              onClick={handleSketchCarouselPrev}
+                              className="absolute left-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
                             >
-                              <ChevronLeft className="w-5 h-5" />
+                              <ChevronLeft className="w-4 h-4" />
                             </button>
+                            
+                            {/* Main sketch */}
+                            <motion.div 
+                              key={`sketch-${sketchCarouselIndex}`}
+                              initial={{ opacity: 0, scale: 0.9 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              transition={{ duration: 0.3 }}
+                              className="relative z-10"
+                            >
+                              <img 
+                                src={lykenSketchImages[sketchCarouselIndex]} 
+                                alt={`Sketch ${sketchCarouselIndex + 1}`}
+                                className="max-h-[140px] object-contain"
+                              />
+                            </motion.div>
+                            
+                            {/* Right Arrow */}
                             <button 
-                              onClick={handleCarouselNext}
-                              className="p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors"
+                              onClick={handleSketchCarouselNext}
+                              className="absolute right-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
                             >
-                              <ChevronRight className="w-5 h-5" />
+                              <ChevronRight className="w-4 h-4" />
                             </button>
+                            
+                            {/* Next sketch (behind, right) */}
+                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-16">
+                              <img 
+                                src={lykenSketchImages[(sketchCarouselIndex + 1) % lykenSketchImages.length]} 
+                                alt="Next sketch"
+                                className="max-h-[120px] object-contain"
+                              />
+                            </div>
                           </div>
                         </div>
                         
                         {/* Text paragraph */}
-                        <div className="w-1/2">
+                        <div className="w-1/2 flex items-center">
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                            Aside from the material challenge, I worked with a narrative concept for this piece.
+                            Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on cultural signifiers that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
                         </div>
                       </div>

@@ -8,24 +8,24 @@ const FloatingParticles = () => {
     if (!container) return;
 
     const particles: HTMLDivElement[] = [];
-    const particleCount = 60;
+    const particleCount = 100;
 
     for (let i = 0; i < particleCount; i++) {
       const particle = document.createElement('div');
       particle.className = 'absolute rounded-full';
       
-      const size = Math.random() * 2 + 1;
-      const opacity = Math.random() * 0.4 + 0.5;
+      const size = Math.random() * 1.5 + 0.5;
+      const opacity = Math.random() * 0.3 + 0.7;
       
       particle.style.width = `${size}px`;
       particle.style.height = `${size}px`;
       particle.style.left = `${Math.random() * 100}%`;
       particle.style.top = `${Math.random() * 100}%`;
-      particle.style.backgroundColor = `rgba(160, 190, 160, ${opacity})`;
-      particle.style.boxShadow = `0 0 ${size * 4}px rgba(160, 190, 160, ${opacity + 0.2})`;
+      particle.style.backgroundColor = `rgba(180, 210, 180, ${opacity})`;
+      particle.style.boxShadow = `0 0 ${size * 6}px rgba(180, 210, 180, ${opacity + 0.3})`;
       
-      const duration = Math.random() * 12 + 8;
-      const delay = Math.random() * -8;
+      const duration = Math.random() * 6 + 4;
+      const delay = Math.random() * -4;
       particle.style.animation = `float ${duration}s ${delay}s infinite ease-in-out`;
       
       container.appendChild(particle);

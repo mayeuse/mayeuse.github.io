@@ -10,7 +10,7 @@ const HeroSection = () => {
   return (
     <section id="top" className="min-h-screen flex items-center pl-[10%] pr-[10%] relative z-10">
       <div className="flex items-center w-full">
-        <div className="w-[45%] max-w-[calc(50vw-5%)]">
+        <div className="w-[50%]">
           <p className="font-nav text-foreground text-lg md:text-xl leading-relaxed">
             I am a Computer Science major at the University of Central Florida with a minor in International Engineering from the Australian National University. Through art, engineering, and anthropology, I aim to develop new tools that center marginalized worlds.
           </p>
