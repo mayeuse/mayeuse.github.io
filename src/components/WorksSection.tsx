@@ -40,6 +40,10 @@ import PetalJewelry3 from '@/assets/PetalJewelry3.png';
 import VeganLeather1 from '@/assets/VeganLeather1.png';
 import VeganLeather2 from '@/assets/VeganLeather2.png';
 import VeganLeather3 from '@/assets/VeganLeather3.png';
+import RootTextile1 from '@/assets/RootTextile1.png';
+import RootTextile2 from '@/assets/RootTextile2.png';
+import RootTextile3 from '@/assets/RootTextile3.png';
+import RootTextile4 from '@/assets/RootTextile4.png';
 
 interface Project {
   id: string;
@@ -506,6 +510,18 @@ const WorksSection = () => {
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I experimented with ways to effectively encapsulate flower petals between layers of natural kombucha leather to create arm bands.
+                      </p>
+                      
+                      {/* Root as Textile Section */}
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Root as Textile</h3>
+                      <div className="mt-4 flex gap-4 justify-center flex-wrap">
+                        <img src={RootTextile1} alt="Root mat growing process" className="max-h-[200px] object-contain" />
+                        <img src={RootTextile2} alt="Root textile on dress form" className="max-h-[200px] object-contain" />
+                        <img src={RootTextile3} alt="Needle lace with roots" className="max-h-[200px] object-contain" />
+                        <img src={RootTextile4} alt="Attaching root textile to form" className="max-h-[200px] object-contain" />
+                      </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I grew various rounds of root mats to create "woven" sheets. I learned needle lace to integrate the roots into a stronger textile structure that could mimic their visual characteristics.
                       </p>
                     </>
                   )}
