@@ -37,6 +37,9 @@ import LykenHem2 from '@/assets/LykenHem2.png';
 import PetalJewelry1 from '@/assets/PetalJewelry1.png';
 import PetalJewelry2 from '@/assets/PetalJewelry2.png';
 import PetalJewelry3 from '@/assets/PetalJewelry3.png';
+import VeganLeather1 from '@/assets/VeganLeather1.png';
+import VeganLeather2 from '@/assets/VeganLeather2.png';
+import VeganLeather3 from '@/assets/VeganLeather3.png';
 
 interface Project {
   id: string;
@@ -492,6 +495,17 @@ const WorksSection = () => {
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I used fallen petals of native flowers to create clay beads. I mimicked traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
+                      </p>
+                      
+                      {/* Vegan Leather Section */}
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Vegan Leather with Petals</h3>
+                      <div className="mt-4 flex gap-4 justify-center">
+                        <img src={VeganLeather1} alt="Hibiscus petals for vegan leather" className="max-h-[200px] object-contain" />
+                        <img src={VeganLeather2} alt="Petals encapsulated in kombucha leather" className="max-h-[200px] object-contain" />
+                        <img src={VeganLeather3} alt="Finished vegan leather arm bands" className="max-h-[200px] object-contain" />
+                      </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I experimented with ways to effectively encapsulate flower petals between layers of natural kombucha leather to create arm bands.
                       </p>
                     </>
                   )}
