@@ -44,6 +44,7 @@ import RootTextile1 from '@/assets/RootTextile1.png';
 import RootTextile2 from '@/assets/RootTextile2.png';
 import RootTextile3 from '@/assets/RootTextile3.png';
 import RootTextile4 from '@/assets/RootTextile4.png';
+import LykenResult from '@/assets/LykenResult.png';
 
 interface Project {
   id: string;
@@ -514,7 +515,7 @@ const WorksSection = () => {
                       
                       {/* Root as Textile Section */}
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Root as Textile</h3>
-                      <div className="mt-4 flex gap-4 justify-center flex-wrap">
+                      <div className="mt-4 flex gap-4 justify-center">
                         <img src={RootTextile1} alt="Root mat growing process" className="max-h-[200px] object-contain" />
                         <img src={RootTextile2} alt="Root textile on dress form" className="max-h-[200px] object-contain" />
                         <img src={RootTextile3} alt="Needle lace with roots" className="max-h-[200px] object-contain" />
@@ -523,6 +524,19 @@ const WorksSection = () => {
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I grew various rounds of root mats to create "woven" sheets. I learned needle lace to integrate the roots into a stronger textile structure that could mimic their visual characteristics.
                       </p>
+                      
+                      {/* Result Section */}
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Result</h3>
+                      <div className="mt-4 flex gap-8 items-center">
+                        <div className="w-1/2 flex items-center justify-center">
+                          <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                            I selected my strongest roots and combined every prior technique into the final look. This look was part of a mini-collection with five other designers each addressing their own visions of environmentalist futures. I co-directed the team with Isabella Chiappini.
+                          </p>
+                        </div>
+                        <div className="w-1/2 flex justify-center">
+                          <img src={LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
+                        </div>
+                      </div>
                     </>
                   )}
                 </div>
