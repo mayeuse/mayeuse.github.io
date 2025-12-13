@@ -23,6 +23,15 @@ import LykenSketch4 from '@/assets/LykenSketch4.png';
 import LykenSketch5 from '@/assets/LykenSketch5.png';
 import LykenSketch6 from '@/assets/LykenSketch6.png';
 import LykenSketch7 from '@/assets/LykenSketch7.png';
+import LykenFullSketch1 from '@/assets/LykenFullSketch1.png';
+import LykenFullSketch2 from '@/assets/LykenFullSketch2.png';
+import LykenDetail1 from '@/assets/LykenDetail1.png';
+import LykenDetail2 from '@/assets/LykenDetail2.png';
+import LykenDetail3 from '@/assets/LykenDetail3.png';
+import LykenDetail4 from '@/assets/LykenDetail4.png';
+import LykenBody1 from '@/assets/LykenBody1.png';
+import LykenBody2 from '@/assets/LykenBody2.png';
+import LykenBody3 from '@/assets/LykenBody3.png';
 
 interface Project {
   id: string;
@@ -63,6 +72,8 @@ const projects: Project[] = [
 
 const lykenImages = [LykenLook1, LykenLook2, LykenLook3];
 const lykenSketchImages = [LykenSketch1, LykenSketch2, LykenSketch3, LykenSketch4, LykenSketch5, LykenSketch6, LykenSketch7];
+const lykenDetailImages = [LykenDetail1, LykenDetail2, LykenDetail3, LykenDetail4];
+const lykenBodyImages = [LykenBody1, LykenBody2, LykenBody3];
 
 const stlModels = [
   { url: '/models/Probe_Head_Attachment.stl', label: 'Novel Probe Attachment' },
@@ -75,6 +86,8 @@ const WorksSection = () => {
   const [hoveredProject, setHoveredProject] = useState<string | null>(null);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [sketchCarouselIndex, setSketchCarouselIndex] = useState(0);
+  const [detailCarouselIndex, setDetailCarouselIndex] = useState(0);
+  const [bodyCarouselIndex, setBodyCarouselIndex] = useState(0);
 
   const handleCarouselPrev = () => {
     setCarouselIndex((prev) => (prev - 1 + lykenImages.length) % lykenImages.length);
@@ -90,6 +103,22 @@ const WorksSection = () => {
 
   const handleSketchCarouselNext = () => {
     setSketchCarouselIndex((prev) => (prev + 1) % lykenSketchImages.length);
+  };
+
+  const handleDetailCarouselPrev = () => {
+    setDetailCarouselIndex((prev) => (prev - 1 + lykenDetailImages.length) % lykenDetailImages.length);
+  };
+
+  const handleDetailCarouselNext = () => {
+    setDetailCarouselIndex((prev) => (prev + 1) % lykenDetailImages.length);
+  };
+
+  const handleBodyCarouselPrev = () => {
+    setBodyCarouselIndex((prev) => (prev - 1 + lykenBodyImages.length) % lykenBodyImages.length);
+  };
+
+  const handleBodyCarouselNext = () => {
+    setBodyCarouselIndex((prev) => (prev + 1) % lykenBodyImages.length);
   };
 
   const handleProjectClick = (projectId: string) => {
@@ -337,7 +366,7 @@ const WorksSection = () => {
                           {/* First Carousel */}
                           <div className="relative flex items-center justify-center flex-1">
                             {/* Previous image (behind, left) */}
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-16">
+                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
                               <img 
                                 src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} 
                                 alt="Previous look"
@@ -348,7 +377,7 @@ const WorksSection = () => {
                             {/* Left Arrow */}
                             <button 
                               onClick={handleCarouselPrev}
-                              className="absolute left-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                              className="absolute left-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
                             >
                               <ChevronLeft className="w-4 h-4" />
                             </button>
@@ -371,13 +400,13 @@ const WorksSection = () => {
                             {/* Right Arrow */}
                             <button 
                               onClick={handleCarouselNext}
-                              className="absolute right-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                              className="absolute right-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
                             >
                               <ChevronRight className="w-4 h-4" />
                             </button>
                             
                             {/* Next image (behind, right) */}
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-16">
+                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
                               <img 
                                 src={lykenImages[(carouselIndex + 1) % lykenImages.length]} 
                                 alt="Next look"
@@ -389,7 +418,7 @@ const WorksSection = () => {
                           {/* Second Carousel - Sketches */}
                           <div className="relative flex items-center justify-center flex-1 mt-4">
                             {/* Previous sketch (behind, left) */}
-                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-16">
+                            <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
                               <img 
                                 src={lykenSketchImages[(sketchCarouselIndex - 1 + lykenSketchImages.length) % lykenSketchImages.length]} 
                                 alt="Previous sketch"
@@ -400,7 +429,7 @@ const WorksSection = () => {
                             {/* Left Arrow */}
                             <button 
                               onClick={handleSketchCarouselPrev}
-                              className="absolute left-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                              className="absolute left-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
                             >
                               <ChevronLeft className="w-4 h-4" />
                             </button>
@@ -423,13 +452,13 @@ const WorksSection = () => {
                             {/* Right Arrow */}
                             <button 
                               onClick={handleSketchCarouselNext}
-                              className="absolute right-[15%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                              className="absolute right-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
                             >
                               <ChevronRight className="w-4 h-4" />
                             </button>
                             
                             {/* Next sketch (behind, right) */}
-                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-16">
+                            <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
                               <img 
                                 src={lykenSketchImages[(sketchCarouselIndex + 1) % lykenSketchImages.length]} 
                                 alt="Next sketch"
@@ -444,6 +473,124 @@ const WorksSection = () => {
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                             Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on cultural signifiers that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
+                        </div>
+                      </div>
+                      
+                      {/* Full Sketch Images */}
+                      <div className="mt-8 flex flex-col items-center gap-6">
+                        <img 
+                          src={LykenFullSketch1} 
+                          alt="Full sketch design 1"
+                          className="max-w-[400px] object-contain"
+                        />
+                        <img 
+                          src={LykenFullSketch2} 
+                          alt="Full sketch design 2"
+                          className="max-w-[400px] object-contain"
+                        />
+                      </div>
+                      
+                      {/* Third Carousel - Details (4 images) */}
+                      <div className="relative flex items-center justify-center mt-8 h-[180px]">
+                        {/* Previous detail (behind, left) */}
+                        <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                          <img 
+                            src={lykenDetailImages[(detailCarouselIndex - 1 + lykenDetailImages.length) % lykenDetailImages.length]} 
+                            alt="Previous detail"
+                            className="max-h-[140px] object-contain"
+                          />
+                        </div>
+                        
+                        {/* Left Arrow */}
+                        <button 
+                          onClick={handleDetailCarouselPrev}
+                          className="absolute left-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        
+                        {/* Main detail */}
+                        <motion.div 
+                          key={`detail-${detailCarouselIndex}`}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.3 }}
+                          className="relative z-10"
+                        >
+                          <img 
+                            src={lykenDetailImages[detailCarouselIndex]} 
+                            alt={`Detail ${detailCarouselIndex + 1}`}
+                            className="max-h-[160px] object-contain"
+                          />
+                        </motion.div>
+                        
+                        {/* Right Arrow */}
+                        <button 
+                          onClick={handleDetailCarouselNext}
+                          className="absolute right-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                        
+                        {/* Next detail (behind, right) */}
+                        <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                          <img 
+                            src={lykenDetailImages[(detailCarouselIndex + 1) % lykenDetailImages.length]} 
+                            alt="Next detail"
+                            className="max-h-[140px] object-contain"
+                          />
+                        </div>
+                      </div>
+                      
+                      {/* Fourth Carousel - Body sketches (3 images) */}
+                      <div className="relative flex items-center justify-center mt-8 h-[180px]">
+                        {/* Previous body (behind, left) */}
+                        <div className="absolute left-0 z-0 opacity-30 scale-60 -translate-x-24">
+                          <img 
+                            src={lykenBodyImages[(bodyCarouselIndex - 1 + lykenBodyImages.length) % lykenBodyImages.length]} 
+                            alt="Previous body sketch"
+                            className="max-h-[140px] object-contain"
+                          />
+                        </div>
+                        
+                        {/* Left Arrow */}
+                        <button 
+                          onClick={handleBodyCarouselPrev}
+                          className="absolute left-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                        </button>
+                        
+                        {/* Main body */}
+                        <motion.div 
+                          key={`body-${bodyCarouselIndex}`}
+                          initial={{ opacity: 0, scale: 0.9 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          transition={{ duration: 0.3 }}
+                          className="relative z-10"
+                        >
+                          <img 
+                            src={lykenBodyImages[bodyCarouselIndex]} 
+                            alt={`Body sketch ${bodyCarouselIndex + 1}`}
+                            className="max-h-[160px] object-contain"
+                          />
+                        </motion.div>
+                        
+                        {/* Right Arrow */}
+                        <button 
+                          onClick={handleBodyCarouselNext}
+                          className="absolute right-[20%] z-20 p-2 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50"
+                        >
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                        
+                        {/* Next body (behind, right) */}
+                        <div className="absolute right-0 z-0 opacity-30 scale-60 translate-x-24">
+                          <img 
+                            src={lykenBodyImages[(bodyCarouselIndex + 1) % lykenBodyImages.length]} 
+                            alt="Next body sketch"
+                            className="max-h-[140px] object-contain"
+                          />
                         </div>
                       </div>
                     </>
