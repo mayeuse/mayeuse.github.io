@@ -55,6 +55,8 @@ import TexelsPaper3 from '@/assets/TexelsPaper3.png';
 import TexelsFabric1 from '@/assets/TexelsFabric1.png';
 import TexelsFabric2 from '@/assets/TexelsFabric2.png';
 import TexelsFabric3 from '@/assets/TexelsFabric3.png';
+import TexelsCircuit1 from '@/assets/TexelsCircuit1.png';
+import TexelsCircuit2 from '@/assets/TexelsCircuit2.png';
 
 const texelsMapImages = [TexelsMap1, TexelsMap2, TexelsMap3, TexelsMap4];
 
@@ -319,6 +321,15 @@ const WorksSection = () => {
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I began with a review of the current state of programmable fabrics and problems hindering their adoption. I chose to focus on user friendliness, reusability, and amount of possible shapes, which was very low on average. I explored different forms of shape language for creating 3D shapes out of deformed 2D surfaces, and landed on "Canadian" or "North American" smocking as a format of intuitive patterns with a consistent grid layout and many possible resulting textures.
+                      </p>
+                      
+                      {/* Circuit images section */}
+                      <div className="mt-6 flex gap-4">
+                        <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="w-1/2 object-contain" />
+                        <img src={TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-1/2 object-contain" />
+                      </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
                       </p>
                     </>
                   )}
