@@ -12,7 +12,7 @@ const presentations = [
 
 const PresentationsSection = () => {
   return (
-    <section id="presentations" className="min-h-screen flex items-center justify-end pr-[10%]">
+    <section id="presentations" className="min-h-screen flex items-center justify-end pr-[10%] relative z-10">
       <ul className="flex flex-col gap-4 items-end">
         {presentations.map((presentation, index) => (
           <li key={index}>
