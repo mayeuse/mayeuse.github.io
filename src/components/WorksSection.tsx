@@ -56,7 +56,14 @@ interface Project {
 }
 
 const projects: Project[] = [
-  { id: 'texels', title: 'TEXELS', thumbnail: '/placeholder.svg' },
+  { 
+    id: 'texels', 
+    title: 'TEXELS', 
+    thumbnail: '/placeholder.svg',
+    displayTitle: 'Can I design a textile that replicates any texture you give it?',
+    subtitle: 'For my honors undergraduate thesis, I am prototyping a fabric that can smock itself into a variety of programmable texture patterns.',
+    hasSchematic: false
+  },
   { 
     id: 'cancer-screening', 
     title: 'CANCER SCREENING', 
