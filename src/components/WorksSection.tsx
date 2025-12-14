@@ -1,5 +1,5 @@
-import { useState, Suspense } from 'react';
-import { motion } from 'framer-motion';
+import { useState, useEffect, Suspense } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import STLModel from './STLModel';
 import ExpSchematic from '@/assets/ExpSchematic.png';
@@ -45,6 +45,18 @@ import RootTextile2 from '@/assets/RootTextile2.png';
 import RootTextile3 from '@/assets/RootTextile3.png';
 import RootTextile4 from '@/assets/RootTextile4.png';
 import LykenResult from '@/assets/LykenResult.png';
+import TexelsMap1 from '@/assets/TexelsMap1.png';
+import TexelsMap2 from '@/assets/TexelsMap2.png';
+import TexelsMap3 from '@/assets/TexelsMap3.png';
+import TexelsMap4 from '@/assets/TexelsMap4.png';
+import TexelsPaper1 from '@/assets/TexelsPaper1.png';
+import TexelsPaper2 from '@/assets/TexelsPaper2.png';
+import TexelsPaper3 from '@/assets/TexelsPaper3.png';
+import TexelsFabric1 from '@/assets/TexelsFabric1.png';
+import TexelsFabric2 from '@/assets/TexelsFabric2.png';
+import TexelsFabric3 from '@/assets/TexelsFabric3.png';
+
+const texelsMapImages = [TexelsMap1, TexelsMap2, TexelsMap3, TexelsMap4];
 
 interface Project {
   id: string;
@@ -110,6 +122,17 @@ const WorksSection = () => {
   const [detailCarouselIndex, setDetailCarouselIndex] = useState(0);
   const [bodyCarouselIndex, setBodyCarouselIndex] = useState(0);
   const [hemCarouselIndex, setHemCarouselIndex] = useState(0);
+  const [texelsMapIndex, setTexelsMapIndex] = useState(0);
+
+  // Auto-cycle through TEXELS map images
+  useEffect(() => {
+    if (activeProject === 'texels') {
+      const interval = setInterval(() => {
+        setTexelsMapIndex((prev) => (prev + 1) % texelsMapImages.length);
+      }, 800);
+      return () => clearInterval(interval);
+    }
+  }, [activeProject]);
 
   const handleCarouselPrev = () => {
     setCarouselIndex((prev) => (prev - 1 + lykenImages.length) % lykenImages.length);
@@ -252,6 +275,49 @@ const WorksSection = () => {
                       </>
                     )}
                   </div>
+                  
+                  {/* TEXELS Design Content */}
+                  {activeProject === 'texels' && (
+                    <>
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Design</h3>
+                      <div className="mt-4 flex gap-4 items-stretch">
+                        {/* Left: Cycling map animation */}
+                        <div className="w-[35%] relative flex items-center">
+                          <AnimatePresence mode="wait">
+                            <motion.img
+                              key={texelsMapIndex}
+                              src={texelsMapImages[texelsMapIndex]}
+                              alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
+                              className="w-full h-full object-contain"
+                              initial={{ opacity: 0 }}
+                              animate={{ opacity: 1 }}
+                              exit={{ opacity: 0 }}
+                              transition={{ duration: 0.3 }}
+                            />
+                          </AnimatePresence>
+                        </div>
+                        
+                        {/* Right: Image grids */}
+                        <div className="w-[65%] flex flex-col gap-2">
+                          {/* Top row - 3 paper images */}
+                          <div className="flex gap-2">
+                            <img src={TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" />
+                            <img src={TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" />
+                            <img src={TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" />
+                          </div>
+                          {/* Bottom row - 3 fabric images */}
+                          <div className="flex gap-2">
+                            <img src={TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" />
+                            <img src={TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" />
+                            <img src={TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" />
+                          </div>
+                        </div>
+                      </div>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I began with a review of the current state of programmable fabrics and problems hindering their adoption. I chose to focus on user friendliness, reusability, and amount of possible shapes, which was very low on average. I explored different forms of shape language for creating 3D shapes out of deformed 2D surfaces, and landed on "Canadian" or "North American" smocking as a format of intuitive patterns with a consistent grid layout and many possible resulting textures.
+                      </p>
+                    </>
+                  )}
                   
                   {/* Drug Delivery Content */}
                   {activeProject === 'drug-delivery' && (
