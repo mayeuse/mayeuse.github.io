@@ -283,18 +283,11 @@ const WorksSection = () => {
                       <div className="mt-4 flex gap-4 items-stretch">
                         {/* Left: Cycling map animation */}
                         <div className="w-[35%] relative flex items-center">
-                          <AnimatePresence mode="wait">
-                            <motion.img
-                              key={texelsMapIndex}
-                              src={texelsMapImages[texelsMapIndex]}
-                              alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
-                              className="w-full h-full object-contain"
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.3 }}
-                            />
-                          </AnimatePresence>
+                          <img
+                            src={texelsMapImages[texelsMapIndex]}
+                            alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
+                            className="w-full h-full object-contain"
+                          />
                         </div>
                         
                         {/* Right: Image grids */}
