@@ -376,6 +376,9 @@ const WorksSection = () => {
                       />
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
+                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                        I am now integrating the software of the device through a microcontroller and several shift registers acting as the row and gate drivers. I will create a simple graphical user interface for people to input the patterns they would like to see the fabric conform to. Then, I will conduct interviews with people in different fields to understand the fabric's usability in varying fields.
+                      </p>
                     </>
                   )}
                   
