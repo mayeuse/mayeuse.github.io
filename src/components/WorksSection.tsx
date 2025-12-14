@@ -324,13 +324,13 @@ const WorksSection = () => {
                       </p>
                       
                       {/* Circuit images section */}
-                      <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-6 w-full object-contain" />
-                      <div className="mt-4 flex gap-4 items-center">
-                        <img src={TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-1/3 object-contain" />
-                        <p className="w-2/3 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                      <div className="mt-6 flex gap-4 items-center">
+                        <img src={TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-1/2 object-contain" />
+                        <p className="w-1/2 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                           Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
                         </p>
                       </div>
+                      <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" />
                     </>
                   )}
                   
