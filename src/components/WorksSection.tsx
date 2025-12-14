@@ -57,6 +57,8 @@ import TexelsFabric2 from '@/assets/TexelsFabric2.png';
 import TexelsFabric3 from '@/assets/TexelsFabric3.png';
 import TexelsCircuit1 from '@/assets/TexelsCircuit1.png';
 import TexelsCircuit2 from '@/assets/TexelsCircuit2.png';
+import TexelsPrototyping1 from '@/assets/TexelsPrototyping1.jpg';
+import TexelsPrototyping2 from '@/assets/TexelsPrototyping2.png';
 
 const texelsMapImages = [TexelsMap1, TexelsMap2, TexelsMap3, TexelsMap4];
 
@@ -333,6 +335,39 @@ const WorksSection = () => {
                       <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" />
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
+                      
+                      <div className="mt-4 flex gap-4" style={{ height: '400px' }}>
+                        {/* Video on left */}
+                        <div className="w-1/2 h-full">
+                          <video 
+                            src="/videos/TexelsPrototyping.mp4" 
+                            autoPlay 
+                            loop 
+                            muted 
+                            playsInline
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
+                        
+                        {/* Right column with image, paragraph, image */}
+                        <div className="w-1/2 h-full flex flex-col justify-between">
+                          <img 
+                            src={TexelsPrototyping1} 
+                            alt="Fabric with shape memory wire connections" 
+                            className="w-full object-contain flex-1"
+                          />
+                          <p className="font-body text-foreground/70 text-sm leading-relaxed text-justify py-2">
+                            I performed the proper calculations to select components that would bring the theoretical circuit into reality on a small scale while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
+                          </p>
+                          <img 
+                            src={TexelsPrototyping2} 
+                            alt="Annotated diagram of circuit components integrated into fabric" 
+                            className="w-full object-contain flex-1"
+                          />
+                        </div>
+                      </div>
+                      
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
                     </>
                   )}
                   
