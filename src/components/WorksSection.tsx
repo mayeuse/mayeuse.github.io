@@ -331,6 +331,8 @@ const WorksSection = () => {
                         Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
                       </p>
                       <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" />
+                      
+                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
                     </>
                   )}
                   
