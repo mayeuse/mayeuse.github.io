@@ -59,6 +59,10 @@ import TexelsCircuit1 from '@/assets/TexelsCircuit1.png';
 import TexelsCircuit2 from '@/assets/TexelsCircuit2.png';
 import TexelsPrototyping1 from '@/assets/TexelsPrototyping1.jpg';
 import TexelsPrototyping2 from '@/assets/TexelsPrototyping2.png';
+import TexelsThumbnail from '@/assets/TexelsThumbnail.png';
+import CancerScreeningThumbnail from '@/assets/CancerScreeningThumbnail.png';
+import DrugDeliveryThumbnail from '@/assets/DrugDeliveryThumbnail.png';
+import LykenThumbnail from '@/assets/LykenThumbnail.png';
 
 const texelsMapImages = [TexelsMap1, TexelsMap2, TexelsMap3, TexelsMap4];
 
@@ -75,7 +79,7 @@ const projects: Project[] = [
   { 
     id: 'texels', 
     title: 'TEXELS', 
-    thumbnail: '/placeholder.svg',
+    thumbnail: TexelsThumbnail,
     displayTitle: 'Can I design a textile that replicates any texture you give it?',
     subtitle: 'For my honors undergraduate thesis, I am prototyping a fabric that can smock itself into a variety of programmable texture patterns.',
     hasSchematic: false
@@ -83,7 +87,7 @@ const projects: Project[] = [
   { 
     id: 'cancer-screening', 
     title: 'CANCER SCREENING', 
-    thumbnail: '/placeholder.svg',
+    thumbnail: CancerScreeningThumbnail,
     displayTitle: 'Can a novel probe by the Conformable Decoders detect tumors with less pressure?',
     subtitle: 'I built a testing system to compare a new ultrasound probe to the industry standard for two reasons.',
     hasSchematic: true
@@ -91,7 +95,7 @@ const projects: Project[] = [
   { 
     id: 'drug-delivery', 
     title: 'DRUG DELIVERY', 
-    thumbnail: '/placeholder.svg',
+    thumbnail: DrugDeliveryThumbnail,
     displayTitle: 'How can we optimize a surface to stick to bodily tracts for drug delivery?',
     subtitle: 'I physically and chemically modified a biocompatible substrate to wick mucus and latch itself onto the lining of a bodily tract for noninvasive, long term drug delivery through the epithelium.',
     hasSchematic: false
@@ -99,7 +103,7 @@ const projects: Project[] = [
   { 
     id: 'lyken', 
     title: 'LYKEN', 
-    thumbnail: '/placeholder.svg',
+    thumbnail: LykenThumbnail,
     displayTitle: 'What could circular fashion look like in Orlando?',
     subtitle: 'I set out to create one full look using only home grown and native biomaterials or recycled fibers.',
     hasSchematic: false
@@ -210,60 +214,29 @@ const WorksSection = () => {
           {projects.map((project) => (
             <div
               key={project.id}
-              className="flex flex-col items-start cursor-pointer group"
+              className="cursor-pointer group"
               onMouseEnter={() => setHoveredProject(project.id)}
               onMouseLeave={() => setHoveredProject(null)}
               onClick={() => handleProjectClick(project.id)}
             >
-              {/* Thumbnail */}
-              <div className="relative w-24 h-16 md:w-32 md:h-20 overflow-hidden bg-muted/20">
-                <motion.div
-                  className="w-full h-full bg-gradient-to-br from-foreground/5 to-foreground/20"
+              {/* Thumbnail - still image for now, will be replaced with video later */}
+              {/* Animation settings preserved: scale 1->1.05, opacity transitions, duration 0.8s, easeInOut */}
+              <div className="relative w-24 h-16 md:w-32 md:h-20 overflow-hidden">
+                <motion.img
+                  src={project.thumbnail}
+                  alt={project.title}
+                  className="w-full h-full object-contain"
                   animate={{
                     scale: isAnimating(project.id) ? [1, 1.05, 1] : isFrozen(project.id) ? 1.05 : 1,
-                    opacity: isAnimating(project.id) ? [0.5, 1, 0.8] : isFrozen(project.id) ? 1 : 0.6,
+                    opacity: isAnimating(project.id) ? [0.7, 1, 0.9] : isFrozen(project.id) ? 1 : 0.8,
                   }}
                   transition={{
                     duration: 0.8,
                     repeat: isAnimating(project.id) ? Infinity : 0,
                     ease: "easeInOut",
                   }}
-                >
-                  <motion.div
-                    className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-transparent to-primary/10"
-                    animate={{
-                      x: isAnimating(project.id) ? [0, 10, 0] : isFrozen(project.id) ? 10 : 0,
-                      y: isAnimating(project.id) ? [0, -5, 0] : isFrozen(project.id) ? -5 : 0,
-                    }}
-                    transition={{
-                      duration: 1.2,
-                      repeat: isAnimating(project.id) ? Infinity : 0,
-                      ease: "easeInOut",
-                    }}
-                  />
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center"
-                    animate={{
-                      rotate: isAnimating(project.id) ? [0, 2, -2, 0] : isFrozen(project.id) ? 2 : 0,
-                    }}
-                    transition={{
-                      duration: 0.6,
-                      repeat: isAnimating(project.id) ? Infinity : 0,
-                    }}
-                  >
-                    <div className="w-6 h-6 border border-foreground/30 rounded-full" />
-                  </motion.div>
-                </motion.div>
+                />
               </div>
-              
-              {/* Label */}
-              <span className={`mt-1 font-nav text-xs md:text-sm uppercase tracking-wider transition-colors duration-300 ${
-                activeProject === project.id 
-                  ? 'text-primary' 
-                  : 'text-foreground/60 group-hover:text-foreground'
-              }`}>
-                {project.title}
-              </span>
             </div>
           ))}
         </div>
