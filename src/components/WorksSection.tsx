@@ -1,6 +1,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import STLModel from './STLModel';
 import ExpSchematic from '@/assets/ExpSchematic.png';
 import HandheldProbeAnimated from '@/assets/HandheldProbeAnimated.gif';
@@ -129,7 +129,7 @@ const WorksSection = () => {
     if (activeProject === 'texels') {
       const interval = setInterval(() => {
         setTexelsMapIndex((prev) => (prev + 1) % texelsMapImages.length);
-      }, 800);
+      }, 400);
       return () => clearInterval(interval);
     }
   }, [activeProject]);
@@ -282,12 +282,23 @@ const WorksSection = () => {
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Design</h3>
                       <div className="mt-4 flex gap-4 items-stretch">
                         {/* Left: Cycling map animation */}
-                        <div className="w-[35%] relative flex items-center">
-                          <img
-                            src={texelsMapImages[texelsMapIndex]}
-                            alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
-                            className="w-full h-full object-contain"
-                          />
+                        <div className="w-[35%] relative flex flex-col">
+                          <div className="flex-1 flex items-center">
+                            <img
+                              src={texelsMapImages[texelsMapIndex]}
+                              alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
+                              className="w-full h-full object-contain"
+                            />
+                          </div>
+                          <a 
+                            href="https://docs.google.com/presentation/d/1k-66ggAYF3-HQOfZ-W9AUxxbpRBd1Azldqbmlzte5h0/edit?usp=sharing"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-end gap-1 mt-2 text-xs text-foreground/60 hover:text-foreground transition-colors"
+                          >
+                            <span>view mindmap</span>
+                            <ExternalLink size={12} />
+                          </a>
                         </div>
                         
                         {/* Right: Image grids */}
