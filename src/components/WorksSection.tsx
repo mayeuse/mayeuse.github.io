@@ -181,6 +181,13 @@ const WorksSection = () => {
   const handleProjectClick = (projectId: string) => {
     console.log('Clicked project:', projectId);
     setActiveProject(projectId);
+    // Scroll to top of project description
+    setTimeout(() => {
+      const projectDisplay = document.querySelector('.project-display-area');
+      if (projectDisplay) {
+        projectDisplay.scrollTop = 0;
+      }
+    }, 50);
   };
 
   const activeProjectData = activeProject ? projects.find(p => p.id === activeProject) : null;
@@ -262,7 +269,7 @@ const WorksSection = () => {
         </div>
 
         {/* Project Display Area */}
-        <div className="flex-1 flex flex-col items-start justify-start px-8 pr-[15%] overflow-y-auto">
+        <div className="project-display-area flex-1 flex flex-col items-start justify-start px-8 pr-[15%] overflow-y-auto">
           {activeProjectData ? (
             <div className="max-w-2xl">
               {activeProjectData.displayTitle ? (
@@ -336,36 +343,37 @@ const WorksSection = () => {
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
                       
-                      <div className="mt-4 flex gap-4" style={{ height: '400px' }}>
+                      <div className="mt-4 flex gap-4">
                         {/* Video on left */}
-                        <div className="w-1/2 h-full">
+                        <div className="w-1/2">
                           <video 
                             src="/videos/TexelsPrototyping.mp4" 
                             autoPlay 
                             loop 
                             muted 
                             playsInline
-                            className="w-full h-full object-contain"
+                            className="w-full object-contain"
                           />
                         </div>
                         
-                        {/* Right column with image, paragraph, image */}
-                        <div className="w-1/2 h-full flex flex-col justify-between">
+                        {/* Right column with image and paragraph */}
+                        <div className="w-1/2 flex flex-col">
                           <img 
                             src={TexelsPrototyping1} 
                             alt="Fabric with shape memory wire connections" 
-                            className="w-full object-contain flex-1"
+                            className="w-full object-contain"
                           />
                           <p className="font-body text-foreground/70 text-sm leading-relaxed text-justify py-2">
                             I performed the proper calculations to select components that would bring the theoretical circuit into reality on a small scale while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
                           </p>
-                          <img 
-                            src={TexelsPrototyping2} 
-                            alt="Annotated diagram of circuit components integrated into fabric" 
-                            className="w-full object-contain flex-1"
-                          />
                         </div>
                       </div>
+                      
+                      <img 
+                        src={TexelsPrototyping2} 
+                        alt="Annotated diagram of circuit components integrated into fabric" 
+                        className="mt-4 w-full object-contain"
+                      />
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
                     </>
