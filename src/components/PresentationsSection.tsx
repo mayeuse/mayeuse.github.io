@@ -10,6 +10,14 @@ const presentations = [
   "2024 MSRP Media Lab Intern Showcase",
 ];
 
+const formatPresentation = (text: string) => {
+  return text
+    .toLowerCase()
+    .replace(/\bmit\b/gi, 'MIT')
+    .replace(/\bucf\b/gi, 'UCF')
+    .replace(/\bmsrp\b/gi, 'MSRP');
+};
+
 const PresentationsSection = () => {
   return (
     <section id="presentations" className="min-h-screen flex items-center justify-end pr-[10%] relative z-10">
@@ -17,7 +25,7 @@ const PresentationsSection = () => {
         {presentations.map((presentation, index) => (
           <li key={index}>
             <span className="font-nav text-base md:text-lg capitalize tracking-wide text-foreground hover:text-primary hover:underline transition-colors cursor-pointer">
-              {presentation.toLowerCase()}
+              {formatPresentation(presentation)}
             </span>
           </li>
         ))}
