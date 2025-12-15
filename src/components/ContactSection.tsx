@@ -84,9 +84,9 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="h-screen flex items-center pl-[5%] pr-[5%]">
+    <section id="contact" className="h-screen flex items-center pl-[5%] pr-[5%] relative z-20">
       {/* Left third - Flower video */}
-      <div className="w-1/3 h-full flex items-center justify-center">
+      <div className="w-1/3 h-full flex items-center justify-center relative z-20">
         <video
           ref={videoRef}
           autoPlay
@@ -100,7 +100,7 @@ const ContactSection = () => {
       </div>
 
       {/* Right two thirds - Content */}
-      <div className="w-2/3 flex flex-col justify-center h-full py-8">
+      <div className="w-2/3 flex flex-col justify-center h-full py-8 relative z-20">
         <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
           Thank You for being part of my life and work
         </h2>
