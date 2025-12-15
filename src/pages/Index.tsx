@@ -52,6 +52,9 @@ const Index = () => {
       <PresentationsSection />
       <WritingSampleSection />
       <ContactSection />
+      
+      {/* Transparent footer */}
+      <footer className="h-16 bg-transparent" />
     </main>
   );
 };

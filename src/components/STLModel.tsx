@@ -42,7 +42,7 @@ interface STLModelProps {
 
 const STLModel = memo(({ url, scale = 0.02, label, className }: STLModelProps) => {
   // Use larger scale for Probe_Head_Attachment to make it visible
-  const adjustedScale = url.includes('Probe_Head_Attachment') ? scale * 2.5 : scale;
+  const adjustedScale = url.includes('Probe_Head_Attachment') ? scale * 10 : scale;
   const [isInteracting, setIsInteracting] = useState(false);
 
   // Convert STL URL to GLB URL if needed
