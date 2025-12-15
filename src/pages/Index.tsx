@@ -3,7 +3,7 @@ import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import WorksSection from "@/components/WorksSection";
 import PresentationsSection from "@/components/PresentationsSection";
-import AwardsSection from "@/components/AwardsSection";
+import WritingSampleSection from "@/components/WritingSampleSection";
 import ContactSection from "@/components/ContactSection";
 import SectionHeader from "@/components/SectionHeader";
 import HandwrittenLogo from "@/components/HandwrittenLogo";
@@ -14,7 +14,7 @@ const sections = [
   { id: 'top', title: '' },
   { id: 'works', title: 'SELECTED WORKS' },
   { id: 'presentations', title: 'PRESENTATIONS' },
-  { id: 'awards', title: 'AWARDS' },
+  { id: 'writing', title: 'WRITING SAMPLE' },
   { id: 'contact', title: 'CONTACT' },
 ];
 
@@ -50,7 +50,7 @@ const Index = () => {
       <HeroSection />
       <WorksSection />
       <PresentationsSection />
-      <AwardsSection />
+      <WritingSampleSection />
       <ContactSection />
     </main>
   );

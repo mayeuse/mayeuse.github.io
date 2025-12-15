@@ -4,7 +4,7 @@ const navLinks = [
   { label: 'STATEMENT', href: '#top' },
   { label: 'SELECTED WORKS', href: '#works' },
   { label: 'PRESENTATIONS', href: '#presentations' },
-  { label: 'AWARDS', href: '#awards' },
+  { label: 'WRITING SAMPLE', href: '#writing' },
   { label: 'CONTACT', href: '#contact' },
 ];
 

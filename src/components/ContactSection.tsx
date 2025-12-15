@@ -113,7 +113,7 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="h-[calc(100vh-180px)] flex items-start pt-8 pl-[5%] pr-[15%] relative z-20">
+    <section id="contact" className="h-[calc(100vh-180px)] flex items-start pt-8 pl-[5%] pr-[20%] relative z-20">
       {/* Left half - Flower video (50% of space before nav) */}
       <div className="w-1/2 h-full flex items-center justify-center relative z-20">
         <video
@@ -130,12 +130,12 @@ const ContactSection = () => {
       </div>
 
       {/* Right half - Content (50% of space before nav) */}
-      <div className="w-1/2 flex flex-col justify-center h-full py-4 relative z-20">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
+      <div className="w-1/2 flex flex-col items-center justify-center h-full py-4 relative z-20">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3 text-center">
           Thank You for being part of my life and work
         </h2>
         
-        <p className="font-body text-foreground/80 text-sm mb-3 text-justify">
+        <p className="font-body text-foreground/80 text-sm mb-3 text-center max-w-[320px]">
           I have only been able to do what I do with support from the people around me. As a tradition, I've started sending virtual thank you bouquets that represent not only me but the people who have helped me along the way. If you'd like to add a flower to my bouquet, use the boxes below to submit your drawing and name.
         </p>
 
@@ -195,7 +195,7 @@ const ContactSection = () => {
         </div>
 
         {/* Email contact */}
-        <p className="font-body text-foreground/80 text-sm">
+        <p className="font-body text-foreground/80 text-sm text-center">
           You can also email me at
         </p>
         <a 
@@ -204,6 +204,7 @@ const ContactSection = () => {
         >
           maya.3lizabeth@gmail.com
         </a>
+        <div className="h-8" />
       </div>
     </section>
   );
