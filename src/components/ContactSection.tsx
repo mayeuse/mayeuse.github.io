@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { toast } from 'sonner';
 
 const ContactSection = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -7,6 +8,7 @@ const ContactSection = () => {
   const [brushColor, setColor] = useState('#000000');
   const [name, setName] = useState('');
   const [isSending, setIsSending] = useState(false);
+  const [hasDrawn, setHasDrawn] = useState(false);
 
   const colors = ['#000000', '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#10ac84', '#ee5253'];
 
@@ -32,9 +34,12 @@ const ContactSection = () => {
     if (!ctx) return;
 
     setIsDrawing(true);
+    setHasDrawn(true);
     const rect = canvas.getBoundingClientRect();
-    const x = 'touches' in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
-    const y = 'touches' in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = ('touches' in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left) * scaleX;
+    const y = ('touches' in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top) * scaleY;
     
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -48,8 +53,10 @@ const ContactSection = () => {
     if (!ctx) return;
 
     const rect = canvas.getBoundingClientRect();
-    const x = 'touches' in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left;
-    const y = 'touches' in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top;
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = ('touches' in e ? e.touches[0].clientX - rect.left : e.clientX - rect.left) * scaleX;
+    const y = ('touches' in e ? e.touches[0].clientY - rect.top : e.clientY - rect.top) * scaleY;
     
     ctx.strokeStyle = brushColor;
     ctx.lineWidth = 3;
@@ -68,25 +75,46 @@ const ContactSection = () => {
 
     setIsSending(true);
     
-    // Convert canvas to PNG blob
-    canvas.toBlob(async (blob) => {
-      if (!blob) {
-        setIsSending(false);
-        return;
-      }
-
-      // Create mailto link with subject
-      const subject = encodeURIComponent(`A Flower for Your Bouquet From ${name}`);
-      window.location.href = `mailto:maya.3lizabeth@gmail.com?subject=${subject}`;
+    try {
+      const imageData = canvas.toDataURL('image/png');
       
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'ce5d3b9a-fe12-43c2-a35c-eaac943ddee8',
+          subject: `A Flower for Your Bouquet From ${name}`,
+          from_name: name,
+          flower_drawing: imageData,
+          message: `${name} has drawn a flower for your bouquet!`,
+        }),
+      });
+
+      const result = await response.json();
+      
+      if (result.success) {
+        toast.success("Thank you! Your flower has been sent!");
+        setName('');
+        setHasDrawn(false);
+        const ctx = canvas.getContext('2d');
+        ctx?.clearRect(0, 0, canvas.width, canvas.height);
+      } else {
+        toast.error("Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      console.error('Error sending flower:', error);
+      toast.error("Failed to send. Please try again.");
+    } finally {
       setIsSending(false);
-    }, 'image/png');
+    }
   };
 
   return (
-    <section id="contact" className="h-screen flex items-center pl-[5%] pr-[5%] relative z-20">
-      {/* Left third - Flower video */}
-      <div className="w-1/3 h-full flex items-center justify-center relative z-20">
+    <section id="contact" className="min-h-[calc(100vh-200px)] flex items-center pl-[5%] pr-[5%] relative z-20">
+      {/* Left half - Flower video */}
+      <div className="w-1/2 h-full flex items-center justify-center relative z-20">
         <video
           ref={videoRef}
           autoPlay
@@ -99,13 +127,13 @@ const ContactSection = () => {
         </video>
       </div>
 
-      {/* Right two thirds - Content */}
-      <div className="w-2/3 flex flex-col justify-center h-full py-8 relative z-20">
+      {/* Right half - Content */}
+      <div className="w-1/2 flex flex-col justify-center h-full py-8 relative z-20">
         <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
           Thank You for being part of my life and work
         </h2>
         
-        <p className="font-body text-foreground/80 text-sm mb-4 max-w-xl">
+        <p className="font-body text-foreground/80 text-sm mb-4 max-w-xl text-justify">
           I have only been able to do what I do with support from the people around me. As a tradition, I've started sending virtual thank you bouquets that represent not only me but the people who have helped me along the way. If you'd like to add a flower to my bouquet, use the boxes below to submit your drawing and name.
         </p>
 
@@ -122,12 +150,12 @@ const ContactSection = () => {
         </div>
 
         {/* Drawing canvas */}
-        <div className="border border-foreground/20 rounded-lg bg-white/50 mb-3" style={{ width: '300px', height: '200px' }}>
+        <div className="border border-foreground/20 rounded-lg bg-white/50 mb-3 relative" style={{ width: '300px', height: '200px' }}>
           <canvas
             ref={canvasRef}
             width={300}
             height={200}
-            className="cursor-crosshair rounded-lg"
+            className="cursor-crosshair rounded-lg w-full h-full"
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -136,8 +164,8 @@ const ContactSection = () => {
             onTouchMove={draw}
             onTouchEnd={stopDrawing}
           />
-          {!isDrawing && (
-            <div className="absolute pointer-events-none text-foreground/30 text-sm" style={{ marginTop: '-110px', marginLeft: '90px' }}>
+          {!hasDrawn && (
+            <div className="absolute inset-0 pointer-events-none flex items-center justify-center text-foreground/30 text-sm">
               Draw Your Flower!
             </div>
           )}

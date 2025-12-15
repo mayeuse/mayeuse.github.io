@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ExternalLink, Maximize2, X } from 'lucide-react';
 
 import Presentation2 from '@/assets/Presentation2.jpg';
@@ -54,12 +54,13 @@ const PresentationsSection = () => {
   const [isHovered, setIsHovered] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
-  const instagramRef = useRef<HTMLIFrameElement>(null);
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   // Auto-rotate carousel
   useEffect(() => {
-    if (!isHovered && !isVideoPlaying) {
+    if (!isHovered && !isVideoPlaying && !isDragging) {
       autoRotateRef.current = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % mediaItems.length);
       }, 3000);
@@ -70,24 +71,21 @@ const PresentationsSection = () => {
         clearInterval(autoRotateRef.current);
       }
     };
-  }, [isHovered, isVideoPlaying]);
+  }, [isHovered, isVideoPlaying, isDragging]);
 
-  // Listen for YouTube and Instagram iframe messages
+  // Listen for YouTube iframe messages
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin === 'https://www.youtube.com') {
         try {
           const data = JSON.parse(event.data);
           if (data.event === 'onStateChange') {
-            // 1 = playing, 2 = paused
             setIsVideoPlaying(data.info === 1);
           }
         } catch {
           // Not a JSON message
         }
       }
-      // Instagram doesn't have a reliable postMessage API for play state
-      // We'll use focus/blur as a proxy
     };
 
     window.addEventListener('message', handleMessage);
@@ -104,6 +102,24 @@ const PresentationsSection = () => {
   const handleExpand = useCallback((index: number) => {
     setExpandedItem(index);
   }, []);
+
+  const handleSliderClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!sliderRef.current) return;
+    const rect = sliderRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    const newIndex = Math.round(percentage * (mediaItems.length - 1));
+    setActiveIndex(Math.max(0, Math.min(mediaItems.length - 1, newIndex)));
+  };
+
+  const handleSliderDrag = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging || !sliderRef.current) return;
+    const rect = sliderRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const percentage = x / rect.width;
+    const newIndex = Math.round(percentage * (mediaItems.length - 1));
+    setActiveIndex(Math.max(0, Math.min(mediaItems.length - 1, newIndex)));
+  };
 
   const renderMediaItem = (item: MediaItem, index: number, isExpanded = false) => {
     const containerClass = isExpanded 
@@ -172,8 +188,7 @@ const PresentationsSection = () => {
         return (
           <div className="w-full h-full flex items-center justify-center">
             <iframe
-              ref={instagramRef}
-              src="https://www.instagram.com/p/DOZnpRjDVNR/embed/captioned/?hidecaption=true"
+              src="https://www.instagram.com/reel/DOZnpRjDVNR/embed/"
               className="w-full h-full max-w-[320px] rounded-lg"
               frameBorder="0"
               scrolling="no"
@@ -199,100 +214,145 @@ const PresentationsSection = () => {
     }
   };
 
+  const getItemStyle = (index: number) => {
+    const diff = index - activeIndex;
+    
+    if (diff === 0) {
+      return {
+        x: 0,
+        scale: 1,
+        z: 10,
+        opacity: 1,
+      };
+    } else if (diff === 1 || diff === -(mediaItems.length - 1)) {
+      return {
+        x: 220,
+        scale: 0.7,
+        z: 0,
+        opacity: 0.5,
+      };
+    } else if (diff === -1 || diff === mediaItems.length - 1) {
+      return {
+        x: -220,
+        scale: 0.7,
+        z: 0,
+        opacity: 0.5,
+      };
+    } else {
+      return {
+        x: diff > 0 ? 400 : -400,
+        scale: 0.5,
+        z: -10,
+        opacity: 0,
+      };
+    }
+  };
+
   const prevIndex = (activeIndex - 1 + mediaItems.length) % mediaItems.length;
   const nextIndex = (activeIndex + 1) % mediaItems.length;
+  const visibleIndices = [prevIndex, activeIndex, nextIndex];
 
   return (
     <>
       <section id="presentations" className="min-h-screen flex items-center justify-center px-[5%] relative z-10">
-        <div className="flex items-center gap-8 w-full max-w-6xl">
-          {/* Left side - Presentation list */}
-          <ul className="flex flex-col gap-3 items-start w-[35%]">
-            {presentations.map((presentation, index) => (
-              <li key={index}>
-                <button
-                  onClick={() => handlePresentationClick(index)}
-                  className={`font-nav text-sm md:text-base capitalize tracking-wide transition-colors cursor-pointer text-left ${
-                    activeIndex === index
-                      ? 'text-primary underline'
-                      : 'text-foreground hover:text-primary hover:underline'
-                  }`}
-                >
-                  {formatPresentation(presentation)}
-                </button>
-              </li>
-            ))}
-          </ul>
+        <div className="flex flex-col items-center gap-6 w-full max-w-6xl">
+          <div className="flex items-center gap-8 w-full">
+            {/* Left side - Presentation list */}
+            <ul className="flex flex-col gap-3 items-start w-[35%]">
+              {presentations.map((presentation, index) => (
+                <li key={index}>
+                  <button
+                    onClick={() => handlePresentationClick(index)}
+                    className={`font-nav text-sm md:text-base capitalize tracking-wide transition-colors cursor-pointer text-left ${
+                      activeIndex === index
+                        ? 'text-primary underline'
+                        : 'text-foreground hover:text-primary hover:underline'
+                    }`}
+                  >
+                    {formatPresentation(presentation)}
+                  </button>
+                </li>
+              ))}
+            </ul>
 
-          {/* Center - Carousel */}
+            {/* Center - 3D Carousel */}
+            <div 
+              className="relative flex items-center justify-center w-[50%] h-[400px]"
+              onMouseEnter={() => setIsHovered(true)}
+              onMouseLeave={() => setIsHovered(false)}
+              style={{ perspective: '1000px' }}
+            >
+              {visibleIndices.map((index) => {
+                const style = getItemStyle(index);
+                return (
+                  <motion.div
+                    key={index}
+                    animate={{
+                      x: style.x,
+                      scale: style.scale,
+                      opacity: style.opacity,
+                    }}
+                    transition={{ duration: 0.4, ease: 'easeOut' }}
+                    className="absolute w-[80%] h-[350px] flex items-center justify-center"
+                    style={{ 
+                      zIndex: style.z,
+                      transformStyle: 'preserve-3d',
+                    }}
+                  >
+                    {renderMediaItem(mediaItems[index], index)}
+                  </motion.div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Progress slider bar */}
           <div 
-            className="relative flex items-center justify-center w-[50%] h-[400px]"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
+            ref={sliderRef}
+            className="w-[50%] ml-[35%] h-2 bg-foreground/10 rounded-full cursor-pointer relative"
+            onClick={handleSliderClick}
+            onMouseDown={() => setIsDragging(true)}
+            onMouseUp={() => setIsDragging(false)}
+            onMouseLeave={() => setIsDragging(false)}
+            onMouseMove={handleSliderDrag}
           >
-            {/* Previous item (faded) */}
-            <div className="absolute -left-[15%] z-0 opacity-30 scale-50 h-[300px] w-[200px] flex items-center justify-center">
-              {mediaItems[prevIndex].type === 'image' || mediaItems[prevIndex].type === 'image-with-link' ? (
-                <img 
-                  src={mediaItems[prevIndex].src} 
-                  alt="Previous" 
-                  className="max-h-full max-w-full object-contain rounded-lg" 
-                />
-              ) : (
-                <div className="w-full h-full bg-foreground/10 rounded-lg" />
-              )}
-            </div>
-
-            {/* Active item */}
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={activeIndex}
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.3 }}
-                className="relative z-10 w-[80%] h-[350px] flex items-center justify-center"
-              >
-                {renderMediaItem(mediaItems[activeIndex], activeIndex)}
-              </motion.div>
-            </AnimatePresence>
-
-            {/* Next item (faded) */}
-            <div className="absolute -right-[15%] z-0 opacity-30 scale-50 h-[300px] w-[200px] flex items-center justify-center">
-              {mediaItems[nextIndex].type === 'image' || mediaItems[nextIndex].type === 'image-with-link' ? (
-                <img 
-                  src={mediaItems[nextIndex].src} 
-                  alt="Next" 
-                  className="max-h-full max-w-full object-contain rounded-lg" 
-                />
-              ) : (
-                <div className="w-full h-full bg-foreground/10 rounded-lg" />
-              )}
-            </div>
+            <motion.div
+              className="absolute top-0 left-0 h-full bg-primary rounded-full"
+              animate={{
+                width: `${((activeIndex + 1) / mediaItems.length) * 100}%`,
+              }}
+              transition={{ duration: 0.3 }}
+            />
+            <motion.div
+              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-md cursor-grab active:cursor-grabbing"
+              animate={{
+                left: `${(activeIndex / (mediaItems.length - 1)) * 100}%`,
+              }}
+              transition={{ duration: 0.3 }}
+              style={{ marginLeft: '-8px' }}
+            />
           </div>
         </div>
       </section>
 
       {/* Expanded view modal */}
-      <AnimatePresence>
-        {expandedItem !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-background/90 z-50 flex items-center justify-center"
+      {expandedItem !== null && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 bg-background/90 z-50 flex items-center justify-center"
+          onClick={() => setExpandedItem(null)}
+        >
+          <button
             onClick={() => setExpandedItem(null)}
+            className="absolute top-8 right-8 text-foreground hover:text-primary transition-colors"
           >
-            <button
-              onClick={() => setExpandedItem(null)}
-              className="absolute top-8 right-8 text-foreground hover:text-primary transition-colors"
-            >
-              <X className="w-8 h-8" />
-            </button>
-            {renderMediaItem(mediaItems[expandedItem], expandedItem, true)}
-          </motion.div>
-        )}
-      </AnimatePresence>
+            <X className="w-8 h-8" />
+          </button>
+          {renderMediaItem(mediaItems[expandedItem], expandedItem, true)}
+        </motion.div>
+      )}
     </>
   );
 };
