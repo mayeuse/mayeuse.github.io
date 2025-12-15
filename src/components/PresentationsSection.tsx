@@ -237,50 +237,52 @@ const PresentationsSection = () => {
               ))}
             </ul>
 
-            {/* Center - 3D Carousel with arrows */}
-            <div 
-              className="relative flex items-center justify-center w-[50%] h-[400px]"
-              style={{ perspective: '1000px' }}
-            >
-              {/* Left arrow */}
-              <button
-                onClick={handlePrev}
-                className="absolute left-[5%] z-20 p-2 text-primary hover:text-primary/70 transition-colors"
-                disabled={isVideoPlaying}
+            {/* Center - 3D Carousel with arrows below */}
+            <div className="flex flex-col items-center w-[50%]">
+              <div 
+                className="relative flex items-center justify-center w-full h-[400px]"
+                style={{ perspective: '1000px' }}
               >
-                <ChevronLeft className="w-8 h-8" />
-              </button>
+                {visibleIndices.map((index) => {
+                  const style = getItemStyle(index);
+                  return (
+                    <motion.div
+                      key={index}
+                      animate={{
+                        x: style.x,
+                        scale: style.scale,
+                        opacity: style.opacity,
+                      }}
+                      transition={{ duration: 0.4, ease: 'easeOut' }}
+                      className="absolute w-[80%] h-[350px] flex items-center justify-center"
+                      style={{ 
+                        zIndex: style.z,
+                        transformStyle: 'preserve-3d',
+                      }}
+                    >
+                      {renderMediaItem(mediaItems[index], index)}
+                    </motion.div>
+                  );
+                })}
+              </div>
 
-              {visibleIndices.map((index) => {
-                const style = getItemStyle(index);
-                return (
-                  <motion.div
-                    key={index}
-                    animate={{
-                      x: style.x,
-                      scale: style.scale,
-                      opacity: style.opacity,
-                    }}
-                    transition={{ duration: 0.4, ease: 'easeOut' }}
-                    className="absolute w-[80%] h-[350px] flex items-center justify-center"
-                    style={{ 
-                      zIndex: style.z,
-                      transformStyle: 'preserve-3d',
-                    }}
-                  >
-                    {renderMediaItem(mediaItems[index], index)}
-                  </motion.div>
-                );
-              })}
-
-              {/* Right arrow */}
-              <button
-                onClick={handleNext}
-                className="absolute right-[5%] z-20 p-2 text-primary hover:text-primary/70 transition-colors"
-                disabled={isVideoPlaying}
-              >
-                <ChevronRight className="w-8 h-8" />
-              </button>
+              {/* Arrows below carousel */}
+              <div className="flex items-center gap-4 mt-4">
+                <button
+                  onClick={handlePrev}
+                  className="p-2 text-primary hover:text-primary/70 transition-colors"
+                  disabled={isVideoPlaying}
+                >
+                  <ChevronLeft className="w-8 h-8" />
+                </button>
+                <button
+                  onClick={handleNext}
+                  className="p-2 text-primary hover:text-primary/70 transition-colors"
+                  disabled={isVideoPlaying}
+                >
+                  <ChevronRight className="w-8 h-8" />
+                </button>
+              </div>
             </div>
           </div>
         </div>
