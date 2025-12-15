@@ -27,10 +27,11 @@ type MediaItem = {
   link?: string;
   youtubeStart?: number;
   expandable?: boolean;
+  aspectRatio?: string;
 };
 
 const mediaItems: MediaItem[] = [
-  { type: 'pdf', src: '/documents/CapitolPosterDraft.pdf', expandable: true },
+  { type: 'pdf', src: '/documents/CapitolPosterDraft.pdf', expandable: true, aspectRatio: '4/3' },
   { type: 'image', src: Presentation2, expandable: true },
   { type: 'youtube', src: 'https://www.youtube.com/embed/wxdZTukw9nE' },
   { type: 'image-with-link', src: Presentation4, link: 'https://docs.google.com/presentation/d/1uR8SfBKQFP-NcyxxOh3tvAU7mf4jk1c21WHq2RfcCt4/edit?usp=sharing' },
@@ -100,9 +101,13 @@ const PresentationsSection = () => {
 
     switch (item.type) {
       case 'pdf':
+        const pdfAspect = item.aspectRatio || '8.5/11';
         return (
           <div className={containerClass}>
-            <div className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full aspect-[8.5/11] max-h-[320px]"}>
+            <div 
+              className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full max-h-[320px]"}
+              style={!isExpanded ? { aspectRatio: pdfAspect } : undefined}
+            >
               <iframe
                 src={`${item.src}#toolbar=0&navpanes=0&view=FitH`}
                 className="w-full h-full rounded-lg"
