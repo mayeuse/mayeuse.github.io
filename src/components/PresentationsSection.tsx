@@ -1,6 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
-import { ExternalLink, Maximize2, X } from 'lucide-react';
+import { ExternalLink, Maximize2, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import Presentation2 from '@/assets/Presentation2.jpg';
 import Presentation4 from '@/assets/Presentation4.jpg';
@@ -51,27 +51,8 @@ const formatPresentation = (text: string) => {
 
 const PresentationsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isHovered, setIsHovered] = useState(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
-  const sliderRef = useRef<HTMLDivElement>(null);
-
-  // Auto-rotate carousel
-  useEffect(() => {
-    if (!isHovered && !isVideoPlaying && !isDragging) {
-      autoRotateRef.current = setInterval(() => {
-        setActiveIndex((prev) => (prev + 1) % mediaItems.length);
-      }, 3000);
-    }
-
-    return () => {
-      if (autoRotateRef.current) {
-        clearInterval(autoRotateRef.current);
-      }
-    };
-  }, [isHovered, isVideoPlaying, isDragging]);
 
   // Listen for YouTube iframe messages
   useEffect(() => {
@@ -93,61 +74,24 @@ const PresentationsSection = () => {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
-  // Lock carousel position when video is playing
-  const lockedIndex = useRef<number | null>(null);
-  
-  useEffect(() => {
-    if (isVideoPlaying) {
-      lockedIndex.current = activeIndex;
-    } else {
-      lockedIndex.current = null;
-    }
-  }, [isVideoPlaying, activeIndex]);
-
   const handlePresentationClick = (index: number) => {
-    // Don't allow navigation while video is playing
     if (isVideoPlaying) return;
-    
     setActiveIndex(index);
-    if (autoRotateRef.current) {
-      clearInterval(autoRotateRef.current);
-    }
+  };
+
+  const handlePrev = () => {
+    if (isVideoPlaying) return;
+    setActiveIndex((prev) => (prev - 1 + mediaItems.length) % mediaItems.length);
+  };
+
+  const handleNext = () => {
+    if (isVideoPlaying) return;
+    setActiveIndex((prev) => (prev + 1) % mediaItems.length);
   };
 
   const handleExpand = useCallback((index: number) => {
     setExpandedItem(index);
   }, []);
-
-  const updateIndexFromPosition = (clientX: number) => {
-    // Don't allow navigation while video is playing
-    if (isVideoPlaying) return;
-    
-    if (!sliderRef.current) return;
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
-    const percentage = x / rect.width;
-    const newIndex = Math.round(percentage * (mediaItems.length - 1));
-    setActiveIndex(Math.max(0, Math.min(mediaItems.length - 1, newIndex)));
-  };
-
-  const handleSliderClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    updateIndexFromPosition(e.clientX);
-  };
-
-  const handleSliderMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsDragging(true);
-    updateIndexFromPosition(e.clientX);
-  };
-
-  const handleSliderMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging) return;
-    updateIndexFromPosition(e.clientX);
-  };
-
-  const handleSliderMouseUp = () => {
-    setIsDragging(false);
-  };
 
   const renderMediaItem = (item: MediaItem, index: number, isExpanded = false) => {
     const containerClass = isExpanded 
@@ -293,13 +237,20 @@ const PresentationsSection = () => {
               ))}
             </ul>
 
-            {/* Center - 3D Carousel */}
+            {/* Center - 3D Carousel with arrows */}
             <div 
               className="relative flex items-center justify-center w-[50%] h-[400px]"
-              onMouseEnter={() => setIsHovered(true)}
-              onMouseLeave={() => setIsHovered(false)}
               style={{ perspective: '1000px' }}
             >
+              {/* Left arrow */}
+              <button
+                onClick={handlePrev}
+                className="absolute left-0 z-20 p-2 text-foreground/60 hover:text-foreground transition-colors"
+                disabled={isVideoPlaying}
+              >
+                <ChevronLeft className="w-8 h-8" />
+              </button>
+
               {visibleIndices.map((index) => {
                 const style = getItemStyle(index);
                 return (
@@ -321,39 +272,16 @@ const PresentationsSection = () => {
                   </motion.div>
                 );
               })}
-            </div>
-          </div>
 
-          {/* Progress slider bar */}
-          <div 
-            ref={sliderRef}
-            className="w-[50%] ml-[35%] h-2 rounded-full relative select-none"
-            onClick={handleSliderClick}
-            onMouseDown={handleSliderMouseDown}
-            onMouseMove={handleSliderMouseMove}
-            onMouseUp={handleSliderMouseUp}
-            onMouseLeave={handleSliderMouseUp}
-            style={{ cursor: isDragging ? 'grabbing' : 'pointer' }}
-          >
-            {/* Track background */}
-            <div className="absolute inset-0 bg-foreground/10 rounded-full" />
-            {/* Green progress bar before circle */}
-            <motion.div
-              className="absolute top-0 left-0 h-full bg-primary rounded-full"
-              animate={{
-                width: `calc(${(activeIndex / (mediaItems.length - 1)) * 100}%)`,
-              }}
-              transition={{ duration: isDragging ? 0 : 0.2, ease: 'easeOut' }}
-            />
-            {/* Circle indicator */}
-            <motion.div
-              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-md"
-              animate={{
-                left: `calc(${(activeIndex / (mediaItems.length - 1)) * 100}% - 8px)`,
-              }}
-              transition={{ duration: isDragging ? 0 : 0.2, ease: 'easeOut' }}
-              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
-            />
+              {/* Right arrow */}
+              <button
+                onClick={handleNext}
+                className="absolute right-0 z-20 p-2 text-foreground/60 hover:text-foreground transition-colors"
+                disabled={isVideoPlaying}
+              >
+                <ChevronRight className="w-8 h-8" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
