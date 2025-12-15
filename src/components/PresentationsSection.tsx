@@ -22,7 +22,7 @@ const presentations = [
 ];
 
 type MediaItem = {
-  type: 'pdf' | 'image' | 'instagram' | 'youtube' | 'image-with-link';
+  type: 'pdf' | 'image' | 'youtube' | 'image-with-link';
   src?: string;
   link?: string;
   youtubeStart?: number;
@@ -32,7 +32,7 @@ type MediaItem = {
 const mediaItems: MediaItem[] = [
   { type: 'pdf', src: '/documents/CapitolPosterDraft.pdf', expandable: true },
   { type: 'image', src: Presentation2, expandable: true },
-  { type: 'instagram', src: 'https://www.instagram.com/p/DOZnpRjDVNR/embed/' },
+  { type: 'youtube', src: 'https://www.youtube.com/embed/wxdZTukw9nE' },
   { type: 'image-with-link', src: Presentation4, link: 'https://docs.google.com/presentation/d/1uR8SfBKQFP-NcyxxOh3tvAU7mf4jk1c21WHq2RfcCt4/edit?usp=sharing' },
   { type: 'image', src: Presentation5 },
   { type: 'image', src: Presentation6 },
@@ -196,25 +196,11 @@ const PresentationsSection = () => {
             </a>
           </div>
         );
-      case 'instagram':
-        return (
-          <div className="w-full h-full flex items-center justify-center">
-            <iframe
-              src="https://www.instagram.com/reel/DOZnpRjDVNR/embed/"
-              className="w-full h-full max-w-[320px] rounded-lg"
-              frameBorder="0"
-              scrolling="no"
-              allowTransparency
-              title="Instagram Video"
-              onFocus={() => setIsVideoPlaying(true)}
-              onBlur={() => setIsVideoPlaying(false)}
-            />
-          </div>
-        );
       case 'youtube':
+        const startParam = item.youtubeStart ? `start=${item.youtubeStart}&` : '';
         return (
           <iframe
-            src={`${item.src}?start=${item.youtubeStart}&enablejsapi=1`}
+            src={`${item.src}?${startParam}enablejsapi=1`}
             className="w-full h-full rounded-lg"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
