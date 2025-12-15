@@ -1,19 +1,33 @@
-import { useRef, useState, memo } from 'react';
-import { Canvas, useFrame, useLoader } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { useRef, useState, memo, useEffect } from 'react';
+import { Canvas, useFrame, useThree } from '@react-three/fiber';
+import { OrbitControls, Center, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { Move3d } from 'lucide-react';
 
 interface ModelProps {
   url: string;
-  scale: number;
   isInteracting: boolean;
+  isProbeHead: boolean;
 }
 
-const Model = memo(({ url, scale, isInteracting }: ModelProps) => {
-  const gltf = useLoader(GLTFLoader, url);
+const Model = memo(({ url, isInteracting, isProbeHead }: ModelProps) => {
+  const { scene } = useGLTF(url);
   const groupRef = useRef<THREE.Group>(null);
+  const { camera } = useThree();
+
+  useEffect(() => {
+    if (groupRef.current) {
+      // Compute bounding box to auto-fit the model
+      const box = new THREE.Box3().setFromObject(groupRef.current);
+      const size = box.getSize(new THREE.Vector3());
+      const maxDim = Math.max(size.x, size.y, size.z);
+      
+      // Adjust camera distance based on model size
+      const fitDistance = isProbeHead ? maxDim * 2 : maxDim * 1.5;
+      camera.position.set(0, 0, fitDistance);
+      camera.updateProjectionMatrix();
+    }
+  }, [scene, camera, isProbeHead]);
 
   useFrame((_, delta) => {
     if (groupRef.current && !isInteracting) {
@@ -22,11 +36,13 @@ const Model = memo(({ url, scale, isInteracting }: ModelProps) => {
   });
 
   return (
-    <group rotation={[0, 0, -Math.PI / 2]}>
-      <group ref={groupRef} scale={scale}>
-        <primitive object={gltf.scene.clone()} />
+    <Center>
+      <group rotation={[0, 0, -Math.PI / 2]}>
+        <group ref={groupRef}>
+          <primitive object={scene.clone()} />
+        </group>
       </group>
-    </group>
+    </Center>
   );
 });
 
@@ -40,10 +56,9 @@ interface STLModelProps {
   className?: string;
 }
 
-const STLModel = memo(({ url, scale = 0.02, label, className }: STLModelProps) => {
-  // Use larger scale for Probe_Head_Attachment to make it visible
-  const adjustedScale = url.includes('Probe_Head_Attachment') ? scale * 10 : scale;
+const STLModel = memo(({ url, label, className }: STLModelProps) => {
   const [isInteracting, setIsInteracting] = useState(false);
+  const isProbeHead = url.includes('Probe_Head_Attachment');
 
   // Convert STL URL to GLB URL if needed
   const glbUrl = url.replace('.stl', '.glb');
@@ -51,10 +66,10 @@ const STLModel = memo(({ url, scale = 0.02, label, className }: STLModelProps) =
   return (
     <div className="flex flex-col items-center h-full">
       <div className={`cursor-grab active:cursor-grabbing relative ${className || 'w-36 h-36'}`}>
-        <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ antialias: true }} dpr={[1, 2]}>
+        <Canvas camera={{ position: [0, 0, 10], fov: 50 }} gl={{ antialias: true }} dpr={[1, 2]}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
-          <Model url={glbUrl} scale={adjustedScale} isInteracting={isInteracting} />
+          <Model url={glbUrl} isInteracting={isInteracting} isProbeHead={isProbeHead} />
           <OrbitControls 
             enableZoom={false} 
             enablePan={false}
