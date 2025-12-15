@@ -1,8 +1,9 @@
-import { useState, useEffect, Suspense } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
-import STLModel from './STLModel';
 import { Skeleton } from './ui/skeleton';
+import LazySectionWrapper from './LazySectionWrapper';
+import LazySTLModels from './LazySTLModels';
 
 // Only import thumbnails initially - project images load on demand
 import TexelsThumbnail from '@/assets/TexelsThumbnail.png';
@@ -61,7 +62,7 @@ const stlModels = [
 ];
 
 // Type definitions for dynamically loaded images
-interface TexelsImages {
+interface TexelsDesignImages {
   texelsMapImages: string[];
   TexelsPaper1: string;
   TexelsPaper2: string;
@@ -71,12 +72,18 @@ interface TexelsImages {
   TexelsFabric3: string;
   TexelsCircuit1: string;
   TexelsCircuit2: string;
+}
+
+interface TexelsPrototypingImages {
   TexelsPrototyping1: string;
   TexelsPrototyping2: string;
 }
 
-interface CancerImages {
+interface CancerInitialImages {
   ExpSchematic: string;
+}
+
+interface CancerResultsImages {
   HandheldProbeAnimated: string;
   NovelProbeAnimated: string;
   DeformationFigure: string;
@@ -92,14 +99,19 @@ interface DrugDeliveryImages {
   PillarWicking: string;
 }
 
-interface LykenImages {
+interface LykenMainImages {
   lykenLookImages: string[];
   lykenSketchImages: string[];
+  LykenFullSketch1: string;
+}
+
+interface LykenCarouselImages {
   lykenDetailImages: string[];
   lykenBodyImages: string[];
   lykenHemImages: string[];
-  LykenFullSketch1: string;
-  LykenFullSketch2: string;
+}
+
+interface LykenSubsectionImages {
   PetalJewelry1: string;
   PetalJewelry2: string;
   PetalJewelry3: string;
@@ -123,24 +135,28 @@ const WorksSection = () => {
   const [hemCarouselIndex, setHemCarouselIndex] = useState(0);
   const [texelsMapIndex, setTexelsMapIndex] = useState(0);
   
-  // Dynamic image states
-  const [texelsImages, setTexelsImages] = useState<TexelsImages | null>(null);
-  const [cancerImages, setCancerImages] = useState<CancerImages | null>(null);
+  // Dynamic image states - split by subsection for progressive loading
+  const [texelsDesignImages, setTexelsDesignImages] = useState<TexelsDesignImages | null>(null);
+  const [texelsPrototypingImages, setTexelsPrototypingImages] = useState<TexelsPrototypingImages | null>(null);
+  const [cancerInitialImages, setCancerInitialImages] = useState<CancerInitialImages | null>(null);
+  const [cancerResultsImages, setCancerResultsImages] = useState<CancerResultsImages | null>(null);
   const [drugImages, setDrugImages] = useState<DrugDeliveryImages | null>(null);
-  const [lykenImages, setLykenImages] = useState<LykenImages | null>(null);
+  const [lykenMainImages, setLykenMainImages] = useState<LykenMainImages | null>(null);
+  const [lykenCarouselImages, setLykenCarouselImages] = useState<LykenCarouselImages | null>(null);
+  const [lykenSubsectionImages, setLykenSubsectionImages] = useState<LykenSubsectionImages | null>(null);
   const [loadingImages, setLoadingImages] = useState(false);
 
-  // Preload project images on hover (before click)
-  const preloadProjectImages = async (projectId: string) => {
+  // Preload initial project images on hover (before click)
+  const preloadProjectImages = useCallback(async (projectId: string) => {
     switch (projectId) {
       case 'texels':
-        if (!texelsImages) {
-          import('./projectImages/texelsImages');
+        if (!texelsDesignImages) {
+          import('./projectImages/texelsDesignImages');
         }
         break;
       case 'cancer-screening':
-        if (!cancerImages) {
-          import('./projectImages/cancerImages');
+        if (!cancerInitialImages) {
+          import('./projectImages/cancerInitialImages');
         }
         break;
       case 'drug-delivery':
@@ -149,14 +165,14 @@ const WorksSection = () => {
         }
         break;
       case 'lyken':
-        if (!lykenImages) {
-          import('./projectImages/lykenImages');
+        if (!lykenMainImages) {
+          import('./projectImages/lykenMainImages');
         }
         break;
     }
-  };
+  }, [texelsDesignImages, cancerInitialImages, drugImages, lykenMainImages]);
 
-  // Load project images dynamically when project is clicked
+  // Load initial project images when project is clicked
   useEffect(() => {
     const loadProjectImages = async () => {
       if (!activeProject) return;
@@ -166,15 +182,15 @@ const WorksSection = () => {
       try {
         switch (activeProject) {
           case 'texels':
-            if (!texelsImages) {
-              const images = await import('./projectImages/texelsImages');
-              setTexelsImages(images as TexelsImages);
+            if (!texelsDesignImages) {
+              const images = await import('./projectImages/texelsDesignImages');
+              setTexelsDesignImages(images as TexelsDesignImages);
             }
             break;
           case 'cancer-screening':
-            if (!cancerImages) {
-              const images = await import('./projectImages/cancerImages');
-              setCancerImages(images as CancerImages);
+            if (!cancerInitialImages) {
+              const images = await import('./projectImages/cancerInitialImages');
+              setCancerInitialImages(images as CancerInitialImages);
             }
             break;
           case 'drug-delivery':
@@ -184,9 +200,9 @@ const WorksSection = () => {
             }
             break;
           case 'lyken':
-            if (!lykenImages) {
-              const images = await import('./projectImages/lykenImages');
-              setLykenImages(images as LykenImages);
+            if (!lykenMainImages) {
+              const images = await import('./projectImages/lykenMainImages');
+              setLykenMainImages(images as LykenMainImages);
             }
             break;
         }
@@ -198,66 +214,95 @@ const WorksSection = () => {
     };
     
     loadProjectImages();
-  }, [activeProject, texelsImages, cancerImages, drugImages, lykenImages]);
+  }, [activeProject, texelsDesignImages, cancerInitialImages, drugImages, lykenMainImages]);
+
+  // Lazy load subsection images
+  const loadTexelsPrototyping = useCallback(async () => {
+    if (!texelsPrototypingImages) {
+      const images = await import('./projectImages/texelsPrototypingImages');
+      setTexelsPrototypingImages(images as TexelsPrototypingImages);
+    }
+  }, [texelsPrototypingImages]);
+
+  const loadCancerResults = useCallback(async () => {
+    if (!cancerResultsImages) {
+      const images = await import('./projectImages/cancerResultsImages');
+      setCancerResultsImages(images as CancerResultsImages);
+    }
+  }, [cancerResultsImages]);
+
+  const loadLykenCarousels = useCallback(async () => {
+    if (!lykenCarouselImages) {
+      const images = await import('./projectImages/lykenCarouselImages');
+      setLykenCarouselImages(images as LykenCarouselImages);
+    }
+  }, [lykenCarouselImages]);
+
+  const loadLykenSubsections = useCallback(async () => {
+    if (!lykenSubsectionImages) {
+      const images = await import('./projectImages/lykenSubsectionImages');
+      setLykenSubsectionImages(images as LykenSubsectionImages);
+    }
+  }, [lykenSubsectionImages]);
 
   // Auto-cycle through TEXELS map images
   useEffect(() => {
-    if (activeProject === 'texels' && texelsImages) {
+    if (activeProject === 'texels' && texelsDesignImages) {
       const interval = setInterval(() => {
-        setTexelsMapIndex((prev) => (prev + 1) % texelsImages.texelsMapImages.length);
+        setTexelsMapIndex((prev) => (prev + 1) % texelsDesignImages.texelsMapImages.length);
       }, 400);
       return () => clearInterval(interval);
     }
-  }, [activeProject, texelsImages]);
+  }, [activeProject, texelsDesignImages]);
 
   const handleCarouselPrev = () => {
-    if (!lykenImages) return;
-    setCarouselIndex((prev) => (prev - 1 + lykenImages.lykenLookImages.length) % lykenImages.lykenLookImages.length);
+    if (!lykenMainImages) return;
+    setCarouselIndex((prev) => (prev - 1 + lykenMainImages.lykenLookImages.length) % lykenMainImages.lykenLookImages.length);
   };
 
   const handleCarouselNext = () => {
-    if (!lykenImages) return;
-    setCarouselIndex((prev) => (prev + 1) % lykenImages.lykenLookImages.length);
+    if (!lykenMainImages) return;
+    setCarouselIndex((prev) => (prev + 1) % lykenMainImages.lykenLookImages.length);
   };
 
   const handleSketchCarouselPrev = () => {
-    if (!lykenImages) return;
-    setSketchCarouselIndex((prev) => (prev - 1 + lykenImages.lykenSketchImages.length) % lykenImages.lykenSketchImages.length);
+    if (!lykenMainImages) return;
+    setSketchCarouselIndex((prev) => (prev - 1 + lykenMainImages.lykenSketchImages.length) % lykenMainImages.lykenSketchImages.length);
   };
 
   const handleSketchCarouselNext = () => {
-    if (!lykenImages) return;
-    setSketchCarouselIndex((prev) => (prev + 1) % lykenImages.lykenSketchImages.length);
+    if (!lykenMainImages) return;
+    setSketchCarouselIndex((prev) => (prev + 1) % lykenMainImages.lykenSketchImages.length);
   };
 
   const handleDetailCarouselPrev = () => {
-    if (!lykenImages) return;
-    setDetailCarouselIndex((prev) => (prev - 1 + lykenImages.lykenDetailImages.length) % lykenImages.lykenDetailImages.length);
+    if (!lykenCarouselImages) return;
+    setDetailCarouselIndex((prev) => (prev - 1 + lykenCarouselImages.lykenDetailImages.length) % lykenCarouselImages.lykenDetailImages.length);
   };
 
   const handleDetailCarouselNext = () => {
-    if (!lykenImages) return;
-    setDetailCarouselIndex((prev) => (prev + 1) % lykenImages.lykenDetailImages.length);
+    if (!lykenCarouselImages) return;
+    setDetailCarouselIndex((prev) => (prev + 1) % lykenCarouselImages.lykenDetailImages.length);
   };
 
   const handleBodyCarouselPrev = () => {
-    if (!lykenImages) return;
-    setBodyCarouselIndex((prev) => (prev - 1 + lykenImages.lykenBodyImages.length) % lykenImages.lykenBodyImages.length);
+    if (!lykenCarouselImages) return;
+    setBodyCarouselIndex((prev) => (prev - 1 + lykenCarouselImages.lykenBodyImages.length) % lykenCarouselImages.lykenBodyImages.length);
   };
 
   const handleBodyCarouselNext = () => {
-    if (!lykenImages) return;
-    setBodyCarouselIndex((prev) => (prev + 1) % lykenImages.lykenBodyImages.length);
+    if (!lykenCarouselImages) return;
+    setBodyCarouselIndex((prev) => (prev + 1) % lykenCarouselImages.lykenBodyImages.length);
   };
 
   const handleHemCarouselPrev = () => {
-    if (!lykenImages) return;
-    setHemCarouselIndex((prev) => (prev - 1 + lykenImages.lykenHemImages.length) % lykenImages.lykenHemImages.length);
+    if (!lykenCarouselImages) return;
+    setHemCarouselIndex((prev) => (prev - 1 + lykenCarouselImages.lykenHemImages.length) % lykenCarouselImages.lykenHemImages.length);
   };
 
   const handleHemCarouselNext = () => {
-    if (!lykenImages) return;
-    setHemCarouselIndex((prev) => (prev + 1) % lykenImages.lykenHemImages.length);
+    if (!lykenCarouselImages) return;
+    setHemCarouselIndex((prev) => (prev + 1) % lykenCarouselImages.lykenHemImages.length);
   };
 
   const handleProjectClick = (projectId: string) => {
@@ -362,7 +407,7 @@ const WorksSection = () => {
                   {loadingImages && <ProjectSkeleton />}
                   
                   {/* TEXELS Design Content */}
-                  {activeProject === 'texels' && texelsImages && !loadingImages && (
+                  {activeProject === 'texels' && texelsDesignImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Design</h3>
                       <div className="mt-4 flex gap-4 items-stretch">
@@ -370,7 +415,7 @@ const WorksSection = () => {
                         <div className="w-[35%] relative flex flex-col">
                           <div className="flex-1 flex items-center">
                             <img
-                              src={texelsImages.texelsMapImages[texelsMapIndex]}
+                              src={texelsDesignImages.texelsMapImages[texelsMapIndex]}
                               alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
                               className="w-full h-full object-contain"
                               loading="lazy"
@@ -391,15 +436,15 @@ const WorksSection = () => {
                         <div className="w-[65%] flex flex-col gap-2">
                           {/* Top row - 3 paper images */}
                           <div className="flex gap-2">
-                            <img src={texelsImages.TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={texelsImages.TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={texelsImages.TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsDesignImages.TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsDesignImages.TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsDesignImages.TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
                           </div>
                           {/* Bottom row - 3 fabric images */}
                           <div className="flex gap-2">
-                            <img src={texelsImages.TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={texelsImages.TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={texelsImages.TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsDesignImages.TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsDesignImages.TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsDesignImages.TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
                           </div>
                         </div>
                       </div>
@@ -409,54 +454,66 @@ const WorksSection = () => {
                       
                       {/* Circuit images section */}
                       <div className="mt-6 flex justify-center">
-                        <img src={texelsImages.TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" loading="lazy" />
+                        <img src={texelsDesignImages.TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" loading="lazy" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
                       </p>
-                      <img src={texelsImages.TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" loading="lazy" />
+                      <img src={texelsDesignImages.TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" loading="lazy" />
                       
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
-                      
-                      <div className="mt-4 flex gap-4">
-                        {/* Video on left */}
-                        <div className="w-1/2">
-                          <video 
-                            src="/videos/TexelsPrototyping.mp4" 
-                            autoPlay 
-                            loop 
-                            muted 
-                            playsInline
-                            preload="none"
-                            className="w-full object-contain"
-                          />
-                        </div>
-                        
-                        {/* Right column with image and paragraph */}
-                        <div className="w-1/2 flex flex-col">
-                          <img 
-                            src={texelsImages.TexelsPrototyping1} 
-                            alt="Fabric with shape memory wire connections" 
-                            className="w-full object-contain"
-                            loading="lazy"
-                          />
-                          <p className="font-body text-foreground/70 text-sm leading-relaxed text-justify py-2">
-                            I performed the proper calculations to select components that would bring the theoretical circuit into reality on a small scale while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
-                          </p>
-                        </div>
-                      </div>
-                      
-                      <img 
-                        src={texelsImages.TexelsPrototyping2} 
-                        alt="Annotated diagram of circuit components integrated into fabric" 
-                        className="mt-4 w-full object-contain"
-                        loading="lazy"
-                      />
-                      
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I am now integrating the software of the device through a microcontroller and several shift registers acting as the row and gate drivers. I will create a simple graphical user interface for people to input the patterns they would like to see the fabric conform to. Then, I will conduct interviews with people in different fields to understand the fabric's usability in varying use cases.
-                      </p>
+                      {/* Prototyping Section - Lazy loaded */}
+                      <LazySectionWrapper onVisible={loadTexelsPrototyping}>
+                        {texelsPrototypingImages ? (
+                          <>
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
+                            
+                            <div className="mt-4 flex gap-4">
+                              {/* Video on left */}
+                              <div className="w-1/2">
+                                <video 
+                                  src="/videos/TexelsPrototyping.mp4" 
+                                  autoPlay 
+                                  loop 
+                                  muted 
+                                  playsInline
+                                  preload="none"
+                                  className="w-full object-contain"
+                                />
+                              </div>
+                              
+                              {/* Right column with image and paragraph */}
+                              <div className="w-1/2 flex flex-col">
+                                <img 
+                                  src={texelsPrototypingImages.TexelsPrototyping1} 
+                                  alt="Fabric with shape memory wire connections" 
+                                  className="w-full object-contain"
+                                  loading="lazy"
+                                />
+                                <p className="font-body text-foreground/70 text-sm leading-relaxed text-justify py-2">
+                                  I performed the proper calculations to select components that would bring the theoretical circuit into reality on a small scale while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
+                                </p>
+                              </div>
+                            </div>
+                            
+                            <img 
+                              src={texelsPrototypingImages.TexelsPrototyping2} 
+                              alt="Annotated diagram of circuit components integrated into fabric" 
+                              className="mt-4 w-full object-contain"
+                              loading="lazy"
+                            />
+                            
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                              I am now integrating the software of the device through a microcontroller and several shift registers acting as the row and gate drivers. I will create a simple graphical user interface for people to input the patterns they would like to see the fabric conform to. Then, I will conduct interviews with people in different fields to understand the fabric's usability in varying use cases.
+                            </p>
+                          </>
+                        ) : (
+                          <div className="space-y-4 mt-8">
+                            <Skeleton className="h-6 w-32 mx-auto" />
+                            <Skeleton className="h-48 w-full" />
+                          </div>
+                        )}
+                      </LazySectionWrapper>
                     </>
                   )}
                   
@@ -529,182 +586,196 @@ const WorksSection = () => {
                   )}
                   
                   {/* Cancer Screening Content */}
-                  {activeProjectData.hasSchematic && cancerImages && !loadingImages && (
+                  {activeProjectData.hasSchematic && cancerInitialImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
                       <div className="mt-4 flex items-start gap-2">
                         {/* Schematic Image */}
                         <div className="w-[66%]">
                           <img 
-                            src={cancerImages.ExpSchematic} 
+                            src={cancerInitialImages.ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
                             className="w-full h-auto"
                             loading="lazy"
                           />
                         </div>
                         
-                        {/* STL Models Column */}
-                        <div className="flex flex-col gap-0 -mt-4">
-                          <Suspense fallback={<div className="w-36 h-36 bg-muted/20 animate-pulse" />}>
-                            {stlModels.map((model, index) => (
-                              <STLModel 
-                                key={index} 
-                                url={model.url} 
-                                scale={0.035} 
-                                label={model.label}
-                              />
-                            ))}
-                          </Suspense>
-                        </div>
+                        {/* STL Models Column - Lazy loaded */}
+                        <LazySTLModels models={stlModels} />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         The test was performed on a phantom breast with a known tumor inside. I used a z-axis manipulator to control the motion of the probe precisely, and 3D printed attachments that would affix each probe to it. The phantom breast was placed on a laser cut acrylic stage bolted into a 3D printed ball-and-socket joint, which was then screwed into a digital force sensor that was clamped to the table. The ball-and-socket joint allowed the stage to be angled such that the tumor was exactly in line with the axis of motion of the probe. Two screws, when tightened, made the entire stage rigid such that all force from the probe was transferred to the force sensor without dissipating or converting. I verified accuracy with known weights.
                       </p>
                       
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Data Collection</h3>
-                      <div className="mt-4 flex items-center justify-center gap-4">
-                        <img 
-                          src={cancerImages.HandheldProbeAnimated} 
-                          alt="Handheld probe data collection animation"
-                          className="h-64 w-auto object-contain"
-                          loading="lazy"
-                        />
-                        <img 
-                          src={cancerImages.NovelProbeAnimated} 
-                          alt="Novel probe data collection animation"
-                          className="h-64 w-auto object-contain"
-                          loading="lazy"
-                        />
-                      </div>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I screen recorded the process of collecting data for each probe. I placed acoustic gel over the tumor, then lowered the probes incrementally from 0 to 11 N of force. To make a fair comparison between the probes, I flattened the 3D data from our novel probe onto a 2D plane, conserving the highest value out of the depth for each point.
-                      </p>
-                      
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
-                      
-                      <img 
-                        src={cancerImages.DeformationFigure} 
-                        alt="Tumor deformation comparison between linear array and wearable 4D system"
-                        className="mt-4 w-full max-w-4xl mx-auto h-auto"
-                        loading="lazy"
-                      />
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
-                        To visualize which system was more prone to causing tumor deformation, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
-                      </p>
-                      
-                      <img 
-                        src={cancerImages.PressureFigure} 
-                        alt="Image quality over increasing applied pressure comparison"
-                        className="mt-6 w-full max-w-4xl mx-auto h-auto"
-                        loading="lazy"
-                      />
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
-                        To assess image quality, I used Contrast-to-Noise Ratio (CNR). This would effectively communicate how distinguishable the tumor is from regular tissue. I modified a CNR calculator by Shrihari Viswanath so that a user could choose between manually selecting target and background regions for each photo or using the same regions for every image in a series. I also made it so that the results would be sent directly to a csv format for easier post-processing. This allowed me to graph quality over applied pressure.
-                      </p>
+                      {/* Data Collection and Results - Lazy loaded */}
+                      <LazySectionWrapper onVisible={loadCancerResults}>
+                        {cancerResultsImages ? (
+                          <>
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Data Collection</h3>
+                            <div className="mt-4 flex items-center justify-center gap-4">
+                              <img 
+                                src={cancerResultsImages.HandheldProbeAnimated} 
+                                alt="Handheld probe data collection animation"
+                                className="h-64 w-auto object-contain"
+                                loading="lazy"
+                              />
+                              <img 
+                                src={cancerResultsImages.NovelProbeAnimated} 
+                                alt="Novel probe data collection animation"
+                                className="h-64 w-auto object-contain"
+                                loading="lazy"
+                              />
+                            </div>
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                              I screen recorded the process of collecting data for each probe. I placed acoustic gel over the tumor, then lowered the probes incrementally from 0 to 11 N of force. To make a fair comparison between the probes, I flattened the 3D data from our novel probe onto a 2D plane, conserving the highest value out of the depth for each point.
+                            </p>
+                            
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
+                            
+                            <img 
+                              src={cancerResultsImages.DeformationFigure} 
+                              alt="Tumor deformation comparison between linear array and wearable 4D system"
+                              className="mt-4 w-full max-w-4xl mx-auto h-auto"
+                              loading="lazy"
+                            />
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
+                              To visualize which system was more prone to causing tumor deformation, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
+                            </p>
+                            
+                            <img 
+                              src={cancerResultsImages.PressureFigure} 
+                              alt="Image quality over increasing applied pressure comparison"
+                              className="mt-6 w-full max-w-4xl mx-auto h-auto"
+                              loading="lazy"
+                            />
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
+                              To assess image quality, I used Contrast-to-Noise Ratio (CNR). This would effectively communicate how distinguishable the tumor is from regular tissue. I modified a CNR calculator by Shrihari Viswanath so that a user could choose between manually selecting target and background regions for each photo or using the same regions for every image in a series. I also made it so that the results would be sent directly to a csv format for easier post-processing. This allowed me to graph quality over applied pressure.
+                            </p>
+                          </>
+                        ) : (
+                          <div className="space-y-4 mt-8">
+                            <Skeleton className="h-6 w-32 mx-auto" />
+                            <Skeleton className="h-64 w-full" />
+                          </div>
+                        )}
+                      </LazySectionWrapper>
                     </>
                   )}
                   
                   {/* Lyken Content */}
-                  {activeProject === 'lyken' && lykenImages && !loadingImages && (
+                  {activeProject === 'lyken' && lykenMainImages && !loadingImages && (
                     <>
                       <div className="mb-6" />
                       <div className="flex gap-8">
-                        {/* Left side - All Carousels (50% width) */}
+                        {/* Left side - Main Carousels (50% width) */}
                         <div className="w-1/2 flex flex-col gap-4">
                           {/* First Carousel - Looks */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenLookImages[(carouselIndex - 1 + lykenImages.lykenLookImages.length) % lykenImages.lykenLookImages.length]} alt="Previous look" className="max-h-[80px] object-contain" loading="lazy" />
+                              <img src={lykenMainImages.lykenLookImages[(carouselIndex - 1 + lykenMainImages.lykenLookImages.length) % lykenMainImages.lykenLookImages.length]} alt="Previous look" className="max-h-[80px] object-contain" loading="lazy" />
                             </div>
                             <button onClick={handleCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={carouselIndex} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages.lykenLookImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" loading="lazy" />
+                              <img src={lykenMainImages.lykenLookImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" loading="lazy" />
                             </motion.div>
                             <button onClick={handleCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenLookImages[(carouselIndex + 1) % lykenImages.lykenLookImages.length]} alt="Next look" className="max-h-[80px] object-contain" loading="lazy" />
+                              <img src={lykenMainImages.lykenLookImages[(carouselIndex + 1) % lykenMainImages.lykenLookImages.length]} alt="Next look" className="max-h-[80px] object-contain" loading="lazy" />
                             </div>
                           </div>
                           
                           {/* Second Carousel - Sketches */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenSketchImages[(sketchCarouselIndex - 1 + lykenImages.lykenSketchImages.length) % lykenImages.lykenSketchImages.length]} alt="Previous sketch" className="max-h-[80px] object-contain" />
+                              <img src={lykenMainImages.lykenSketchImages[(sketchCarouselIndex - 1 + lykenMainImages.lykenSketchImages.length) % lykenMainImages.lykenSketchImages.length]} alt="Previous sketch" className="max-h-[80px] object-contain" />
                             </div>
                             <button onClick={handleSketchCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`sketch-${sketchCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages.lykenSketchImages[sketchCarouselIndex]} alt={`Sketch ${sketchCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                              <img src={lykenMainImages.lykenSketchImages[sketchCarouselIndex]} alt={`Sketch ${sketchCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
                             <button onClick={handleSketchCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenSketchImages[(sketchCarouselIndex + 1) % lykenImages.lykenSketchImages.length]} alt="Next sketch" className="max-h-[80px] object-contain" />
+                              <img src={lykenMainImages.lykenSketchImages[(sketchCarouselIndex + 1) % lykenMainImages.lykenSketchImages.length]} alt="Next sketch" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
-                          {/* Third Carousel - Details */}
-                          <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenDetailImages[(detailCarouselIndex - 1 + lykenImages.lykenDetailImages.length) % lykenImages.lykenDetailImages.length]} alt="Previous detail" className="max-h-[80px] object-contain" />
-                            </div>
-                            <button onClick={handleDetailCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
-                              <ChevronLeft className="w-3 h-3" />
-                            </button>
-                            <motion.div key={`detail-${detailCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages.lykenDetailImages[detailCarouselIndex]} alt={`Detail ${detailCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
-                            </motion.div>
-                            <button onClick={handleDetailCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
-                              <ChevronRight className="w-3 h-3" />
-                            </button>
-                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenDetailImages[(detailCarouselIndex + 1) % lykenImages.lykenDetailImages.length]} alt="Next detail" className="max-h-[80px] object-contain" />
-                            </div>
-                          </div>
-                          
-                          {/* Fourth Carousel - Body */}
-                          <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenBodyImages[(bodyCarouselIndex - 1 + lykenImages.lykenBodyImages.length) % lykenImages.lykenBodyImages.length]} alt="Previous body" className="max-h-[80px] object-contain" />
-                            </div>
-                            <button onClick={handleBodyCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
-                              <ChevronLeft className="w-3 h-3" />
-                            </button>
-                            <motion.div key={`body-${bodyCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages.lykenBodyImages[bodyCarouselIndex]} alt={`Body ${bodyCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
-                            </motion.div>
-                            <button onClick={handleBodyCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
-                              <ChevronRight className="w-3 h-3" />
-                            </button>
-                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenBodyImages[(bodyCarouselIndex + 1) % lykenImages.lykenBodyImages.length]} alt="Next body" className="max-h-[80px] object-contain" />
-                            </div>
-                          </div>
-                          
-                          {/* Fifth Carousel - Hem */}
-                          <div className="relative flex items-center justify-center h-[100px]">
-                            <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenHemImages[(hemCarouselIndex - 1 + lykenImages.lykenHemImages.length) % lykenImages.lykenHemImages.length]} alt="Previous hem" className="max-h-[80px] object-contain" />
-                            </div>
-                            <button onClick={handleHemCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
-                              <ChevronLeft className="w-3 h-3" />
-                            </button>
-                            <motion.div key={`hem-${hemCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages.lykenHemImages[hemCarouselIndex]} alt={`Hem ${hemCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
-                            </motion.div>
-                            <button onClick={handleHemCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
-                              <ChevronRight className="w-3 h-3" />
-                            </button>
-                            <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages.lykenHemImages[(hemCarouselIndex + 1) % lykenImages.lykenHemImages.length]} alt="Next hem" className="max-h-[80px] object-contain" />
-                            </div>
-                          </div>
+                          {/* Detail/Body/Hem Carousels - Lazy loaded */}
+                          <LazySectionWrapper onVisible={loadLykenCarousels}>
+                            {lykenCarouselImages ? (
+                              <>
+                                {/* Third Carousel - Details */}
+                                <div className="relative flex items-center justify-center h-[100px]">
+                                  <div className="absolute left-[5%] z-0 opacity-30 scale-75">
+                                    <img src={lykenCarouselImages.lykenDetailImages[(detailCarouselIndex - 1 + lykenCarouselImages.lykenDetailImages.length) % lykenCarouselImages.lykenDetailImages.length]} alt="Previous detail" className="max-h-[80px] object-contain" />
+                                  </div>
+                                  <button onClick={handleDetailCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                                    <ChevronLeft className="w-3 h-3" />
+                                  </button>
+                                  <motion.div key={`detail-${detailCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
+                                    <img src={lykenCarouselImages.lykenDetailImages[detailCarouselIndex]} alt={`Detail ${detailCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                                  </motion.div>
+                                  <button onClick={handleDetailCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                                    <ChevronRight className="w-3 h-3" />
+                                  </button>
+                                  <div className="absolute right-[5%] z-0 opacity-30 scale-75">
+                                    <img src={lykenCarouselImages.lykenDetailImages[(detailCarouselIndex + 1) % lykenCarouselImages.lykenDetailImages.length]} alt="Next detail" className="max-h-[80px] object-contain" />
+                                  </div>
+                                </div>
+                                
+                                {/* Fourth Carousel - Body */}
+                                <div className="relative flex items-center justify-center h-[100px]">
+                                  <div className="absolute left-[5%] z-0 opacity-30 scale-75">
+                                    <img src={lykenCarouselImages.lykenBodyImages[(bodyCarouselIndex - 1 + lykenCarouselImages.lykenBodyImages.length) % lykenCarouselImages.lykenBodyImages.length]} alt="Previous body" className="max-h-[80px] object-contain" />
+                                  </div>
+                                  <button onClick={handleBodyCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                                    <ChevronLeft className="w-3 h-3" />
+                                  </button>
+                                  <motion.div key={`body-${bodyCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
+                                    <img src={lykenCarouselImages.lykenBodyImages[bodyCarouselIndex]} alt={`Body ${bodyCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                                  </motion.div>
+                                  <button onClick={handleBodyCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                                    <ChevronRight className="w-3 h-3" />
+                                  </button>
+                                  <div className="absolute right-[5%] z-0 opacity-30 scale-75">
+                                    <img src={lykenCarouselImages.lykenBodyImages[(bodyCarouselIndex + 1) % lykenCarouselImages.lykenBodyImages.length]} alt="Next body" className="max-h-[80px] object-contain" />
+                                  </div>
+                                </div>
+                                
+                                {/* Fifth Carousel - Hem */}
+                                <div className="relative flex items-center justify-center h-[100px]">
+                                  <div className="absolute left-[5%] z-0 opacity-30 scale-75">
+                                    <img src={lykenCarouselImages.lykenHemImages[(hemCarouselIndex - 1 + lykenCarouselImages.lykenHemImages.length) % lykenCarouselImages.lykenHemImages.length]} alt="Previous hem" className="max-h-[80px] object-contain" />
+                                  </div>
+                                  <button onClick={handleHemCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                                    <ChevronLeft className="w-3 h-3" />
+                                  </button>
+                                  <motion.div key={`hem-${hemCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
+                                    <img src={lykenCarouselImages.lykenHemImages[hemCarouselIndex]} alt={`Hem ${hemCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                                  </motion.div>
+                                  <button onClick={handleHemCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
+                                    <ChevronRight className="w-3 h-3" />
+                                  </button>
+                                  <div className="absolute right-[5%] z-0 opacity-30 scale-75">
+                                    <img src={lykenCarouselImages.lykenHemImages[(hemCarouselIndex + 1) % lykenCarouselImages.lykenHemImages.length]} alt="Next hem" className="max-h-[80px] object-contain" />
+                                  </div>
+                                </div>
+                              </>
+                            ) : (
+                              <div className="space-y-4">
+                                <Skeleton className="h-[100px] w-full" />
+                                <Skeleton className="h-[100px] w-full" />
+                                <Skeleton className="h-[100px] w-full" />
+                              </div>
+                            )}
+                          </LazySectionWrapper>
                         </div>
                         
                         {/* Right side - Paragraph + Still Image (50% width) */}
@@ -712,56 +783,68 @@ const WorksSection = () => {
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                             Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on cultural signifiers that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
-                          <img src={lykenImages.LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
+                          <img src={lykenMainImages.LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
                         </div>
                       </div>
                       
-                      {/* Petal Jewelry Section */}
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Petal Jewelry</h3>
-                      <div className="mt-4 flex gap-4 justify-center">
-                        <img src={lykenImages.PetalJewelry1} alt="Fallen flower petals collection" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.PetalJewelry2} alt="Clay made from flower petals - hibiscus, yucca, king's mantle" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.PetalJewelry3} alt="Finished petal clay beads" className="max-h-[200px] object-contain" />
-                      </div>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I used fallen petals of native flowers to create clay beads. I mimicked traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
-                      </p>
-                      
-                      {/* Vegan Leather Section */}
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Vegan Leather with Petals</h3>
-                      <div className="mt-4 flex gap-4 justify-center">
-                        <img src={lykenImages.VeganLeather1} alt="Hibiscus petals for vegan leather" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.VeganLeather2} alt="Petals encapsulated in kombucha leather" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.VeganLeather3} alt="Finished vegan leather arm bands" className="max-h-[200px] object-contain" />
-                      </div>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I experimented with ways to effectively encapsulate flower petals between layers of natural kombucha leather to create arm bands.
-                      </p>
-                      
-                      {/* Root as Textile Section */}
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Root as Textile</h3>
-                      <div className="mt-4 flex gap-4 justify-center">
-                        <img src={lykenImages.RootTextile1} alt="Root mat growing process" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.RootTextile2} alt="Root textile on dress form" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.RootTextile3} alt="Needle lace with roots" className="max-h-[200px] object-contain" />
-                        <img src={lykenImages.RootTextile4} alt="Attaching root textile to form" className="max-h-[200px] object-contain" />
-                      </div>
-                      <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I grew various rounds of root mats to create "woven" sheets. I learned needle lace to integrate the roots into a stronger textile structure that could mimic their visual characteristics.
-                      </p>
-                      
-                      {/* Result Section */}
-                      <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Result</h3>
-                      <div className="mt-4 flex gap-8 items-center">
-                        <div className="w-1/2 flex items-center justify-center">
-                          <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                            I selected my strongest roots and combined every prior technique into the final look. This look was part of a mini-collection with five other designers each addressing their own visions of environmentalist futures. I co-directed the team with Isabella Chiappini.
-                          </p>
-                        </div>
-                        <div className="w-1/2 flex justify-center">
-                          <img src={lykenImages.LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
-                        </div>
-                      </div>
+                      {/* Subsections - Lazy loaded */}
+                      <LazySectionWrapper onVisible={loadLykenSubsections}>
+                        {lykenSubsectionImages ? (
+                          <>
+                            {/* Petal Jewelry Section */}
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Petal Jewelry</h3>
+                            <div className="mt-4 flex gap-4 justify-center">
+                              <img src={lykenSubsectionImages.PetalJewelry1} alt="Fallen flower petals collection" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.PetalJewelry2} alt="Clay made from flower petals - hibiscus, yucca, king's mantle" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.PetalJewelry3} alt="Finished petal clay beads" className="max-h-[200px] object-contain" />
+                            </div>
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                              I used fallen petals of native flowers to create clay beads. I mimicked traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
+                            </p>
+                            
+                            {/* Vegan Leather Section */}
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Vegan Leather with Petals</h3>
+                            <div className="mt-4 flex gap-4 justify-center">
+                              <img src={lykenSubsectionImages.VeganLeather1} alt="Hibiscus petals for vegan leather" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.VeganLeather2} alt="Petals encapsulated in kombucha leather" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.VeganLeather3} alt="Finished vegan leather arm bands" className="max-h-[200px] object-contain" />
+                            </div>
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                              I experimented with ways to effectively encapsulate flower petals between layers of natural kombucha leather to create arm bands.
+                            </p>
+                            
+                            {/* Root as Textile Section */}
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Root as Textile</h3>
+                            <div className="mt-4 flex gap-4 justify-center">
+                              <img src={lykenSubsectionImages.RootTextile1} alt="Root mat growing process" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.RootTextile2} alt="Root textile on dress form" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.RootTextile3} alt="Needle lace with roots" className="max-h-[200px] object-contain" />
+                              <img src={lykenSubsectionImages.RootTextile4} alt="Attaching root textile to form" className="max-h-[200px] object-contain" />
+                            </div>
+                            <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                              I grew various rounds of root mats to create "woven" sheets. I learned needle lace to integrate the roots into a stronger textile structure that could mimic their visual characteristics.
+                            </p>
+                            
+                            {/* Result Section */}
+                            <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Result</h3>
+                            <div className="mt-4 flex gap-8 items-center">
+                              <div className="w-1/2 flex items-center justify-center">
+                                <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
+                                  I selected my strongest roots and combined every prior technique into the final look. This look was part of a mini-collection with five other designers each addressing their own visions of environmentalist futures. I co-directed the team with Isabella Chiappini.
+                                </p>
+                              </div>
+                              <div className="w-1/2 flex justify-center">
+                                <img src={lykenSubsectionImages.LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="space-y-4 mt-8">
+                            <Skeleton className="h-6 w-32 mx-auto" />
+                            <Skeleton className="h-48 w-full" />
+                          </div>
+                        )}
+                      </LazySectionWrapper>
                     </>
                   )}
                 </div>
