@@ -245,7 +245,7 @@ const PresentationsSection = () => {
               {/* Left arrow */}
               <button
                 onClick={handlePrev}
-                className="absolute left-0 z-20 p-2 text-foreground/60 hover:text-foreground transition-colors"
+                className="absolute left-[5%] z-20 p-2 text-primary hover:text-primary/70 transition-colors"
                 disabled={isVideoPlaying}
               >
                 <ChevronLeft className="w-8 h-8" />
@@ -276,7 +276,7 @@ const PresentationsSection = () => {
               {/* Right arrow */}
               <button
                 onClick={handleNext}
-                className="absolute right-0 z-20 p-2 text-foreground/60 hover:text-foreground transition-colors"
+                className="absolute right-[5%] z-20 p-2 text-primary hover:text-primary/70 transition-colors"
                 disabled={isVideoPlaying}
               >
                 <ChevronRight className="w-8 h-8" />
