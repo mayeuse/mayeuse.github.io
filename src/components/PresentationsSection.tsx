@@ -321,7 +321,7 @@ const PresentationsSection = () => {
           {/* Progress slider bar */}
           <div 
             ref={sliderRef}
-            className="w-[50%] ml-[35%] h-2 bg-foreground/10 rounded-full relative select-none"
+            className="w-[50%] ml-[35%] h-2 rounded-full relative select-none"
             onClick={handleSliderClick}
             onMouseDown={handleSliderMouseDown}
             onMouseMove={handleSliderMouseMove}
@@ -329,6 +329,17 @@ const PresentationsSection = () => {
             onMouseLeave={handleSliderMouseUp}
             style={{ cursor: isDragging ? 'grabbing' : 'pointer' }}
           >
+            {/* Track background */}
+            <div className="absolute inset-0 bg-foreground/10 rounded-full" />
+            {/* Green progress bar before circle */}
+            <motion.div
+              className="absolute top-0 left-0 h-full bg-primary rounded-full"
+              animate={{
+                width: `calc(${(activeIndex / (mediaItems.length - 1)) * 100}%)`,
+              }}
+              transition={{ duration: isDragging ? 0 : 0.2, ease: 'easeOut' }}
+            />
+            {/* Circle indicator */}
             <motion.div
               className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-md"
               animate={{

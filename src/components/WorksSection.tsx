@@ -130,6 +130,32 @@ const WorksSection = () => {
   const [lykenImages, setLykenImages] = useState<LykenImages | null>(null);
   const [loadingImages, setLoadingImages] = useState(false);
 
+  // Preload project images on hover (before click)
+  const preloadProjectImages = async (projectId: string) => {
+    switch (projectId) {
+      case 'texels':
+        if (!texelsImages) {
+          import('./projectImages/texelsImages');
+        }
+        break;
+      case 'cancer-screening':
+        if (!cancerImages) {
+          import('./projectImages/cancerImages');
+        }
+        break;
+      case 'drug-delivery':
+        if (!drugImages) {
+          import('./projectImages/drugDeliveryImages');
+        }
+        break;
+      case 'lyken':
+        if (!lykenImages) {
+          import('./projectImages/lykenImages');
+        }
+        break;
+    }
+  };
+
   // Load project images dynamically when project is clicked
   useEffect(() => {
     const loadProjectImages = async () => {
@@ -284,7 +310,10 @@ const WorksSection = () => {
             <div
               key={project.id}
               className="cursor-pointer group"
-              onMouseEnter={() => setHoveredProject(project.id)}
+              onMouseEnter={() => {
+                setHoveredProject(project.id);
+                preloadProjectImages(project.id);
+              }}
               onMouseLeave={() => setHoveredProject(null)}
               onClick={() => handleProjectClick(project.id)}
             >
