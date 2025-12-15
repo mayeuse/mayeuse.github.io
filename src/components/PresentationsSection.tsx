@@ -105,7 +105,7 @@ const PresentationsSection = () => {
         return (
           <div className={containerClass}>
             <div 
-              className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full max-h-[320px]"}
+              className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full max-h-[320px] lg:max-h-[380px] xl:max-h-[430px]"}
               style={!isExpanded ? { aspectRatio: pdfAspect } : undefined}
             >
               <iframe
@@ -223,11 +223,11 @@ const PresentationsSection = () => {
 
   return (
     <>
-      <section id="presentations" className="min-h-screen flex items-center justify-center px-[5%] relative z-10">
-        <div className="flex flex-col items-center gap-6 w-full max-w-6xl">
+      <section id="presentations" className="min-h-screen flex items-center justify-center px-[3%] lg:px-[5%] relative z-10">
+        <div className="flex flex-col items-center gap-6 w-full max-w-6xl lg:max-w-7xl xl:max-w-[90%] 2xl:max-w-[85%]">
           <div className="flex items-center gap-8 w-full">
             {/* Left side - Presentation list */}
-            <ul className="flex flex-col gap-3 items-start w-[35%]">
+            <ul className="flex flex-col gap-3 items-start w-[35%] lg:w-[30%] xl:w-[25%]">
               {presentations.map((presentation, index) => (
                 <li key={index}>
                   <button
@@ -245,9 +245,9 @@ const PresentationsSection = () => {
             </ul>
 
             {/* Center - 3D Carousel with arrows below */}
-            <div className="flex flex-col items-center w-[50%]">
+            <div className="flex flex-col items-center w-[50%] lg:w-[60%] xl:w-[65%]">
               <div 
-                className="relative flex items-center justify-center w-full h-[400px]"
+                className="relative flex items-center justify-center w-full h-[400px] lg:h-[450px] xl:h-[500px]"
                 style={{ perspective: '1000px' }}
               >
                 {visibleIndices.map((index) => {
@@ -261,7 +261,7 @@ const PresentationsSection = () => {
                         opacity: style.opacity,
                       }}
                       transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="absolute w-[80%] h-[350px] flex items-center justify-center"
+                      className="absolute w-[80%] lg:w-[85%] h-[350px] lg:h-[400px] xl:h-[450px] flex items-center justify-center"
                       style={{ 
                         zIndex: style.z,
                         transformStyle: 'preserve-3d',
