@@ -1,6 +1,6 @@
 import { useRef, useState, memo, useEffect } from 'react';
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Center, useGLTF } from '@react-three/drei';
+import { OrbitControls, useGLTF } from '@react-three/drei';
 import * as THREE from 'three';
 import { Move3d } from 'lucide-react';
 
@@ -14,19 +14,23 @@ const Model = memo(({ url, isInteracting, isProbeHead }: ModelProps) => {
   const { scene } = useGLTF(url);
   const groupRef = useRef<THREE.Group>(null);
   const { camera } = useThree();
+  const [offset, setOffset] = useState<THREE.Vector3>(new THREE.Vector3());
 
   useEffect(() => {
-    if (groupRef.current) {
-      // Compute bounding box to auto-fit the model
-      const box = new THREE.Box3().setFromObject(groupRef.current);
-      const size = box.getSize(new THREE.Vector3());
-      const maxDim = Math.max(size.x, size.y, size.z);
-      
-      // Adjust camera distance based on model size
-      const fitDistance = isProbeHead ? maxDim * 2 : maxDim * 1.5;
-      camera.position.set(0, 0, fitDistance);
-      camera.updateProjectionMatrix();
-    }
+    // Clone the scene and compute its bounding box to find the center offset
+    const clonedScene = scene.clone();
+    const box = new THREE.Box3().setFromObject(clonedScene);
+    const center = box.getCenter(new THREE.Vector3());
+    const size = box.getSize(new THREE.Vector3());
+    const maxDim = Math.max(size.x, size.y, size.z);
+    
+    // Store the offset to translate the model so its center is at origin
+    setOffset(center.negate());
+    
+    // Adjust camera distance based on model size
+    const fitDistance = isProbeHead ? maxDim * 2.5 : maxDim * 1.5;
+    camera.position.set(0, 0, fitDistance);
+    camera.updateProjectionMatrix();
   }, [scene, camera, isProbeHead]);
 
   useFrame((_, delta) => {
@@ -36,13 +40,13 @@ const Model = memo(({ url, isInteracting, isProbeHead }: ModelProps) => {
   });
 
   return (
-    <Center>
-      <group rotation={[0, 0, -Math.PI / 2]}>
-        <group ref={groupRef}>
+    <group rotation={[0, 0, -Math.PI / 2]}>
+      <group ref={groupRef}>
+        <group position={[offset.x, offset.y, offset.z]}>
           <primitive object={scene.clone()} />
         </group>
       </group>
-    </Center>
+    </group>
   );
 });
 
