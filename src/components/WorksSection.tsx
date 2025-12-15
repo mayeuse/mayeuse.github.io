@@ -6,15 +6,20 @@ import LazySectionWrapper from './LazySectionWrapper';
 import LazySTLModels from './LazySTLModels';
 
 // Only import thumbnails initially - project images load on demand
-import TexelsThumbnail from '@/assets/TexelsThumbnail.png';
-import CancerScreeningThumbnail from '@/assets/CancerScreeningThumbnail.png';
-import DrugDeliveryThumbnail from '@/assets/DrugDeliveryThumbnail.png';
-import LykenThumbnail from '@/assets/LykenThumbnail.png';
+import TexelsThumb1 from '@/assets/TexelsThumb1.png';
+import TexelsThumb2 from '@/assets/TexelsThumb2.png';
+import CancerThumb1 from '@/assets/CancerThumb1.png';
+import CancerThumb2 from '@/assets/CancerThumb2.png';
+import DrugThumb1 from '@/assets/DrugThumb1.png';
+import DrugThumb2 from '@/assets/DrugThumb2.png';
+import LykenThumb1 from '@/assets/LykenThumb1.png';
+import LykenThumb2 from '@/assets/LykenThumb2.png';
 
 interface Project {
   id: string;
   title: string;
-  thumbnail: string;
+  thumbnailPrimary: string;
+  thumbnailSecondary: string;
   displayTitle?: string;
   subtitle?: string;
   hasSchematic?: boolean;
@@ -24,7 +29,8 @@ const projects: Project[] = [
   { 
     id: 'texels', 
     title: 'TEXELS', 
-    thumbnail: TexelsThumbnail,
+    thumbnailPrimary: TexelsThumb1,
+    thumbnailSecondary: TexelsThumb2,
     displayTitle: 'Can I design a textile that replicates any texture you give it?',
     subtitle: 'For my honors undergraduate thesis, I am prototyping a fabric that can smock itself into a variety of programmable texture patterns.',
     hasSchematic: false
@@ -32,7 +38,8 @@ const projects: Project[] = [
   { 
     id: 'cancer-screening', 
     title: 'CANCER SCREENING', 
-    thumbnail: CancerScreeningThumbnail,
+    thumbnailPrimary: CancerThumb1,
+    thumbnailSecondary: CancerThumb2,
     displayTitle: 'Can a novel probe by the Conformable Decoders detect tumors with less pressure?',
     subtitle: 'I built a testing system to compare a new ultrasound probe to the industry standard for two reasons.',
     hasSchematic: true
@@ -40,7 +47,8 @@ const projects: Project[] = [
   { 
     id: 'drug-delivery', 
     title: 'DRUG DELIVERY', 
-    thumbnail: DrugDeliveryThumbnail,
+    thumbnailPrimary: DrugThumb1,
+    thumbnailSecondary: DrugThumb2,
     displayTitle: 'How can we optimize a surface to stick to bodily tracts for drug delivery?',
     subtitle: 'I physically and chemically modified a biocompatible substrate to wick mucus and latch itself onto the lining of a bodily tract for noninvasive, long term drug delivery.',
     hasSchematic: false
@@ -48,7 +56,8 @@ const projects: Project[] = [
   { 
     id: 'lyken', 
     title: 'LYKEN', 
-    thumbnail: LykenThumbnail,
+    thumbnailPrimary: LykenThumb1,
+    thumbnailSecondary: LykenThumb2,
     displayTitle: 'What could circular fashion look like in Orlando?',
     subtitle: 'I set out to create one full look using only home grown and native biomaterials or recycled fibers.',
     hasSchematic: false
@@ -362,22 +371,27 @@ const WorksSection = () => {
               onMouseLeave={() => setHoveredProject(null)}
               onClick={() => handleProjectClick(project.id)}
             >
-              {/* Thumbnail - still image for now, will be replaced with video later */}
-              {/* Animation settings preserved: scale 1->1.05, opacity transitions, duration 0.8s, easeInOut */}
+              {/* Thumbnail with hover fade between primary/secondary, secondary shown when active */}
               <div className="relative w-24 h-16 md:w-32 md:h-20 overflow-hidden">
+                {/* Primary image - hidden when active or hovered */}
                 <motion.img
-                  src={project.thumbnail}
+                  src={project.thumbnailPrimary}
                   alt={project.title}
-                  className="w-full h-full object-contain"
+                  className="absolute inset-0 w-full h-full object-contain"
                   animate={{
-                    scale: isAnimating(project.id) ? [1, 1.05, 1] : isFrozen(project.id) ? 1.05 : 1,
-                    opacity: isAnimating(project.id) ? [0.7, 1, 0.9] : isFrozen(project.id) ? 1 : 0.8,
+                    opacity: (hoveredProject === project.id || activeProject === project.id) ? 0 : 1,
                   }}
-                  transition={{
-                    duration: 0.8,
-                    repeat: isAnimating(project.id) ? Infinity : 0,
-                    ease: "easeInOut",
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
+                />
+                {/* Secondary image - shown when hovered or active */}
+                <motion.img
+                  src={project.thumbnailSecondary}
+                  alt={`${project.title} active`}
+                  className="absolute inset-0 w-full h-full object-contain"
+                  animate={{
+                    opacity: (hoveredProject === project.id || activeProject === project.id) ? 1 : 0,
                   }}
+                  transition={{ duration: 0.3, ease: "easeInOut" }}
                 />
               </div>
             </div>
