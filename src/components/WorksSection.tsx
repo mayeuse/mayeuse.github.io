@@ -1,70 +1,14 @@
 import { useState, useEffect, Suspense } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import STLModel from './STLModel';
-import ExpSchematic from '@/assets/ExpSchematic.png';
-import HandheldProbeAnimated from '@/assets/HandheldProbeAnimated.gif';
-import NovelProbeAnimated from '@/assets/NovelProbeAnimated.gif';
-import DeformationFigure from '@/assets/DeformationFigure.png';
-import PressureFigure from '@/assets/PressureFigure.png';
-import PhantomModels from '@/assets/PhantomModels.png';
-import PhantomMoldsAndMaterials from '@/assets/PhantomMoldsAndMaterials.png';
-import ContactAngleAnalysis from '@/assets/ContactAngleAnalysis.png';
-import ContactAngleResults from '@/assets/ContactAngleResults.png';
-import PillarMold from '@/assets/PillarMold.png';
-import PillarWicking from '@/assets/PillarWicking.png';
-import LykenLook1 from '@/assets/LykenLook1.png';
-import LykenLook2 from '@/assets/LykenLook2.png';
-import LykenLook3 from '@/assets/LykenLook3.png';
-import LykenSketch1 from '@/assets/LykenSketch1.png';
-import LykenSketch2 from '@/assets/LykenSketch2.png';
-import LykenSketch3 from '@/assets/LykenSketch3.png';
-import LykenSketch4 from '@/assets/LykenSketch4.png';
-import LykenSketch5 from '@/assets/LykenSketch5.png';
-import LykenSketch6 from '@/assets/LykenSketch6.png';
-import LykenSketch7 from '@/assets/LykenSketch7.png';
-import LykenFullSketch1 from '@/assets/LykenFullSketch1.png';
-import LykenFullSketch2 from '@/assets/LykenFullSketch2.png';
-import LykenDetail1 from '@/assets/LykenDetail1.png';
-import LykenDetail2 from '@/assets/LykenDetail2.png';
-import LykenDetail3 from '@/assets/LykenDetail3.png';
-import LykenDetail4 from '@/assets/LykenDetail4.png';
-import LykenBody1 from '@/assets/LykenBody1.png';
-import LykenBody2 from '@/assets/LykenBody2.png';
-import LykenBody3 from '@/assets/LykenBody3.png';
-import LykenHem1 from '@/assets/LykenHem1.png';
-import LykenHem2 from '@/assets/LykenHem2.png';
-import PetalJewelry1 from '@/assets/PetalJewelry1.png';
-import PetalJewelry2 from '@/assets/PetalJewelry2.png';
-import PetalJewelry3 from '@/assets/PetalJewelry3.png';
-import VeganLeather1 from '@/assets/VeganLeather1.png';
-import VeganLeather2 from '@/assets/VeganLeather2.png';
-import VeganLeather3 from '@/assets/VeganLeather3.png';
-import RootTextile1 from '@/assets/RootTextile1.png';
-import RootTextile2 from '@/assets/RootTextile2.png';
-import RootTextile3 from '@/assets/RootTextile3.png';
-import RootTextile4 from '@/assets/RootTextile4.png';
-import LykenResult from '@/assets/LykenResult.png';
-import TexelsMap1 from '@/assets/TexelsMap1.png';
-import TexelsMap2 from '@/assets/TexelsMap2.png';
-import TexelsMap3 from '@/assets/TexelsMap3.png';
-import TexelsMap4 from '@/assets/TexelsMap4.png';
-import TexelsPaper1 from '@/assets/TexelsPaper1.png';
-import TexelsPaper2 from '@/assets/TexelsPaper2.png';
-import TexelsPaper3 from '@/assets/TexelsPaper3.png';
-import TexelsFabric1 from '@/assets/TexelsFabric1.png';
-import TexelsFabric2 from '@/assets/TexelsFabric2.png';
-import TexelsFabric3 from '@/assets/TexelsFabric3.png';
-import TexelsCircuit1 from '@/assets/TexelsCircuit1.png';
-import TexelsCircuit2 from '@/assets/TexelsCircuit2.png';
-import TexelsPrototyping1 from '@/assets/TexelsPrototyping1.jpg';
-import TexelsPrototyping2 from '@/assets/TexelsPrototyping2.png';
+import { Skeleton } from './ui/skeleton';
+
+// Only import thumbnails initially - project images load on demand
 import TexelsThumbnail from '@/assets/TexelsThumbnail.png';
 import CancerScreeningThumbnail from '@/assets/CancerScreeningThumbnail.png';
 import DrugDeliveryThumbnail from '@/assets/DrugDeliveryThumbnail.png';
 import LykenThumbnail from '@/assets/LykenThumbnail.png';
-
-const texelsMapImages = [TexelsMap1, TexelsMap2, TexelsMap3, TexelsMap4];
 
 interface Project {
   id: string;
@@ -110,17 +54,64 @@ const projects: Project[] = [
   },
 ];
 
-const lykenImages = [LykenLook1, LykenLook2, LykenLook3];
-const lykenSketchImages = [LykenSketch1, LykenSketch2, LykenSketch3, LykenSketch4, LykenSketch5, LykenSketch6, LykenSketch7];
-const lykenDetailImages = [LykenDetail1, LykenDetail2, LykenDetail3, LykenDetail4];
-const lykenBodyImages = [LykenBody1, LykenBody2, LykenBody3];
-const lykenHemImages = [LykenHem1, LykenHem2];
-
 const stlModels = [
   { url: '/models/Probe_Head_Attachment.stl', label: 'Novel Probe Attachment' },
   { url: '/models/Handheld_Probe_Attachment_v3.stl', label: 'Traditional Probe Attachment' },
   { url: '/models/Tilt_Mechanism.stl', label: 'Stage Tilt Mechanism' },
 ];
+
+// Type definitions for dynamically loaded images
+interface TexelsImages {
+  texelsMapImages: string[];
+  TexelsPaper1: string;
+  TexelsPaper2: string;
+  TexelsPaper3: string;
+  TexelsFabric1: string;
+  TexelsFabric2: string;
+  TexelsFabric3: string;
+  TexelsCircuit1: string;
+  TexelsCircuit2: string;
+  TexelsPrototyping1: string;
+  TexelsPrototyping2: string;
+}
+
+interface CancerImages {
+  ExpSchematic: string;
+  HandheldProbeAnimated: string;
+  NovelProbeAnimated: string;
+  DeformationFigure: string;
+  PressureFigure: string;
+}
+
+interface DrugDeliveryImages {
+  PhantomModels: string;
+  PhantomMoldsAndMaterials: string;
+  ContactAngleAnalysis: string;
+  ContactAngleResults: string;
+  PillarMold: string;
+  PillarWicking: string;
+}
+
+interface LykenImages {
+  lykenLookImages: string[];
+  lykenSketchImages: string[];
+  lykenDetailImages: string[];
+  lykenBodyImages: string[];
+  lykenHemImages: string[];
+  LykenFullSketch1: string;
+  LykenFullSketch2: string;
+  PetalJewelry1: string;
+  PetalJewelry2: string;
+  PetalJewelry3: string;
+  VeganLeather1: string;
+  VeganLeather2: string;
+  VeganLeather3: string;
+  RootTextile1: string;
+  RootTextile2: string;
+  RootTextile3: string;
+  RootTextile4: string;
+  LykenResult: string;
+}
 
 const WorksSection = () => {
   const [activeProject, setActiveProject] = useState<string | null>(null);
@@ -131,60 +122,128 @@ const WorksSection = () => {
   const [bodyCarouselIndex, setBodyCarouselIndex] = useState(0);
   const [hemCarouselIndex, setHemCarouselIndex] = useState(0);
   const [texelsMapIndex, setTexelsMapIndex] = useState(0);
+  
+  // Dynamic image states
+  const [texelsImages, setTexelsImages] = useState<TexelsImages | null>(null);
+  const [cancerImages, setCancerImages] = useState<CancerImages | null>(null);
+  const [drugImages, setDrugImages] = useState<DrugDeliveryImages | null>(null);
+  const [lykenImages, setLykenImages] = useState<LykenImages | null>(null);
+  const [loadingImages, setLoadingImages] = useState(false);
+
+  // Load project images dynamically when project is clicked
+  useEffect(() => {
+    const loadProjectImages = async () => {
+      if (!activeProject) return;
+      
+      setLoadingImages(true);
+      
+      try {
+        switch (activeProject) {
+          case 'texels':
+            if (!texelsImages) {
+              const images = await import('./projectImages/texelsImages');
+              setTexelsImages(images as TexelsImages);
+            }
+            break;
+          case 'cancer-screening':
+            if (!cancerImages) {
+              const images = await import('./projectImages/cancerImages');
+              setCancerImages(images as CancerImages);
+            }
+            break;
+          case 'drug-delivery':
+            if (!drugImages) {
+              const images = await import('./projectImages/drugDeliveryImages');
+              setDrugImages(images as DrugDeliveryImages);
+            }
+            break;
+          case 'lyken':
+            if (!lykenImages) {
+              const images = await import('./projectImages/lykenImages');
+              setLykenImages(images as LykenImages);
+            }
+            break;
+        }
+      } catch (error) {
+        console.error('Failed to load project images:', error);
+      } finally {
+        setLoadingImages(false);
+      }
+    };
+    
+    loadProjectImages();
+  }, [activeProject, texelsImages, cancerImages, drugImages, lykenImages]);
 
   // Auto-cycle through TEXELS map images
   useEffect(() => {
-    if (activeProject === 'texels') {
+    if (activeProject === 'texels' && texelsImages) {
       const interval = setInterval(() => {
-        setTexelsMapIndex((prev) => (prev + 1) % texelsMapImages.length);
+        setTexelsMapIndex((prev) => (prev + 1) % texelsImages.texelsMapImages.length);
       }, 400);
       return () => clearInterval(interval);
     }
-  }, [activeProject]);
+  }, [activeProject, texelsImages]);
 
   const handleCarouselPrev = () => {
-    setCarouselIndex((prev) => (prev - 1 + lykenImages.length) % lykenImages.length);
+    if (!lykenImages) return;
+    setCarouselIndex((prev) => (prev - 1 + lykenImages.lykenLookImages.length) % lykenImages.lykenLookImages.length);
   };
 
   const handleCarouselNext = () => {
-    setCarouselIndex((prev) => (prev + 1) % lykenImages.length);
+    if (!lykenImages) return;
+    setCarouselIndex((prev) => (prev + 1) % lykenImages.lykenLookImages.length);
   };
 
   const handleSketchCarouselPrev = () => {
-    setSketchCarouselIndex((prev) => (prev - 1 + lykenSketchImages.length) % lykenSketchImages.length);
+    if (!lykenImages) return;
+    setSketchCarouselIndex((prev) => (prev - 1 + lykenImages.lykenSketchImages.length) % lykenImages.lykenSketchImages.length);
   };
 
   const handleSketchCarouselNext = () => {
-    setSketchCarouselIndex((prev) => (prev + 1) % lykenSketchImages.length);
+    if (!lykenImages) return;
+    setSketchCarouselIndex((prev) => (prev + 1) % lykenImages.lykenSketchImages.length);
   };
 
   const handleDetailCarouselPrev = () => {
-    setDetailCarouselIndex((prev) => (prev - 1 + lykenDetailImages.length) % lykenDetailImages.length);
+    if (!lykenImages) return;
+    setDetailCarouselIndex((prev) => (prev - 1 + lykenImages.lykenDetailImages.length) % lykenImages.lykenDetailImages.length);
   };
 
   const handleDetailCarouselNext = () => {
-    setDetailCarouselIndex((prev) => (prev + 1) % lykenDetailImages.length);
+    if (!lykenImages) return;
+    setDetailCarouselIndex((prev) => (prev + 1) % lykenImages.lykenDetailImages.length);
   };
 
   const handleBodyCarouselPrev = () => {
-    setBodyCarouselIndex((prev) => (prev - 1 + lykenBodyImages.length) % lykenBodyImages.length);
+    if (!lykenImages) return;
+    setBodyCarouselIndex((prev) => (prev - 1 + lykenImages.lykenBodyImages.length) % lykenImages.lykenBodyImages.length);
   };
 
   const handleBodyCarouselNext = () => {
-    setBodyCarouselIndex((prev) => (prev + 1) % lykenBodyImages.length);
+    if (!lykenImages) return;
+    setBodyCarouselIndex((prev) => (prev + 1) % lykenImages.lykenBodyImages.length);
   };
 
   const handleHemCarouselPrev = () => {
-    setHemCarouselIndex((prev) => (prev - 1 + lykenHemImages.length) % lykenHemImages.length);
+    if (!lykenImages) return;
+    setHemCarouselIndex((prev) => (prev - 1 + lykenImages.lykenHemImages.length) % lykenImages.lykenHemImages.length);
   };
 
   const handleHemCarouselNext = () => {
-    setHemCarouselIndex((prev) => (prev + 1) % lykenHemImages.length);
+    if (!lykenImages) return;
+    setHemCarouselIndex((prev) => (prev + 1) % lykenImages.lykenHemImages.length);
   };
 
   const handleProjectClick = (projectId: string) => {
     console.log('Clicked project:', projectId);
     setActiveProject(projectId);
+    // Reset carousel indices
+    setCarouselIndex(0);
+    setSketchCarouselIndex(0);
+    setDetailCarouselIndex(0);
+    setBodyCarouselIndex(0);
+    setHemCarouselIndex(0);
+    setTexelsMapIndex(0);
     // Scroll to top of project description
     setTimeout(() => {
       const projectDisplay = document.querySelector('.project-display-area');
@@ -205,6 +264,16 @@ const WorksSection = () => {
   const isFrozen = (projectId: string) => {
     return activeProject === projectId;
   };
+
+  // Loading skeleton for project content
+  const ProjectSkeleton = () => (
+    <div className="space-y-4 w-full">
+      <Skeleton className="h-8 w-3/4" />
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-5/6" />
+      <Skeleton className="h-64 w-full mt-4" />
+    </div>
+  );
 
   return (
     <section id="works" className="h-screen flex items-start pt-[25vh] relative z-10">
@@ -260,8 +329,11 @@ const WorksSection = () => {
                     )}
                   </div>
                   
+                  {/* Show loading skeleton while images load */}
+                  {loadingImages && <ProjectSkeleton />}
+                  
                   {/* TEXELS Design Content */}
-                  {activeProject === 'texels' && (
+                  {activeProject === 'texels' && texelsImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Design</h3>
                       <div className="mt-4 flex gap-4 items-stretch">
@@ -269,7 +341,7 @@ const WorksSection = () => {
                         <div className="w-[35%] relative flex flex-col">
                           <div className="flex-1 flex items-center">
                             <img
-                              src={texelsMapImages[texelsMapIndex]}
+                              src={texelsImages.texelsMapImages[texelsMapIndex]}
                               alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
                               className="w-full h-full object-contain"
                               loading="lazy"
@@ -290,15 +362,15 @@ const WorksSection = () => {
                         <div className="w-[65%] flex flex-col gap-2">
                           {/* Top row - 3 paper images */}
                           <div className="flex gap-2">
-                            <img src={TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsImages.TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsImages.TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsImages.TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
                           </div>
                           {/* Bottom row - 3 fabric images */}
                           <div className="flex gap-2">
-                            <img src={TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
-                            <img src={TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsImages.TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsImages.TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={texelsImages.TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
                           </div>
                         </div>
                       </div>
@@ -308,12 +380,12 @@ const WorksSection = () => {
                       
                       {/* Circuit images section */}
                       <div className="mt-6 flex justify-center">
-                        <img src={TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" loading="lazy" />
+                        <img src={texelsImages.TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" loading="lazy" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
                       </p>
-                      <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" loading="lazy" />
+                      <img src={texelsImages.TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" loading="lazy" />
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
                       
@@ -334,7 +406,7 @@ const WorksSection = () => {
                         {/* Right column with image and paragraph */}
                         <div className="w-1/2 flex flex-col">
                           <img 
-                            src={TexelsPrototyping1} 
+                            src={texelsImages.TexelsPrototyping1} 
                             alt="Fabric with shape memory wire connections" 
                             className="w-full object-contain"
                             loading="lazy"
@@ -346,7 +418,7 @@ const WorksSection = () => {
                       </div>
                       
                       <img 
-                        src={TexelsPrototyping2} 
+                        src={texelsImages.TexelsPrototyping2} 
                         alt="Annotated diagram of circuit components integrated into fabric" 
                         className="mt-4 w-full object-contain"
                         loading="lazy"
@@ -360,18 +432,18 @@ const WorksSection = () => {
                   )}
                   
                   {/* Drug Delivery Content */}
-                  {activeProject === 'drug-delivery' && (
+                  {activeProject === 'drug-delivery' && drugImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Phantom Environment</h3>
                       <div className="mt-4 flex flex-col gap-4 items-center">
                         <img 
-                          src={PhantomModels} 
+                          src={drugImages.PhantomModels} 
                           alt="Phantom environment 3D models" 
                           className="w-full object-contain"
                           loading="lazy"
                         />
                         <img 
-                          src={PhantomMoldsAndMaterials} 
+                          src={drugImages.PhantomMoldsAndMaterials} 
                           alt="Phantom molds and materials" 
                           className="w-full object-contain"
                           loading="lazy"
@@ -387,13 +459,13 @@ const WorksSection = () => {
                       </p>
                       <div className="mt-4 flex gap-4 justify-center">
                         <img 
-                          src={ContactAngleAnalysis} 
+                          src={drugImages.ContactAngleAnalysis} 
                           alt="Contact angle analysis in ImageJ" 
                           className="max-h-[200px] object-contain"
                           loading="lazy"
                         />
                         <img 
-                          src={ContactAngleResults} 
+                          src={drugImages.ContactAngleResults} 
                           alt="Contact angle results comparing coated and uncoated surfaces" 
                           className="max-h-[200px] object-contain"
                           loading="lazy"
@@ -409,13 +481,13 @@ const WorksSection = () => {
                       </p>
                       <div className="mt-4 flex gap-4 justify-center">
                         <img 
-                          src={PillarMold} 
+                          src={drugImages.PillarMold} 
                           alt="Varied pillar mold design" 
                           className="max-h-[200px] object-contain"
                           loading="lazy"
                         />
                         <img 
-                          src={PillarWicking} 
+                          src={drugImages.PillarWicking} 
                           alt="Pillar wicking test results" 
                           className="max-h-[200px] object-contain"
                           loading="lazy"
@@ -428,14 +500,14 @@ const WorksSection = () => {
                   )}
                   
                   {/* Cancer Screening Content */}
-                  {activeProjectData.hasSchematic && (
+                  {activeProjectData.hasSchematic && cancerImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
                       <div className="mt-4 flex items-start gap-2">
                         {/* Schematic Image */}
                         <div className="w-[66%]">
                           <img 
-                            src={ExpSchematic} 
+                            src={cancerImages.ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
                             className="w-full h-auto"
                             loading="lazy"
@@ -463,13 +535,13 @@ const WorksSection = () => {
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Data Collection</h3>
                       <div className="mt-4 flex items-center justify-center gap-4">
                         <img 
-                          src={HandheldProbeAnimated} 
+                          src={cancerImages.HandheldProbeAnimated} 
                           alt="Handheld probe data collection animation"
                           className="h-64 w-auto object-contain"
                           loading="lazy"
                         />
                         <img 
-                          src={NovelProbeAnimated} 
+                          src={cancerImages.NovelProbeAnimated} 
                           alt="Novel probe data collection animation"
                           className="h-64 w-auto object-contain"
                           loading="lazy"
@@ -482,7 +554,7 @@ const WorksSection = () => {
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
                       
                       <img 
-                        src={DeformationFigure} 
+                        src={cancerImages.DeformationFigure} 
                         alt="Tumor deformation comparison between linear array and wearable 4D system"
                         className="mt-4 w-full max-w-4xl mx-auto h-auto"
                         loading="lazy"
@@ -492,7 +564,7 @@ const WorksSection = () => {
                       </p>
                       
                       <img 
-                        src={PressureFigure} 
+                        src={cancerImages.PressureFigure} 
                         alt="Image quality over increasing applied pressure comparison"
                         className="mt-6 w-full max-w-4xl mx-auto h-auto"
                         loading="lazy"
@@ -504,7 +576,7 @@ const WorksSection = () => {
                   )}
                   
                   {/* Lyken Content */}
-                  {activeProject === 'lyken' && (
+                  {activeProject === 'lyken' && lykenImages && !loadingImages && (
                     <>
                       <div className="mb-6" />
                       <div className="flex gap-8">
@@ -513,95 +585,95 @@ const WorksSection = () => {
                           {/* First Carousel - Looks */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} alt="Previous look" className="max-h-[80px] object-contain" loading="lazy" />
+                              <img src={lykenImages.lykenLookImages[(carouselIndex - 1 + lykenImages.lykenLookImages.length) % lykenImages.lykenLookImages.length]} alt="Previous look" className="max-h-[80px] object-contain" loading="lazy" />
                             </div>
                             <button onClick={handleCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={carouselIndex} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" loading="lazy" />
+                              <img src={lykenImages.lykenLookImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" loading="lazy" />
                             </motion.div>
                             <button onClick={handleCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages[(carouselIndex + 1) % lykenImages.length]} alt="Next look" className="max-h-[80px] object-contain" loading="lazy" />
+                              <img src={lykenImages.lykenLookImages[(carouselIndex + 1) % lykenImages.lykenLookImages.length]} alt="Next look" className="max-h-[80px] object-contain" loading="lazy" />
                             </div>
                           </div>
                           
                           {/* Second Carousel - Sketches */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenSketchImages[(sketchCarouselIndex - 1 + lykenSketchImages.length) % lykenSketchImages.length]} alt="Previous sketch" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenSketchImages[(sketchCarouselIndex - 1 + lykenImages.lykenSketchImages.length) % lykenImages.lykenSketchImages.length]} alt="Previous sketch" className="max-h-[80px] object-contain" />
                             </div>
                             <button onClick={handleSketchCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`sketch-${sketchCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenSketchImages[sketchCarouselIndex]} alt={`Sketch ${sketchCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                              <img src={lykenImages.lykenSketchImages[sketchCarouselIndex]} alt={`Sketch ${sketchCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
                             <button onClick={handleSketchCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenSketchImages[(sketchCarouselIndex + 1) % lykenSketchImages.length]} alt="Next sketch" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenSketchImages[(sketchCarouselIndex + 1) % lykenImages.lykenSketchImages.length]} alt="Next sketch" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Third Carousel - Details */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenDetailImages[(detailCarouselIndex - 1 + lykenDetailImages.length) % lykenDetailImages.length]} alt="Previous detail" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenDetailImages[(detailCarouselIndex - 1 + lykenImages.lykenDetailImages.length) % lykenImages.lykenDetailImages.length]} alt="Previous detail" className="max-h-[80px] object-contain" />
                             </div>
                             <button onClick={handleDetailCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`detail-${detailCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenDetailImages[detailCarouselIndex]} alt={`Detail ${detailCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                              <img src={lykenImages.lykenDetailImages[detailCarouselIndex]} alt={`Detail ${detailCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
                             <button onClick={handleDetailCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenDetailImages[(detailCarouselIndex + 1) % lykenDetailImages.length]} alt="Next detail" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenDetailImages[(detailCarouselIndex + 1) % lykenImages.lykenDetailImages.length]} alt="Next detail" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Fourth Carousel - Body */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenBodyImages[(bodyCarouselIndex - 1 + lykenBodyImages.length) % lykenBodyImages.length]} alt="Previous body" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenBodyImages[(bodyCarouselIndex - 1 + lykenImages.lykenBodyImages.length) % lykenImages.lykenBodyImages.length]} alt="Previous body" className="max-h-[80px] object-contain" />
                             </div>
                             <button onClick={handleBodyCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`body-${bodyCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenBodyImages[bodyCarouselIndex]} alt={`Body ${bodyCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                              <img src={lykenImages.lykenBodyImages[bodyCarouselIndex]} alt={`Body ${bodyCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
                             <button onClick={handleBodyCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenBodyImages[(bodyCarouselIndex + 1) % lykenBodyImages.length]} alt="Next body" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenBodyImages[(bodyCarouselIndex + 1) % lykenImages.lykenBodyImages.length]} alt="Next body" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                           
                           {/* Fifth Carousel - Hem */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenHemImages[(hemCarouselIndex - 1 + lykenHemImages.length) % lykenHemImages.length]} alt="Previous hem" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenHemImages[(hemCarouselIndex - 1 + lykenImages.lykenHemImages.length) % lykenImages.lykenHemImages.length]} alt="Previous hem" className="max-h-[80px] object-contain" />
                             </div>
                             <button onClick={handleHemCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={`hem-${hemCarouselIndex}`} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenHemImages[hemCarouselIndex]} alt={`Hem ${hemCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                              <img src={lykenImages.lykenHemImages[hemCarouselIndex]} alt={`Hem ${hemCarouselIndex + 1}`} className="max-h-[90px] object-contain" />
                             </motion.div>
                             <button onClick={handleHemCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenHemImages[(hemCarouselIndex + 1) % lykenHemImages.length]} alt="Next hem" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages.lykenHemImages[(hemCarouselIndex + 1) % lykenImages.lykenHemImages.length]} alt="Next hem" className="max-h-[80px] object-contain" />
                             </div>
                           </div>
                         </div>
@@ -611,16 +683,16 @@ const WorksSection = () => {
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                             Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on cultural signifiers that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
-                          <img src={LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
+                          <img src={lykenImages.LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
                         </div>
                       </div>
                       
                       {/* Petal Jewelry Section */}
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Petal Jewelry</h3>
                       <div className="mt-4 flex gap-4 justify-center">
-                        <img src={PetalJewelry1} alt="Fallen flower petals collection" className="max-h-[200px] object-contain" />
-                        <img src={PetalJewelry2} alt="Clay made from flower petals - hibiscus, yucca, king's mantle" className="max-h-[200px] object-contain" />
-                        <img src={PetalJewelry3} alt="Finished petal clay beads" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.PetalJewelry1} alt="Fallen flower petals collection" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.PetalJewelry2} alt="Clay made from flower petals - hibiscus, yucca, king's mantle" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.PetalJewelry3} alt="Finished petal clay beads" className="max-h-[200px] object-contain" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I used fallen petals of native flowers to create clay beads. I mimicked traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
@@ -629,9 +701,9 @@ const WorksSection = () => {
                       {/* Vegan Leather Section */}
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Vegan Leather with Petals</h3>
                       <div className="mt-4 flex gap-4 justify-center">
-                        <img src={VeganLeather1} alt="Hibiscus petals for vegan leather" className="max-h-[200px] object-contain" />
-                        <img src={VeganLeather2} alt="Petals encapsulated in kombucha leather" className="max-h-[200px] object-contain" />
-                        <img src={VeganLeather3} alt="Finished vegan leather arm bands" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.VeganLeather1} alt="Hibiscus petals for vegan leather" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.VeganLeather2} alt="Petals encapsulated in kombucha leather" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.VeganLeather3} alt="Finished vegan leather arm bands" className="max-h-[200px] object-contain" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I experimented with ways to effectively encapsulate flower petals between layers of natural kombucha leather to create arm bands.
@@ -640,10 +712,10 @@ const WorksSection = () => {
                       {/* Root as Textile Section */}
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Root as Textile</h3>
                       <div className="mt-4 flex gap-4 justify-center">
-                        <img src={RootTextile1} alt="Root mat growing process" className="max-h-[200px] object-contain" />
-                        <img src={RootTextile2} alt="Root textile on dress form" className="max-h-[200px] object-contain" />
-                        <img src={RootTextile3} alt="Needle lace with roots" className="max-h-[200px] object-contain" />
-                        <img src={RootTextile4} alt="Attaching root textile to form" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.RootTextile1} alt="Root mat growing process" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.RootTextile2} alt="Root textile on dress form" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.RootTextile3} alt="Needle lace with roots" className="max-h-[200px] object-contain" />
+                        <img src={lykenImages.RootTextile4} alt="Attaching root textile to form" className="max-h-[200px] object-contain" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         I grew various rounds of root mats to create "woven" sheets. I learned needle lace to integrate the roots into a stronger textile structure that could mimic their visual characteristics.
@@ -658,7 +730,7 @@ const WorksSection = () => {
                           </p>
                         </div>
                         <div className="w-1/2 flex justify-center">
-                          <img src={LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
+                          <img src={lykenImages.LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
                         </div>
                       </div>
                     </>
