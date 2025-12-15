@@ -102,11 +102,13 @@ const PresentationsSection = () => {
       case 'pdf':
         return (
           <div className={containerClass}>
-            <iframe
-              src={`${item.src}#toolbar=0&navpanes=0&view=FitH`}
-              className={isExpanded ? "w-[80vw] h-[85vh] rounded-lg" : "w-full h-full rounded-lg"}
-              title={`Presentation ${index + 1}`}
-            />
+            <div className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full aspect-[8.5/11] max-h-[320px]"}>
+              <iframe
+                src={`${item.src}#toolbar=0&navpanes=0&view=FitH`}
+                className="w-full h-full rounded-lg"
+                title={`Presentation ${index + 1}`}
+              />
+            </div>
             {!isExpanded && item.expandable && (
               <button
                 onClick={(e) => { e.stopPropagation(); handleExpand(index); }}
