@@ -105,7 +105,7 @@ const PresentationsSection = () => {
         return (
           <div className={containerClass}>
             <div 
-              className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full max-h-[320px] lg:max-h-[380px] xl:max-h-[430px]"}
+              className={isExpanded ? "w-[80vw] h-[85vh]" : "w-full max-h-[420px] lg:max-h-[500px] xl:max-h-[570px]"}
               style={!isExpanded ? { aspectRatio: pdfAspect } : undefined}
             >
               <iframe
@@ -247,7 +247,7 @@ const PresentationsSection = () => {
             {/* Center - 3D Carousel with arrows below */}
             <div className="flex flex-col items-center w-[50%] lg:w-[60%] xl:w-[65%]">
               <div 
-                className="relative flex items-center justify-center w-full h-[400px] lg:h-[450px] xl:h-[500px]"
+                className="relative flex items-center justify-center w-full h-[480px] lg:h-[560px] xl:h-[630px]"
                 style={{ perspective: '1000px' }}
               >
                 {visibleIndices.map((index) => {
@@ -261,7 +261,7 @@ const PresentationsSection = () => {
                         opacity: style.opacity,
                       }}
                       transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="absolute w-[80%] lg:w-[85%] h-[350px] lg:h-[400px] xl:h-[450px] flex items-center justify-center"
+                      className="absolute w-[80%] lg:w-[85%] h-[450px] lg:h-[530px] xl:h-[600px] flex items-center justify-center"
                       style={{ 
                         zIndex: style.z,
                         transformStyle: 'preserve-3d',
