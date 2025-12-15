@@ -114,8 +114,11 @@ const ContactSection = () => {
 
   return (
     <section id="contact" className="h-[calc(100vh-180px)] flex items-start pt-8 pl-[5%] pr-[20%] relative z-20">
-      {/* Left half - Flower video + Title */}
+      {/* Left half - Title + Flower video + Email */}
       <div className="w-1/2 h-full flex flex-col items-center justify-center relative z-20">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4 text-center max-w-[90%]">
+          Thank You for being part of my life and work
+        </h2>
         <video
           ref={videoRef}
           autoPlay
@@ -123,13 +126,19 @@ const ContactSection = () => {
           muted
           playsInline
           preload="metadata"
-          className="w-[80%] max-h-[70%] object-contain"
+          className="w-[80%] max-h-[50%] object-contain"
         >
           <source src="/videos/flower.webm" type="video/webm" />
         </video>
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mt-4 text-center max-w-[90%]">
-          Thank You for being part of my life and work
-        </h2>
+        <p className="font-body text-foreground/80 text-sm text-center mt-4">
+          email me at
+        </p>
+        <a 
+          href="mailto:maya.3lizabeth@gmail.com" 
+          className="font-body text-foreground hover:text-primary hover:underline transition-colors text-sm"
+        >
+          maya.3lizabeth@gmail.com
+        </a>
       </div>
 
       {/* Right half - Content */}
@@ -196,17 +205,6 @@ const ContactSection = () => {
           </button>
         </div>
 
-        {/* Email contact */}
-        <p className="font-body text-foreground/80 text-sm text-center">
-          You can also email me at
-        </p>
-        <a 
-          href="mailto:maya.3lizabeth@gmail.com" 
-          className="font-body text-foreground hover:text-primary hover:underline transition-colors text-sm"
-        >
-          maya.3lizabeth@gmail.com
-        </a>
-        <div className="h-12" />
       </div>
     </section>
   );

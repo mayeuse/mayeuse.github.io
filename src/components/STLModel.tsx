@@ -41,6 +41,8 @@ interface STLModelProps {
 }
 
 const STLModel = memo(({ url, scale = 0.02, label, className }: STLModelProps) => {
+  // Use larger scale for Probe_Head_Attachment to make it visible
+  const adjustedScale = url.includes('Probe_Head_Attachment') ? scale * 2.5 : scale;
   const [isInteracting, setIsInteracting] = useState(false);
 
   // Convert STL URL to GLB URL if needed
@@ -52,7 +54,7 @@ const STLModel = memo(({ url, scale = 0.02, label, className }: STLModelProps) =
         <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ antialias: true }} dpr={[1, 2]}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
-          <Model url={glbUrl} scale={scale} isInteracting={isInteracting} />
+          <Model url={glbUrl} scale={adjustedScale} isInteracting={isInteracting} />
           <OrbitControls 
             enableZoom={false} 
             enablePan={false}
