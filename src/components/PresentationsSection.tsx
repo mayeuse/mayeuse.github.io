@@ -52,16 +52,17 @@ const formatPresentation = (text: string) => {
 const PresentationsSection = () => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const [isYoutubePlaying, setIsYoutubePlaying] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const [expandedItem, setExpandedItem] = useState<number | null>(null);
   const autoRotateRef = useRef<NodeJS.Timeout | null>(null);
+  const instagramRef = useRef<HTMLIFrameElement>(null);
 
   // Auto-rotate carousel
   useEffect(() => {
-    if (!isHovered && !isYoutubePlaying) {
+    if (!isHovered && !isVideoPlaying) {
       autoRotateRef.current = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % mediaItems.length);
-      }, 2000);
+      }, 3000);
     }
 
     return () => {
@@ -69,9 +70,9 @@ const PresentationsSection = () => {
         clearInterval(autoRotateRef.current);
       }
     };
-  }, [isHovered, isYoutubePlaying]);
+  }, [isHovered, isVideoPlaying]);
 
-  // Listen for YouTube iframe messages
+  // Listen for YouTube and Instagram iframe messages
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
       if (event.origin === 'https://www.youtube.com') {
@@ -79,12 +80,14 @@ const PresentationsSection = () => {
           const data = JSON.parse(event.data);
           if (data.event === 'onStateChange') {
             // 1 = playing, 2 = paused
-            setIsYoutubePlaying(data.info === 1);
+            setIsVideoPlaying(data.info === 1);
           }
         } catch {
           // Not a JSON message
         }
       }
+      // Instagram doesn't have a reliable postMessage API for play state
+      // We'll use focus/blur as a proxy
     };
 
     window.addEventListener('message', handleMessage);
@@ -169,12 +172,15 @@ const PresentationsSection = () => {
         return (
           <div className="w-full h-full flex items-center justify-center">
             <iframe
-              src="https://www.instagram.com/p/DOZnpRjDVNR/embed/"
+              ref={instagramRef}
+              src="https://www.instagram.com/p/DOZnpRjDVNR/embed/captioned/?hidecaption=true"
               className="w-full h-full max-w-[320px] rounded-lg"
               frameBorder="0"
               scrolling="no"
               allowTransparency
               title="Instagram Video"
+              onFocus={() => setIsVideoPlaying(true)}
+              onBlur={() => setIsVideoPlaying(false)}
             />
           </div>
         );
