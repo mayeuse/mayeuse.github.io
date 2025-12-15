@@ -401,7 +401,7 @@ const WorksSection = () => {
         {/* Project Display Area */}
         <div className="project-display-area flex-1 flex flex-col items-start justify-start px-8 pr-[15%] overflow-y-auto">
           {activeProjectData ? (
-            <div className="max-w-2xl">
+            <div className="w-full max-w-[90%] lg:max-w-[80%] xl:max-w-4xl 2xl:max-w-5xl">
               {activeProjectData.displayTitle ? (
                 <div className="space-y-4">
                   <h2 className="font-body text-foreground text-2xl md:text-3xl lg:text-4xl leading-tight">
