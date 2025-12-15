@@ -42,7 +42,7 @@ const projects: Project[] = [
     title: 'DRUG DELIVERY', 
     thumbnail: DrugDeliveryThumbnail,
     displayTitle: 'How can we optimize a surface to stick to bodily tracts for drug delivery?',
-    subtitle: 'I physically and chemically modified a biocompatible substrate to wick mucus and latch itself onto the lining of a bodily tract for noninvasive, long term drug delivery through the epithelium.',
+    subtitle: 'I physically and chemically modified a biocompatible substrate to wick mucus and latch itself onto the lining of a bodily tract for noninvasive, long term drug delivery.',
     hasSchematic: false
   },
   { 
@@ -449,7 +449,7 @@ const WorksSection = () => {
                         </div>
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I began with a review of the current state of programmable fabrics and problems hindering their adoption. I chose to focus on user friendliness, reusability, and amount of possible shapes, which was very low on average. I explored different forms of shape language for creating 3D shapes out of deformed 2D surfaces, and landed on "Canadian" or "North American" smocking as a format of intuitive patterns with a consistent grid layout and many possible resulting textures.
+                        I began with a review of the current state of programmable fabrics and problems hindering their adoption. I chose to focus on user friendliness, reusability, and amount of possible shapes. I explored different forms of shape language for creating 3D shapes out of deformed 2D surfaces, and landed on "Canadian" or "North American" smocking as a format of intuitive patterns with a consistent grid layout and many possible resulting textures.
                       </p>
                       
                       {/* Circuit images section */}
@@ -457,7 +457,7 @@ const WorksSection = () => {
                         <img src={texelsDesignImages.TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" loading="lazy" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
+                        Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could smock together selected points on the grid by passing electricity through a shape memory wire connecting them.
                       </p>
                       <img src={texelsDesignImages.TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" loading="lazy" />
                       
@@ -490,7 +490,7 @@ const WorksSection = () => {
                                   loading="lazy"
                                 />
                                 <p className="font-body text-foreground/70 text-sm leading-relaxed text-justify py-2">
-                                  I performed the proper calculations to select components that would bring the theoretical circuit into reality on a small scale while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
+                                  I performed the proper calculations to select components that would bring the theoretical circuit into reality while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
                                 </p>
                               </div>
                             </div>
@@ -504,7 +504,7 @@ const WorksSection = () => {
                             
                             <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
                             <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                              I am now integrating the software of the device through a microcontroller and several shift registers acting as the row and gate drivers. I will create a simple graphical user interface for people to input the patterns they would like to see the fabric conform to. Then, I will conduct interviews with people in different fields to understand the fabric's usability in varying use cases.
+                              I am now integrating the software of the device through a microcontroller and several shift registers acting as the row and gate drivers. I will create a simple graphical user interface for people to input the patterns they would like to see the fabric conform to. Then, I will conduct interviews with people in different fields to understand the fabric's potential in varying use cases.
                             </p>
                           </>
                         ) : (
@@ -580,7 +580,7 @@ const WorksSection = () => {
                         />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                        I analyzed the distance covered and change in surface area of water drops with imageJ to determine the wicking effects of the pillars. I proposed a design with varying sizes to move and hold mucus in designated areas, as different sizes had different advantages.
+                        I analyzed the increase in surface area and distance travelled by water drops with imageJ to determine the wicking effects of the pillars. I proposed a design with varying sizes to move and hold mucus in designated areas, as different sizes had different advantages.
                       </p>
                     </>
                   )}
@@ -627,7 +627,7 @@ const WorksSection = () => {
                               />
                             </div>
                             <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                              I screen recorded the process of collecting data for each probe. I placed acoustic gel over the tumor, then lowered the probes incrementally from 0 to 11 N of force. To make a fair comparison between the probes, I flattened the 3D data from our novel probe onto a 2D plane, conserving the highest value out of the depth for each point.
+                              I screen recorded the process of collecting data for each probe. I placed acoustic gel over the tumor, then lowered the probes incrementally from 0 to 11 N of force. To make a fair comparison between the probes, I flattened the 3D data from our novel probe onto a 2D plane.
                             </p>
                             
                             <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Results</h3>
@@ -639,7 +639,7 @@ const WorksSection = () => {
                               loading="lazy"
                             />
                             <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
-                              To visualize which system was more prone to causing tumor deformation, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
+                              To visualize which system was more prone to deforming tumors, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
                             </p>
                             
                             <img 
@@ -781,7 +781,7 @@ const WorksSection = () => {
                         {/* Right side - Paragraph + Still Image (50% width) */}
                         <div className="w-1/2 flex flex-col gap-4">
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                            Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on cultural signifiers that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
+                            Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on fashion elements that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
                           <img src={lykenMainImages.LykenFullSketch1} alt="Full sketch design 1" className="w-full object-contain" />
                         </div>
@@ -799,7 +799,7 @@ const WorksSection = () => {
                               <img src={lykenSubsectionImages.PetalJewelry3} alt="Finished petal clay beads" className="max-h-[200px] object-contain" />
                             </div>
                             <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
-                              I used fallen petals of native flowers to create clay beads. I mimicked traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
+                              I used fallen petals of native flowers to create clay beads. I kept traditions of associating flowers to distinct meanings by making separate clays for each type of flower. I spelled messages with the flower beads based on the first letter of their names to replicate the old romantic gesture of acrostic jewelry.
                             </p>
                             
                             {/* Vegan Leather Section */}
