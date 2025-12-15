@@ -80,6 +80,7 @@ const PresentationsSection = () => {
         try {
           const data = JSON.parse(event.data);
           if (data.event === 'onStateChange') {
+            // 1 = playing, 2 = paused, 0 = ended
             setIsVideoPlaying(data.info === 1);
           }
         } catch {
@@ -92,7 +93,21 @@ const PresentationsSection = () => {
     return () => window.removeEventListener('message', handleMessage);
   }, []);
 
+  // Lock carousel position when video is playing
+  const lockedIndex = useRef<number | null>(null);
+  
+  useEffect(() => {
+    if (isVideoPlaying) {
+      lockedIndex.current = activeIndex;
+    } else {
+      lockedIndex.current = null;
+    }
+  }, [isVideoPlaying, activeIndex]);
+
   const handlePresentationClick = (index: number) => {
+    // Don't allow navigation while video is playing
+    if (isVideoPlaying) return;
+    
     setActiveIndex(index);
     if (autoRotateRef.current) {
       clearInterval(autoRotateRef.current);
@@ -104,6 +119,9 @@ const PresentationsSection = () => {
   }, []);
 
   const updateIndexFromPosition = (clientX: number) => {
+    // Don't allow navigation while video is playing
+    if (isVideoPlaying) return;
+    
     if (!sliderRef.current) return;
     const rect = sliderRef.current.getBoundingClientRect();
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
