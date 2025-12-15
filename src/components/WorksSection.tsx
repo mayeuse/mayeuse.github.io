@@ -272,6 +272,7 @@ const WorksSection = () => {
                               src={texelsMapImages[texelsMapIndex]}
                               alt={`Programmable textiles mind map stage ${texelsMapIndex + 1}`}
                               className="w-full h-full object-contain"
+                              loading="lazy"
                             />
                           </div>
                           <a 
@@ -289,15 +290,15 @@ const WorksSection = () => {
                         <div className="w-[65%] flex flex-col gap-2">
                           {/* Top row - 3 paper images */}
                           <div className="flex gap-2">
-                            <img src={TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" />
-                            <img src={TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" />
-                            <img src={TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" />
+                            <img src={TexelsPaper1} alt="Paper smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={TexelsPaper2} alt="Paper smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={TexelsPaper3} alt="Paper smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
                           </div>
                           {/* Bottom row - 3 fabric images */}
                           <div className="flex gap-2">
-                            <img src={TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" />
-                            <img src={TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" />
-                            <img src={TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" />
+                            <img src={TexelsFabric1} alt="Fabric smocking pattern 1" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={TexelsFabric2} alt="Fabric smocking pattern 2" className="w-1/3 object-cover aspect-square" loading="lazy" />
+                            <img src={TexelsFabric3} alt="Fabric smocking pattern 3" className="w-1/3 object-cover aspect-square" loading="lazy" />
                           </div>
                         </div>
                       </div>
@@ -307,12 +308,12 @@ const WorksSection = () => {
                       
                       {/* Circuit images section */}
                       <div className="mt-6 flex justify-center">
-                        <img src={TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" />
+                        <img src={TexelsCircuit2} alt="Driver and smocking pattern diagram" className="w-2/3 object-contain" loading="lazy" />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                         Inspired by individually addressable pixels in an LCD display, I drafted and simulated a circuit on Simulink that could activate selected points on the grid to smock together by passing electricity through a thin shape memory wire connecting them.
                       </p>
-                      <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" />
+                      <img src={TexelsCircuit1} alt="Electronic circuit diagram of texel array on Simulink" className="mt-4 w-full object-contain" loading="lazy" />
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
                       
@@ -325,6 +326,7 @@ const WorksSection = () => {
                             loop 
                             muted 
                             playsInline
+                            preload="none"
                             className="w-full object-contain"
                           />
                         </div>
@@ -335,6 +337,7 @@ const WorksSection = () => {
                             src={TexelsPrototyping1} 
                             alt="Fabric with shape memory wire connections" 
                             className="w-full object-contain"
+                            loading="lazy"
                           />
                           <p className="font-body text-foreground/70 text-sm leading-relaxed text-justify py-2">
                             I performed the proper calculations to select components that would bring the theoretical circuit into reality on a small scale while ensuring compatibility and proper power handling. I am currently assembling these pieces and integrating them into the fabric by hand. I have relied on a mix of traditional electrical engineering, jewelry, and fashion methods to form connections between nontraditional components on a flexible surface.
@@ -346,6 +349,7 @@ const WorksSection = () => {
                         src={TexelsPrototyping2} 
                         alt="Annotated diagram of circuit components integrated into fabric" 
                         className="mt-4 w-full object-contain"
+                        loading="lazy"
                       />
                       
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Future Work</h3>
@@ -364,11 +368,13 @@ const WorksSection = () => {
                           src={PhantomModels} 
                           alt="Phantom environment 3D models" 
                           className="w-full object-contain"
+                          loading="lazy"
                         />
                         <img 
                           src={PhantomMoldsAndMaterials} 
                           alt="Phantom molds and materials" 
                           className="w-full object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
@@ -384,11 +390,13 @@ const WorksSection = () => {
                           src={ContactAngleAnalysis} 
                           alt="Contact angle analysis in ImageJ" 
                           className="max-h-[200px] object-contain"
+                          loading="lazy"
                         />
                         <img 
                           src={ContactAngleResults} 
                           alt="Contact angle results comparing coated and uncoated surfaces" 
                           className="max-h-[200px] object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
@@ -404,11 +412,13 @@ const WorksSection = () => {
                           src={PillarMold} 
                           alt="Varied pillar mold design" 
                           className="max-h-[200px] object-contain"
+                          loading="lazy"
                         />
                         <img 
                           src={PillarWicking} 
                           alt="Pillar wicking test results" 
                           className="max-h-[200px] object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
@@ -428,6 +438,7 @@ const WorksSection = () => {
                             src={ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
                             className="w-full h-auto"
+                            loading="lazy"
                           />
                         </div>
                         
@@ -455,11 +466,13 @@ const WorksSection = () => {
                           src={HandheldProbeAnimated} 
                           alt="Handheld probe data collection animation"
                           className="h-64 w-auto object-contain"
+                          loading="lazy"
                         />
                         <img 
                           src={NovelProbeAnimated} 
                           alt="Novel probe data collection animation"
                           className="h-64 w-auto object-contain"
+                          loading="lazy"
                         />
                       </div>
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
@@ -472,6 +485,7 @@ const WorksSection = () => {
                         src={DeformationFigure} 
                         alt="Tumor deformation comparison between linear array and wearable 4D system"
                         className="mt-4 w-full max-w-4xl mx-auto h-auto"
+                        loading="lazy"
                       />
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
                         To visualize which system was more prone to causing tumor deformation, I wrote a computer vision program to track the bright regions of the ultrasound images and plot their positions over time.
@@ -481,6 +495,7 @@ const WorksSection = () => {
                         src={PressureFigure} 
                         alt="Image quality over increasing applied pressure comparison"
                         className="mt-6 w-full max-w-4xl mx-auto h-auto"
+                        loading="lazy"
                       />
                       <p className="mt-4 font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify max-w-4xl mx-auto">
                         To assess image quality, I used Contrast-to-Noise Ratio (CNR). This would effectively communicate how distinguishable the tumor is from regular tissue. I modified a CNR calculator by Shrihari Viswanath so that a user could choose between manually selecting target and background regions for each photo or using the same regions for every image in a series. I also made it so that the results would be sent directly to a csv format for easier post-processing. This allowed me to graph quality over applied pressure.
@@ -498,19 +513,19 @@ const WorksSection = () => {
                           {/* First Carousel - Looks */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} alt="Previous look" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages[(carouselIndex - 1 + lykenImages.length) % lykenImages.length]} alt="Previous look" className="max-h-[80px] object-contain" loading="lazy" />
                             </div>
                             <button onClick={handleCarouselPrev} className="absolute left-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronLeft className="w-3 h-3" />
                             </button>
                             <motion.div key={carouselIndex} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.3 }} className="relative z-10">
-                              <img src={lykenImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" />
+                              <img src={lykenImages[carouselIndex]} alt={`Look ${carouselIndex + 1}`} className="max-h-[90px] object-contain" loading="lazy" />
                             </motion.div>
                             <button onClick={handleCarouselNext} className="absolute right-[25%] z-20 p-1 rounded-full border border-foreground/20 hover:bg-foreground/10 transition-colors bg-background/50">
                               <ChevronRight className="w-3 h-3" />
                             </button>
                             <div className="absolute right-[5%] z-0 opacity-30 scale-75">
-                              <img src={lykenImages[(carouselIndex + 1) % lykenImages.length]} alt="Next look" className="max-h-[80px] object-contain" />
+                              <img src={lykenImages[(carouselIndex + 1) % lykenImages.length]} alt="Next look" className="max-h-[80px] object-contain" loading="lazy" />
                             </div>
                           </div>
                           
