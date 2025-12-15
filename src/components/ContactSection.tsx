@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { toast } from 'sonner';
+import crayonCursor from '@/assets/crayon-cursor.svg';
 
 const ContactSection = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -112,8 +113,8 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="min-h-[calc(100vh-200px)] flex items-center pl-[5%] pr-[5%] relative z-20">
-      {/* Left half - Flower video */}
+    <section id="contact" className="h-[calc(100vh-180px)] flex items-start pt-8 pl-[5%] pr-[15%] relative z-20">
+      {/* Left half - Flower video (50% of space before nav) */}
       <div className="w-1/2 h-full flex items-center justify-center relative z-20">
         <video
           ref={videoRef}
@@ -121,41 +122,43 @@ const ContactSection = () => {
           loop
           muted
           playsInline
-          className="w-[80%] h-auto object-contain"
+          preload="metadata"
+          className="w-[90%] max-h-[90%] object-contain"
         >
           <source src="/videos/flower.webm" type="video/webm" />
         </video>
       </div>
 
-      {/* Right half - Content */}
-      <div className="w-1/2 flex flex-col justify-center h-full py-8 relative z-20">
-        <h2 className="font-display text-3xl md:text-4xl text-foreground mb-4">
+      {/* Right half - Content (50% of space before nav) */}
+      <div className="w-1/2 flex flex-col justify-center h-full py-4 relative z-20">
+        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-3">
           Thank You for being part of my life and work
         </h2>
         
-        <p className="font-body text-foreground/80 text-sm mb-4 max-w-xl text-justify">
+        <p className="font-body text-foreground/80 text-sm mb-3 text-justify">
           I have only been able to do what I do with support from the people around me. As a tradition, I've started sending virtual thank you bouquets that represent not only me but the people who have helped me along the way. If you'd like to add a flower to my bouquet, use the boxes below to submit your drawing and name.
         </p>
 
         {/* Color picker */}
-        <div className="flex gap-2 mb-3">
+        <div className="flex gap-2 mb-2">
           {colors.map((color) => (
             <button
               key={color}
               onClick={() => setColor(color)}
-              className={`w-6 h-6 rounded-full transition-transform ${brushColor === color ? 'scale-125 ring-2 ring-foreground' : ''}`}
+              className={`w-5 h-5 rounded-full transition-transform ${brushColor === color ? 'scale-125 ring-2 ring-foreground' : ''}`}
               style={{ backgroundColor: color }}
             />
           ))}
         </div>
 
         {/* Drawing canvas */}
-        <div className="border border-foreground/20 rounded-lg bg-white/50 mb-3 relative" style={{ width: '300px', height: '200px' }}>
+        <div className="border border-foreground/20 rounded-lg bg-white/50 mb-2 relative" style={{ width: '280px', height: '180px' }}>
           <canvas
             ref={canvasRef}
-            width={300}
-            height={200}
-            className="cursor-crosshair rounded-lg w-full h-full"
+            width={280}
+            height={180}
+            className="rounded-lg w-full h-full"
+            style={{ cursor: `url(${crayonCursor}) 2 22, crosshair` }}
             onMouseDown={startDrawing}
             onMouseMove={draw}
             onMouseUp={stopDrawing}
@@ -177,15 +180,15 @@ const ContactSection = () => {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Name"
-          className="w-[300px] px-3 py-2 border border-foreground/20 rounded-lg bg-white/50 font-body text-foreground placeholder:text-foreground/40 mb-3"
+          className="w-[280px] px-3 py-1.5 border border-foreground/20 rounded-lg bg-white/50 font-body text-foreground placeholder:text-foreground/40 mb-2 text-sm"
         />
 
         {/* Send button */}
-        <div className="w-[300px] flex justify-end mb-6">
+        <div className="w-[280px] flex justify-end mb-4">
           <button
             onClick={handleSend}
             disabled={isSending || !name.trim()}
-            className="px-6 py-2 bg-foreground text-background font-nav text-sm rounded transition-opacity hover:opacity-80 disabled:opacity-50"
+            className="px-5 py-1.5 bg-foreground text-background font-nav text-sm rounded transition-opacity hover:opacity-80 disabled:opacity-50"
           >
             {isSending ? 'Sending...' : 'Send'}
           </button>

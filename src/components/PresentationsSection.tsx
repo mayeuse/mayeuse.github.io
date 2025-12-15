@@ -103,22 +103,32 @@ const PresentationsSection = () => {
     setExpandedItem(index);
   }, []);
 
-  const handleSliderClick = (e: React.MouseEvent<HTMLDivElement>) => {
+  const updateIndexFromPosition = (clientX: number) => {
     if (!sliderRef.current) return;
     const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
+    const x = Math.max(0, Math.min(clientX - rect.left, rect.width));
     const percentage = x / rect.width;
     const newIndex = Math.round(percentage * (mediaItems.length - 1));
     setActiveIndex(Math.max(0, Math.min(mediaItems.length - 1, newIndex)));
   };
 
-  const handleSliderDrag = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!isDragging || !sliderRef.current) return;
-    const rect = sliderRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const percentage = x / rect.width;
-    const newIndex = Math.round(percentage * (mediaItems.length - 1));
-    setActiveIndex(Math.max(0, Math.min(mediaItems.length - 1, newIndex)));
+  const handleSliderClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    updateIndexFromPosition(e.clientX);
+  };
+
+  const handleSliderMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+    updateIndexFromPosition(e.clientX);
+  };
+
+  const handleSliderMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!isDragging) return;
+    updateIndexFromPosition(e.clientX);
+  };
+
+  const handleSliderMouseUp = () => {
+    setIsDragging(false);
   };
 
   const renderMediaItem = (item: MediaItem, index: number, isExpanded = false) => {
@@ -131,8 +141,8 @@ const PresentationsSection = () => {
         return (
           <div className={containerClass}>
             <iframe
-              src={`${item.src}#toolbar=0&navpanes=0`}
-              className={isExpanded ? "w-[80vw] h-[85vh] rounded-lg" : "w-full h-full rounded-lg"}
+              src={`${item.src}#toolbar=0&navpanes=0&view=FitH`}
+              className={isExpanded ? "w-[80vw] h-[85vh] rounded-lg" : "w-full aspect-[8.5/11] rounded-lg"}
               title={`Presentation ${index + 1}`}
             />
             {!isExpanded && item.expandable && (
@@ -154,6 +164,7 @@ const PresentationsSection = () => {
               className={isExpanded 
                 ? "max-h-[85vh] max-w-[80vw] object-contain rounded-lg" 
                 : `${item.expandable ? 'max-h-[85%]' : 'max-h-full'} max-w-full object-contain rounded-lg`}
+              loading="lazy"
             />
             {!isExpanded && item.expandable && (
               <button
@@ -172,6 +183,7 @@ const PresentationsSection = () => {
               src={item.src}
               alt={`Presentation ${index + 1}`}
               className="max-h-[85%] max-w-full object-contain rounded-lg"
+              loading="lazy"
             />
             <a
               href={item.link}
@@ -309,27 +321,21 @@ const PresentationsSection = () => {
           {/* Progress slider bar */}
           <div 
             ref={sliderRef}
-            className="w-[50%] ml-[35%] h-2 bg-foreground/10 rounded-full cursor-pointer relative"
+            className="w-[50%] ml-[35%] h-2 bg-foreground/10 rounded-full relative select-none"
             onClick={handleSliderClick}
-            onMouseDown={() => setIsDragging(true)}
-            onMouseUp={() => setIsDragging(false)}
-            onMouseLeave={() => setIsDragging(false)}
-            onMouseMove={handleSliderDrag}
+            onMouseDown={handleSliderMouseDown}
+            onMouseMove={handleSliderMouseMove}
+            onMouseUp={handleSliderMouseUp}
+            onMouseLeave={handleSliderMouseUp}
+            style={{ cursor: isDragging ? 'grabbing' : 'pointer' }}
           >
             <motion.div
-              className="absolute top-0 left-0 h-full bg-primary rounded-full"
+              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-md"
               animate={{
-                width: `${((activeIndex + 1) / mediaItems.length) * 100}%`,
+                left: `calc(${(activeIndex / (mediaItems.length - 1)) * 100}% - 8px)`,
               }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.div
-              className="absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-primary rounded-full shadow-md cursor-grab active:cursor-grabbing"
-              animate={{
-                left: `${(activeIndex / (mediaItems.length - 1)) * 100}%`,
-              }}
-              transition={{ duration: 0.3 }}
-              style={{ marginLeft: '-8px' }}
+              transition={{ duration: isDragging ? 0 : 0.2, ease: 'easeOut' }}
+              style={{ cursor: isDragging ? 'grabbing' : 'grab' }}
             />
           </div>
         </div>
