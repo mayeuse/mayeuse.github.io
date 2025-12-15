@@ -142,7 +142,7 @@ const PresentationsSection = () => {
           <div className={containerClass}>
             <iframe
               src={`${item.src}#toolbar=0&navpanes=0&view=FitH`}
-              className={isExpanded ? "w-[80vw] h-[85vh] rounded-lg" : "w-full aspect-[8.5/11] rounded-lg"}
+              className={isExpanded ? "w-[80vw] h-[85vh] rounded-lg" : "w-full h-full rounded-lg"}
               title={`Presentation ${index + 1}`}
             />
             {!isExpanded && item.expandable && (
@@ -200,11 +200,13 @@ const PresentationsSection = () => {
         const startParam = item.youtubeStart ? `start=${item.youtubeStart}&` : '';
         return (
           <iframe
-            src={`${item.src}?${startParam}enablejsapi=1`}
+            src={`${item.src}?${startParam}enablejsapi=1&origin=${window.location.origin}`}
             className="w-full h-full rounded-lg"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             title="YouTube Video"
+            onPlay={() => setIsVideoPlaying(true)}
+            onPause={() => setIsVideoPlaying(false)}
           />
         );
       default:
