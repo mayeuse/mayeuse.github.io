@@ -20,7 +20,7 @@ const WritingSampleSection = () => {
 
   return (
     <section id="writing" className="min-h-screen flex items-center justify-center px-[5%] relative z-10">
-      <div className="flex items-center justify-center gap-4 w-full max-w-4xl">
+      <div className="flex items-center justify-center gap-4 w-full max-w-3xl">
         {/* Left arrow */}
         <button
           onClick={goToPrevPage}
@@ -30,42 +30,20 @@ const WritingSampleSection = () => {
           <ChevronLeft className="w-8 h-8" />
         </button>
 
-        {/* Book-style two-page view */}
-        <div className="flex shadow-2xl rounded-lg overflow-hidden bg-white">
-          {/* Left page */}
-          <motion.div
-            key={`left-${currentPage}`}
-            initial={{ rotateY: -90, opacity: 0 }}
-            animate={{ rotateY: 0, opacity: 1 }}
-            transition={{ duration: 0.4, ease: 'easeOut' }}
-            className="w-[320px] h-[440px] bg-white border-r border-foreground/10"
-            style={{ transformOrigin: 'right center' }}
-          >
-            <iframe
-              src={`/documents/ANTH_2017_FINAL_PAPER.pdf#page=${currentPage}&toolbar=0&navpanes=0&view=FitH`}
-              className="w-full h-full"
-              title={`Writing Sample Page ${currentPage}`}
-            />
-          </motion.div>
-
-          {/* Right page */}
-          {currentPage < totalPages && (
-            <motion.div
-              key={`right-${currentPage + 1}`}
-              initial={{ rotateY: 90, opacity: 0 }}
-              animate={{ rotateY: 0, opacity: 1 }}
-              transition={{ duration: 0.4, ease: 'easeOut', delay: 0.1 }}
-              className="w-[320px] h-[440px] bg-white"
-              style={{ transformOrigin: 'left center' }}
-            >
-              <iframe
-                src={`/documents/ANTH_2017_FINAL_PAPER.pdf#page=${currentPage + 1}&toolbar=0&navpanes=0&view=FitH`}
-                className="w-full h-full"
-                title={`Writing Sample Page ${currentPage + 1}`}
-              />
-            </motion.div>
-          )}
-        </div>
+        {/* Single page view */}
+        <motion.div
+          key={currentPage}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
+          className="shadow-2xl rounded-lg overflow-hidden bg-white"
+        >
+          <iframe
+            src={`/documents/ANTH_2017_FINAL_PAPER.pdf#page=${currentPage}&toolbar=0&navpanes=0&view=FitH`}
+            className="w-[500px] h-[650px]"
+            title={`Writing Sample Page ${currentPage}`}
+          />
+        </motion.div>
 
         {/* Right arrow */}
         <button
@@ -79,7 +57,7 @@ const WritingSampleSection = () => {
 
       {/* Page indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 font-nav text-sm text-foreground/60">
-        Page {currentPage}-{Math.min(currentPage + 1, totalPages)} of {totalPages}
+        Page {currentPage} of {totalPages}
       </div>
     </section>
   );

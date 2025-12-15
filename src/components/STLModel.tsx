@@ -1,7 +1,7 @@
-import { useRef, useState, useMemo, memo } from 'react';
+import { useRef, useState, memo } from 'react';
 import { Canvas, useFrame, useLoader } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import * as THREE from 'three';
 import { Move3d } from 'lucide-react';
 
@@ -12,27 +12,20 @@ interface ModelProps {
 }
 
 const Model = memo(({ url, scale, isInteracting }: ModelProps) => {
-  const geometry = useLoader(STLLoader, url);
-  const meshRef = useRef<THREE.Mesh>(null);
-
-  // Memoize centered geometry to avoid recomputing
-  const centeredGeometry = useMemo(() => {
-    geometry.center();
-    geometry.computeVertexNormals();
-    return geometry;
-  }, [geometry]);
+  const gltf = useLoader(GLTFLoader, url);
+  const groupRef = useRef<THREE.Group>(null);
 
   useFrame((_, delta) => {
-    if (meshRef.current && !isInteracting) {
-      meshRef.current.rotation.x += delta * 0.5;
+    if (groupRef.current && !isInteracting) {
+      groupRef.current.rotation.x += delta * 0.5;
     }
   });
 
   return (
     <group rotation={[0, 0, -Math.PI / 2]}>
-      <mesh ref={meshRef} geometry={centeredGeometry} scale={scale}>
-        <meshStandardMaterial color="#888888" metalness={0.3} roughness={0.6} vertexColors={false} />
-      </mesh>
+      <group ref={groupRef} scale={scale}>
+        <primitive object={gltf.scene.clone()} />
+      </group>
     </group>
   );
 });
@@ -50,13 +43,16 @@ interface STLModelProps {
 const STLModel = memo(({ url, scale = 0.02, label, className }: STLModelProps) => {
   const [isInteracting, setIsInteracting] = useState(false);
 
+  // Convert STL URL to GLB URL if needed
+  const glbUrl = url.replace('.stl', '.glb');
+
   return (
     <div className="flex flex-col items-center h-full">
       <div className={`cursor-grab active:cursor-grabbing relative ${className || 'w-36 h-36'}`}>
         <Canvas camera={{ position: [0, 0, 5], fov: 50 }} gl={{ antialias: true }} dpr={[1, 2]}>
           <ambientLight intensity={0.6} />
           <directionalLight position={[5, 5, 5]} intensity={0.8} />
-          <Model url={url} scale={scale} isInteracting={isInteracting} />
+          <Model url={glbUrl} scale={scale} isInteracting={isInteracting} />
           <OrbitControls 
             enableZoom={false} 
             enablePan={false}
