@@ -144,7 +144,7 @@ const ContactSection = () => {
       {/* Right half - Content */}
       <div className="w-1/2 flex flex-col items-center justify-center h-full py-4 relative z-20">
         <p className="font-body text-foreground/80 text-sm mb-3 text-center max-w-[320px]">
-          I have only been able to do what I do with support from the people around me. As a tradition, I've started sending virtual thank you bouquets that represent not only me but the people who have helped me along the way.
+          I have only been able to do what I do with support from the people around me. As a tradition, I'll be sending virtual thank you bouquets that represent not only me but the people who have helped me along the way.
         </p>
         <p className="font-body text-foreground/80 text-sm mb-3 text-center max-w-[320px] font-bold">
           If you'd like to add a flower to my bouquet, use the boxes below to submit your drawing and name.
