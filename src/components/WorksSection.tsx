@@ -847,7 +847,7 @@ const WorksSection = () => {
                                   I selected my strongest roots and combined every prior technique into the final look. This look was part of a mini-collection with five other designers each addressing their own visions of environmentalist futures. I co-directed the team with Isabella Chiappini.
                                 </p>
                               </div>
-                              <div className="w-1/2 flex justify-center">
+                              <div className="w-full md:w-1/2 flex justify-center">
                                 <img src={lykenSubsectionImages.LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
                               </div>
                             </div>
