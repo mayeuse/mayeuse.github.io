@@ -481,9 +481,9 @@ const WorksSection = () => {
                           <>
                             <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
                             
-                            <div className="mt-4 flex gap-4">
+                            <div className="mt-4 flex flex-col md:flex-row gap-4">
                               {/* Video on left */}
-                              <div className="w-1/2">
+                              <div className="w-full md:w-1/2">
                                 <video 
                                   src="/videos/TexelsPrototyping.mp4" 
                                   autoPlay 
@@ -496,7 +496,7 @@ const WorksSection = () => {
                               </div>
                               
                               {/* Right column with image and paragraph */}
-                              <div className="w-1/2 flex flex-col">
+                              <div className="w-full md:w-1/2 flex flex-col">
                                 <img 
                                   src={texelsPrototypingImages.TexelsPrototyping1} 
                                   alt="Fabric with shape memory wire connections" 
