@@ -680,9 +680,9 @@ const WorksSection = () => {
                   {activeProject === 'lyken' && lykenMainImages && !loadingImages && (
                     <>
                       <div className="mb-6" />
-                      <div className="flex gap-8">
-                        {/* Left side - Main Carousels (50% width) */}
-                        <div className="w-1/2 flex flex-col gap-4">
+                      <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+                        {/* Left side - Main Carousels */}
+                        <div className="w-full md:w-1/2 flex flex-col gap-4">
                           {/* First Carousel - Looks */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
