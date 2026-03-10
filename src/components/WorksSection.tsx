@@ -356,14 +356,14 @@ const WorksSection = () => {
   );
 
   return (
-    <section id="works" className="h-screen flex items-start pt-[25vh] relative z-10">
-      <div className="flex w-full h-[70vh]">
-        {/* Thumbnails Column */}
-        <div className="flex flex-col justify-between h-full pl-[10%]">
+    <section id="works" className="min-h-screen md:h-screen flex items-start pt-[15vh] md:pt-[25vh] relative z-10">
+      <div className="flex flex-col md:flex-row w-full md:h-[70vh]">
+        {/* Thumbnails Column - horizontal on mobile, vertical on desktop */}
+        <div className="flex flex-row md:flex-col justify-start md:justify-between gap-4 md:gap-0 px-[5%] md:px-0 md:h-full md:pl-[10%] overflow-x-auto pb-4 md:pb-0">
           {projects.map((project) => (
             <div
               key={project.id}
-              className="cursor-pointer group"
+              className="cursor-pointer group flex-shrink-0"
               onMouseEnter={() => {
                 setHoveredProject(project.id);
                 preloadProjectImages(project.id);
@@ -372,7 +372,7 @@ const WorksSection = () => {
               onClick={() => handleProjectClick(project.id)}
             >
               {/* Thumbnail with hover fade between primary/secondary, secondary shown when active */}
-              <div className="relative w-24 h-16 md:w-32 md:h-20 overflow-hidden">
+              <div className="relative w-20 h-14 md:w-32 md:h-20 overflow-hidden">
                 {/* Primary image - hidden when active or hovered */}
                 <motion.img
                   src={project.thumbnailPrimary}
@@ -399,7 +399,7 @@ const WorksSection = () => {
         </div>
 
         {/* Project Display Area */}
-        <div className="project-display-area flex-1 flex flex-col items-start justify-start px-8 pr-[15%] overflow-y-auto">
+        <div className="project-display-area flex-1 flex flex-col items-start justify-start px-[5%] md:px-8 md:pr-[15%] overflow-y-auto">
           {activeProjectData ? (
             <div className="w-full max-w-[90%] lg:max-w-[80%] xl:max-w-4xl 2xl:max-w-5xl">
               {activeProjectData.displayTitle ? (
