@@ -356,14 +356,14 @@ const WorksSection = () => {
   );
 
   return (
-    <section id="works" className="h-screen flex items-start pt-[25vh] relative z-10">
-      <div className="flex w-full h-[70vh]">
-        {/* Thumbnails Column */}
-        <div className="flex flex-col justify-between h-full pl-[10%]">
+    <section id="works" className="min-h-screen md:h-screen flex items-start pt-[15vh] md:pt-[25vh] relative z-10">
+      <div className="flex flex-col md:flex-row w-full md:h-[70vh]">
+        {/* Thumbnails Column - horizontal on mobile, vertical on desktop */}
+        <div className="flex flex-row md:flex-col justify-start md:justify-between gap-4 md:gap-0 px-[5%] md:px-0 md:h-full md:pl-[10%] overflow-x-auto pb-4 md:pb-0">
           {projects.map((project) => (
             <div
               key={project.id}
-              className="cursor-pointer group"
+              className="cursor-pointer group flex-shrink-0"
               onMouseEnter={() => {
                 setHoveredProject(project.id);
                 preloadProjectImages(project.id);
@@ -372,7 +372,7 @@ const WorksSection = () => {
               onClick={() => handleProjectClick(project.id)}
             >
               {/* Thumbnail with hover fade between primary/secondary, secondary shown when active */}
-              <div className="relative w-24 h-16 md:w-32 md:h-20 overflow-hidden">
+              <div className="relative w-20 h-14 md:w-32 md:h-20 overflow-hidden">
                 {/* Primary image - hidden when active or hovered */}
                 <motion.img
                   src={project.thumbnailPrimary}
@@ -399,7 +399,7 @@ const WorksSection = () => {
         </div>
 
         {/* Project Display Area */}
-        <div className="project-display-area flex-1 flex flex-col items-start justify-start px-8 pr-[15%] overflow-y-auto">
+        <div className="project-display-area flex-1 flex flex-col items-start justify-start px-[5%] md:px-8 md:pr-[15%] overflow-y-auto">
           {activeProjectData ? (
             <div className="w-full max-w-[90%] lg:max-w-[80%] xl:max-w-4xl 2xl:max-w-5xl">
               {activeProjectData.displayTitle ? (
@@ -481,9 +481,9 @@ const WorksSection = () => {
                           <>
                             <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Prototyping</h3>
                             
-                            <div className="mt-4 flex gap-4">
+                            <div className="mt-4 flex flex-col md:flex-row gap-4">
                               {/* Video on left */}
-                              <div className="w-1/2">
+                              <div className="w-full md:w-1/2">
                                 <video 
                                   src="/videos/TexelsPrototyping.mp4" 
                                   autoPlay 
@@ -496,7 +496,7 @@ const WorksSection = () => {
                               </div>
                               
                               {/* Right column with image and paragraph */}
-                              <div className="w-1/2 flex flex-col">
+                              <div className="w-full md:w-1/2 flex flex-col">
                                 <img 
                                   src={texelsPrototypingImages.TexelsPrototyping1} 
                                   alt="Fabric with shape memory wire connections" 
@@ -603,9 +603,9 @@ const WorksSection = () => {
                   {activeProjectData.hasSchematic && cancerInitialImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
-                      <div className="mt-4 flex items-start gap-2">
+                      <div className="mt-4 flex flex-col md:flex-row items-start gap-2">
                         {/* Schematic Image */}
-                        <div className="w-[66%]">
+                        <div className="w-full md:w-[66%]">
                           <img 
                             src={cancerInitialImages.ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
@@ -680,9 +680,9 @@ const WorksSection = () => {
                   {activeProject === 'lyken' && lykenMainImages && !loadingImages && (
                     <>
                       <div className="mb-6" />
-                      <div className="flex gap-8">
-                        {/* Left side - Main Carousels (50% width) */}
-                        <div className="w-1/2 flex flex-col gap-4">
+                      <div className="flex flex-col md:flex-row gap-4 md:gap-8">
+                        {/* Left side - Main Carousels */}
+                        <div className="w-full md:w-1/2 flex flex-col gap-4">
                           {/* First Carousel - Looks */}
                           <div className="relative flex items-center justify-center h-[100px]">
                             <div className="absolute left-[5%] z-0 opacity-30 scale-75">
@@ -793,7 +793,7 @@ const WorksSection = () => {
                         </div>
                         
                         {/* Right side - Paragraph + Still Image (50% width) */}
-                        <div className="w-1/2 flex flex-col gap-4">
+                        <div className="w-full md:w-1/2 flex flex-col gap-4">
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                             Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on fashion elements that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
@@ -841,13 +841,13 @@ const WorksSection = () => {
                             
                             {/* Result Section */}
                             <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Result</h3>
-                            <div className="mt-4 flex gap-8 items-center">
-                              <div className="w-1/2 flex items-center justify-center">
+                            <div className="mt-4 flex flex-col md:flex-row gap-4 md:gap-8 items-center">
+                              <div className="w-full md:w-1/2 flex items-center justify-center">
                                 <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                                   I selected my strongest roots and combined every prior technique into the final look. This look was part of a mini-collection with five other designers each addressing their own visions of environmentalist futures. I co-directed the team with Isabella Chiappini.
                                 </p>
                               </div>
-                              <div className="w-1/2 flex justify-center">
+                              <div className="w-full md:w-1/2 flex justify-center">
                                 <img src={lykenSubsectionImages.LykenResult} alt="Final LYKEN look on model" className="max-h-[400px] object-contain" />
                               </div>
                             </div>

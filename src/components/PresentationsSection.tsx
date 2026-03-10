@@ -225,14 +225,14 @@ const PresentationsSection = () => {
     <>
       <section id="presentations" className="min-h-screen flex items-center justify-center px-[3%] lg:px-[5%] relative z-10">
         <div className="flex flex-col items-center gap-6 w-full max-w-6xl lg:max-w-7xl xl:max-w-[90%] 2xl:max-w-[85%]">
-          <div className="flex items-center gap-8 w-full">
+          <div className="flex flex-col md:flex-row items-center md:items-center gap-6 md:gap-8 w-full">
             {/* Left side - Presentation list */}
-            <ul className="flex flex-col gap-3 items-start w-[35%] lg:w-[30%] xl:w-[25%]">
+            <ul className="flex flex-col gap-2 md:gap-3 items-center md:items-start w-full md:w-[35%] lg:w-[30%] xl:w-[25%]">
               {presentations.map((presentation, index) => (
                 <li key={index}>
                   <button
                     onClick={() => handlePresentationClick(index)}
-                    className={`font-nav text-sm md:text-base capitalize tracking-wide transition-colors cursor-pointer text-left ${
+                    className={`font-nav text-xs md:text-base capitalize tracking-wide transition-colors cursor-pointer text-center md:text-left ${
                       activeIndex === index
                         ? 'text-primary underline'
                         : 'text-foreground hover:text-primary hover:underline'
@@ -245,9 +245,9 @@ const PresentationsSection = () => {
             </ul>
 
             {/* Center - 3D Carousel with arrows below */}
-            <div className="flex flex-col items-center w-[50%] lg:w-[60%] xl:w-[65%]">
+            <div className="flex flex-col items-center w-full md:w-[50%] lg:w-[60%] xl:w-[65%]">
               <div 
-                className="relative flex items-center justify-center w-full h-[400px] lg:h-[450px] xl:h-[500px]"
+                className="relative flex items-center justify-center w-full h-[250px] md:h-[400px] lg:h-[450px] xl:h-[500px]"
                 style={{ perspective: '1000px' }}
               >
                 {visibleIndices.map((index) => {
@@ -261,7 +261,7 @@ const PresentationsSection = () => {
                         opacity: style.opacity,
                       }}
                       transition={{ duration: 0.4, ease: 'easeOut' }}
-                      className="absolute w-[80%] lg:w-[85%] h-[350px] lg:h-[400px] xl:h-[450px] flex items-center justify-center"
+                      className="absolute w-[90%] md:w-[80%] lg:w-[85%] h-[220px] md:h-[350px] lg:h-[400px] xl:h-[450px] flex items-center justify-center"
                       style={{ 
                         zIndex: style.z,
                         transformStyle: 'preserve-3d',
@@ -280,14 +280,14 @@ const PresentationsSection = () => {
                   className="p-2 text-primary hover:text-primary/70 transition-colors"
                   disabled={isVideoPlaying}
                 >
-                  <ChevronLeft className="w-8 h-8" />
+                  <ChevronLeft className="w-6 h-6 md:w-8 md:h-8" />
                 </button>
                 <button
                   onClick={handleNext}
                   className="p-2 text-primary hover:text-primary/70 transition-colors"
                   disabled={isVideoPlaying}
                 >
-                  <ChevronRight className="w-8 h-8" />
+                  <ChevronRight className="w-6 h-6 md:w-8 md:h-8" />
                 </button>
               </div>
             </div>
