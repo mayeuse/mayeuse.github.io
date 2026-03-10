@@ -841,8 +841,8 @@ const WorksSection = () => {
                             
                             {/* Result Section */}
                             <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Result</h3>
-                            <div className="mt-4 flex gap-8 items-center">
-                              <div className="w-1/2 flex items-center justify-center">
+                            <div className="mt-4 flex flex-col md:flex-row gap-4 md:gap-8 items-center">
+                              <div className="w-full md:w-1/2 flex items-center justify-center">
                                 <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                                   I selected my strongest roots and combined every prior technique into the final look. This look was part of a mini-collection with five other designers each addressing their own visions of environmentalist futures. I co-directed the team with Isabella Chiappini.
                                 </p>
