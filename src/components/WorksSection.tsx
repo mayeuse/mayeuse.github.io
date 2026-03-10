@@ -793,7 +793,7 @@ const WorksSection = () => {
                         </div>
                         
                         {/* Right side - Paragraph + Still Image (50% width) */}
-                        <div className="w-1/2 flex flex-col gap-4">
+                        <div className="w-full md:w-1/2 flex flex-col gap-4">
                           <p className="font-body text-foreground/70 text-sm md:text-base leading-relaxed text-justify">
                             Aside from the material challenge, I worked with a narrative concept for this piece. I wanted to explore flowers not just as my main physical medium but as cultural symbols for love and commitment. When sketching designs, I focused on fashion elements that similarly evoked ceremonies of love, vulnerability, entanglement, and restriction.
                           </p>
