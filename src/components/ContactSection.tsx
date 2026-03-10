@@ -113,10 +113,10 @@ const ContactSection = () => {
   };
 
   return (
-    <section id="contact" className="h-[calc(100vh-180px)] flex items-start pt-8 pl-[5%] pr-[20%] relative z-20">
+    <section id="contact" className="min-h-[calc(100vh-180px)] md:h-[calc(100vh-180px)] flex flex-col md:flex-row items-start pt-8 px-[5%] md:pl-[5%] md:pr-[20%] relative z-20">
       {/* Left half - Title + Flower video + Email */}
-      <div className="w-1/2 h-full flex flex-col items-center justify-center relative z-20">
-        <h2 className="font-display text-2xl md:text-3xl text-foreground mb-4 text-center max-w-[90%]">
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-center relative z-20 mb-8 md:mb-0 md:h-full">
+        <h2 className="font-display text-xl md:text-3xl text-foreground mb-4 text-center max-w-[90%]">
           Thank You for being part of my life and work
         </h2>
         <video
@@ -126,7 +126,7 @@ const ContactSection = () => {
           muted
           playsInline
           preload="metadata"
-          className="w-[80%] max-h-[50%] object-contain"
+          className="w-[60%] md:w-[80%] max-h-[40vh] md:max-h-[50%] object-contain"
         >
           <source src="/videos/flower.webm" type="video/webm" />
         </video>
@@ -142,7 +142,7 @@ const ContactSection = () => {
       </div>
 
       {/* Right half - Content */}
-      <div className="w-1/2 flex flex-col items-center justify-center h-full py-4 relative z-20">
+      <div className="w-full md:w-1/2 flex flex-col items-center justify-center md:h-full py-4 relative z-20">
         <p className="font-body text-foreground/80 text-sm mb-3 text-center max-w-[320px]">
           I have only been able to do what I do with support from the people around me. As a tradition, I'll be sending virtual thank you bouquets that represent not only me but the people who have helped me along the way.
         </p>
@@ -151,7 +151,7 @@ const ContactSection = () => {
         </p>
 
         {/* Color picker */}
-        <div className="flex gap-2 mb-2">
+        <div className="flex gap-2 mb-2 flex-wrap justify-center">
           {colors.map((color) => (
             <button
               key={color}
@@ -163,7 +163,7 @@ const ContactSection = () => {
         </div>
 
         {/* Drawing canvas */}
-        <div className="border border-foreground/20 rounded-lg bg-white/50 mb-2 relative" style={{ width: '280px', height: '180px' }}>
+        <div className="border border-foreground/20 rounded-lg bg-white/50 mb-2 relative w-[280px] h-[180px]">
           <canvas
             ref={canvasRef}
             width={280}

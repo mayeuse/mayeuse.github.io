@@ -10,7 +10,7 @@ const Model3D = () => {
   }, []);
 
   return (
-    <div className="w-[530px] h-[530px] md:w-[700px] md:h-[700px] flex-shrink-0">
+    <div className="w-[280px] h-[280px] md:w-[530px] md:h-[530px] lg:w-[700px] lg:h-[700px] flex-shrink-0">
       <video
         ref={videoRef}
         src="/videos/flower.webm"
