@@ -18,6 +18,7 @@ const Model3D = () => {
         loop
         muted
         playsInline
+        preload="auto"
         className="w-full h-full object-contain"
         style={{ background: 'transparent' }}
       />
