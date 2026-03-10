@@ -603,9 +603,9 @@ const WorksSection = () => {
                   {activeProjectData.hasSchematic && cancerInitialImages && !loadingImages && (
                     <>
                       <h3 className="mt-8 font-body text-foreground text-lg md:text-xl text-center w-full">Testing Stage</h3>
-                      <div className="mt-4 flex items-start gap-2">
+                      <div className="mt-4 flex flex-col md:flex-row items-start gap-2">
                         {/* Schematic Image */}
-                        <div className="w-[66%]">
+                        <div className="w-full md:w-[66%]">
                           <img 
                             src={cancerInitialImages.ExpSchematic} 
                             alt="Experimental schematic showing probe attached to z-axis manipulator, phantom breast with tumor, and force sensor"
