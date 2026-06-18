@@ -11,7 +11,7 @@ const ContactSection = () => {
   const [isSending, setIsSending] = useState(false);
   const [hasDrawn, setHasDrawn] = useState(false);
 
-  const colors = ['#000000', '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#10ac84', '#ee5253'];
+  const colors = ['#f4840d00', '#ff6b6b', '#feca57', '#48dbfb', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#10ac84', '#ee5253'];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -144,10 +144,10 @@ const ContactSection = () => {
       {/* Right half - Content */}
       <div className="w-full md:w-1/2 flex flex-col items-center justify-center md:h-full py-4 relative z-20">
         <p className="font-body text-foreground/80 text-sm mb-3 text-center max-w-[320px]">
-          I have only been able to do what I do with support from the people around me. As a tradition, I'll be sending virtual thank you bouquets that represent not only me but the people who have helped me along the way.
+          I have only been able to do what I do with support from the people around me. As a tradition, I send virtual thank you bouquets that represent not only me but the people who have helped me along the way. Those boquets update alongside the one you see here!
         </p>
         <p className="font-body text-foreground/80 text-sm mb-3 text-center max-w-[320px] font-bold">
-          If you'd like to add a flower to my bouquet, use the boxes below to submit your drawing and name.
+          If you'd like to add a flower to the bouquet, use the boxes below to submit your drawing and name.
         </p>
 
         {/* Color picker */}
@@ -157,7 +157,7 @@ const ContactSection = () => {
               key={color}
               onClick={() => setColor(color)}
               className={`w-5 h-5 rounded-full transition-transform ${brushColor === color ? 'scale-125 ring-2 ring-foreground' : ''}`}
-              style={{ backgroundColor: color }}
+              style={{ backgroundColor: color, outline: '1px solid #000000' }}
             />
           ))}
         </div>

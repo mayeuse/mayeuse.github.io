@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import Navigation from "@/components/Navigation";
 import HeroSection from "@/components/HeroSection";
 import WorksSection from "@/components/WorksSection";
@@ -20,15 +21,35 @@ const sections = [
 
 const Index = () => {
   const [currentSection, setCurrentSection] = useState('');
+  const { section } = useParams();
+  const navigate = useNavigate();
+  const hasScrolledToUrlSection = useRef(false);
+
+  // Scroll to the section named in the URL, once, on initial load
+  useEffect(() => {
+    if (hasScrolledToUrlSection.current) return;
+    hasScrolledToUrlSection.current = true;
+
+    if (section) {
+      const el = document.getElementById(section);
+      if (el) el.scrollIntoView({ behavior: 'instant' as ScrollBehavior });
+    }
+  }, [section]);
 
   useEffect(() => {
     const handleScroll = () => {
       const scrollPosition = window.scrollY + window.innerHeight / 2;
-      
+
       for (let i = sections.length - 1; i >= 0; i--) {
         const element = document.getElementById(sections[i].id);
         if (element && element.offsetTop <= scrollPosition) {
           setCurrentSection(sections[i].title);
+
+          // keep the URL in sync with scroll position
+          const path = sections[i].id === 'top' ? '/' : `/${sections[i].id}`;
+          if (window.location.pathname !== path) {
+            window.history.replaceState(null, '', path);
+          }
           break;
         }
       }
@@ -36,7 +57,7 @@ const Index = () => {
 
     window.addEventListener('scroll', handleScroll);
     handleScroll();
-    
+
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -52,7 +73,7 @@ const Index = () => {
       <PresentationsSection />
       <WritingSampleSection />
       <ContactSection />
-      
+
       {/* Transparent footer */}
       <footer className="h-16 bg-transparent" />
     </main>
