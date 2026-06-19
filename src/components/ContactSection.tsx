@@ -128,7 +128,7 @@ const ContactSection = () => {
           preload="metadata"
           className="w-[60%] md:w-[80%] max-h-[40vh] md:max-h-[50%] object-contain"
         >
-          <source src="/videos/bouquet_v1.0.webm" type="video/webm" />
+          <source src="/videos/bouquet_v2.webm" type="video/webm" />
         </video>
         <p className="font-body text-foreground/80 text-sm text-center mt-4">
           email me at
